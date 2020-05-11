@@ -30,11 +30,12 @@ public class Game {
     @OneToOne
     @Getter
     @Setter
-    @JoinColumn(name = "second_player_id", nullable = false)
+    @JoinColumn(name = "second_player_id")
     private Player player2;
 
     @Getter
     @Setter
+    @Enumerated(EnumType.STRING)
     private GameStatus gameStatus;
 
     @OneToMany
