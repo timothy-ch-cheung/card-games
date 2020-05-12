@@ -21,10 +21,10 @@ public class Game {
     @Setter
     private String lobbyName;
 
-    @OneToOne
     @Getter
     @Setter
-    @JoinColumn(name = "first_player_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private Player player1;
 
     @OneToOne

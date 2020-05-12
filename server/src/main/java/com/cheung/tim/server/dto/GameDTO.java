@@ -15,5 +15,5 @@ public class GameDTO {
 
     @Getter
     @Setter
-    private String player1;
+    private String host;
 }

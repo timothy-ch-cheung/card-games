@@ -41,6 +41,7 @@ public class GameController {
 
     private GameDTO convertToDto(Game game) {
         GameDTO gameDto = modelMapper.map(game, GameDTO.class);
+        gameDto.setHost(game.getPlayer1().getUsername());
         return gameDto;
     }
 
