@@ -5,12 +5,15 @@ import com.cheung.tim.server.dto.GameDTO;
 import com.cheung.tim.server.enums.GameStatus;
 import com.cheung.tim.server.repository.GameRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,15 +34,22 @@ public class GameController {
     }
 
     @GetMapping(path = "/games")
-    @ResponseBody
-    public List<GameDTO> getGames() {
+    public ResponseEntity<Map<String, Object>> getGames() {
         List<Game> games = gameRepository.findByGameStatus(GameStatus.OPEN);
-        return games.stream().map(this::convertToDto)
-                .collect(Collectors.toList());
+        return new ResponseEntity<>(convertToDtoMap(games), HttpStatus.OK);
     }
 
-    private GameDTO convertToDto(Game post) {
-        GameDTO gameDto = modelMapper.map(post, GameDTO.class);
+    private GameDTO convertToDto(Game game) {
+        GameDTO gameDto = modelMapper.map(game, GameDTO.class);
         return gameDto;
+    }
+
+    private Map<String, Object> convertToDtoMap(List<Game> games) {
+        Map<String, Object> mapDTO = new HashMap<>();
+        List<GameDTO> gamesDto = games.stream().map(this::convertToDto)
+                .collect(Collectors.toList());
+        mapDTO.put("numGames", gamesDto.size());
+        mapDTO.put("games", gamesDto);
+        return mapDTO;
     }
 }
