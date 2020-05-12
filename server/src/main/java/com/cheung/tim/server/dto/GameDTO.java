@@ -11,6 +11,10 @@ public class GameDTO {
 
     @Getter
     @Setter
+    private String createdAt;
+
+    @Getter
+    @Setter
     private String lobbyName;
 
     @Getter

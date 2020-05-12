@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "PLAYERS")
-public class Player {
+public class Player extends BaseEntity {
 
     @Id
     @Getter

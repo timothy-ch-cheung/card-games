@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "GAME")
-public class Game {
+public class Game extends BaseEntity{
 
     @Id
     @Getter
