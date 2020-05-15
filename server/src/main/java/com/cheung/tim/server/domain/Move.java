@@ -1,12 +1,14 @@
 package com.cheung.tim.server.domain;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name ="MOVES")
+@RequiredArgsConstructor
 public class Move extends BaseEntity {
 
     @Id

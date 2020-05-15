@@ -2,7 +2,7 @@ package com.cheung.tim.server.controller;
 
 import com.cheung.tim.server.domain.Player;
 import com.cheung.tim.server.dto.PlayerDTO;
-import com.cheung.tim.server.repository.PlayerRepository;
+import com.cheung.tim.server.service.PlayerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,19 +15,19 @@ public class PlayerController {
 
     private ModelMapper modelMapper;
 
-    PlayerRepository playerRepository;
+    PlayerService playerService;
 
-    public PlayerController(PlayerRepository playerRepository, ModelMapper modelMapper) {
-        this.playerRepository = playerRepository;
+    public PlayerController(PlayerService playerService, ModelMapper modelMapper) {
+        this.playerService = playerService;
         this.modelMapper = modelMapper;
     }
 
     @PostMapping(path = "/player")
-    public ResponseEntity<PlayerDTO> createPlayer(@RequestBody Player player) {
-        return new ResponseEntity<>(convertToDTO(this.playerRepository.save(player)), HttpStatus.OK);
+    public ResponseEntity<PlayerDTO> createPlayer(@RequestBody PlayerDTO player) {
+        return new ResponseEntity<>(convertToDTO(this.playerService.createPlayer(player)), HttpStatus.OK);
     }
 
-    private PlayerDTO convertToDTO(Player player) {
+    public PlayerDTO convertToDTO(Player player) {
         return modelMapper.map(player, PlayerDTO.class);
     }
 }

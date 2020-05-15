@@ -10,7 +10,16 @@ import java.util.List;
 
 @Entity
 @Table(name = "GAME")
-public class Game extends BaseEntity{
+public class Game extends BaseEntity {
+
+    public Game() {
+    }
+
+    public Game(String lobbyName, Player host, GameStatus status) {
+        this.lobbyName = lobbyName;
+        this.player1 = host;
+        this.gameStatus = status;
+    }
 
     @Id
     @Getter

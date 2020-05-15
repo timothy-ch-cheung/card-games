@@ -3,9 +3,9 @@ package com.cheung.tim.server.controller;
 import com.cheung.tim.server.domain.Game;
 import com.cheung.tim.server.domain.Player;
 import com.cheung.tim.server.dto.GameDTO;
-import com.cheung.tim.server.enums.GameStatus;
-import com.cheung.tim.server.repository.GameRepository;
-import com.cheung.tim.server.repository.PlayerRepository;
+import com.cheung.tim.server.dto.PlayerDTO;
+import com.cheung.tim.server.service.GameService;
+import com.cheung.tim.server.service.PlayerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +21,12 @@ public class GameController {
 
     private ModelMapper modelMapper;
 
-    GameRepository gameRepository;
-    PlayerRepository playerRepository;
+    GameService gameService;
+    PlayerService playerService;
 
-    public GameController(GameRepository gameRepository, PlayerRepository playerRepository, ModelMapper modelMapper) {
-        this.gameRepository = gameRepository;
-        this.playerRepository = playerRepository;
+    public GameController(GameService gameService, PlayerService playerService, ModelMapper modelMapper) {
+        this.gameService = gameService;
+        this.playerService = playerService;
         this.modelMapper = modelMapper;
     }
 
@@ -35,26 +35,23 @@ public class GameController {
         return "Path";
     }
 
-    @PostMapping(path = "/game")
-    public ResponseEntity<GameDTO> createGame(@RequestBody Game newGame) {
-        Player host = playerRepository.findById(newGame.getPlayer1().getUserId()).get();
-        if (host == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        newGame.setPlayer1(host);
-        newGame.setGameStatus(GameStatus.OPEN);
-        return new ResponseEntity<>(convertToDto(this.gameRepository.save(newGame)), HttpStatus.OK);
+    @PostMapping(path = "/create")
+    public ResponseEntity<GameDTO> createGame(@RequestBody GameDTO gameDTO) {
+        Player host = playerService.findPlayerById(gameDTO.getHost());
+        Game game = gameService.createGame(gameDTO, host);
+        return ResponseEntity.ok(convertToDto(game));
     }
 
     @GetMapping(path = "/games")
     public ResponseEntity<Map<String, Object>> getGames() {
-        List<Game> games = gameRepository.findByGameStatus(GameStatus.OPEN);
+        List<Game> games = gameService.findOpenGames();
         return new ResponseEntity<>(convertToDtoMap(games), HttpStatus.OK);
     }
 
     private GameDTO convertToDto(Game game) {
         GameDTO gameDto = modelMapper.map(game, GameDTO.class);
-        gameDto.setHost(game.getPlayer1().getUsername());
+        gameDto.setHost(modelMapper.map(game.getPlayer1(), PlayerDTO.class));
+        gameDto.setGameStatus(game.getGameStatus().toString());
         return gameDto;
     }
 

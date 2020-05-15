@@ -19,5 +19,9 @@ public class GameDTO {
 
     @Getter
     @Setter
-    private String host;
+    private PlayerDTO host;
+
+    @Getter
+    @Setter
+    private String gameStatus;
 }
