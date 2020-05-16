@@ -37,8 +37,7 @@ public class GameController {
 
     @PostMapping(path = "/create")
     public ResponseEntity<GameDTO> createGame(@RequestBody GameDTO gameDTO) {
-        Player host = playerService.findPlayerById(gameDTO.getHost());
-        Game game = gameService.createGame(gameDTO, host);
+        Game game = gameService.createGame(gameDTO);
         return ResponseEntity.ok(convertToDto(game));
     }
 

@@ -14,14 +14,19 @@ import java.util.List;
 public class GameService {
 
     private GameRepository gameRepository;
+    private PlayerService playerService;
 
-    public GameService(GameRepository gameRepository) {
+    public GameService(GameRepository gameRepository, PlayerService playerService) {
         this.gameRepository = gameRepository;
+        this.playerService = playerService;
     }
 
-    public Game createGame(GameDTO gameDTO, Player player) throws BadRequestException {
-        if (player == null){
+    public Game createGame(GameDTO gameDTO) throws BadRequestException {
+        Player player = playerService.findPlayerById(gameDTO.getHost());
+        if (player == null) {
             throw new BadRequestException("Player does not exist");
+        } else if (gameRepository.countByPlayer(player) > 0) {
+            throw new BadRequestException(String.format("Player %s is already in a game", player.getUsername()));
         }
         Game game = new Game(gameDTO.getLobbyName(), player, GameStatus.OPEN);
         return gameRepository.save(game);

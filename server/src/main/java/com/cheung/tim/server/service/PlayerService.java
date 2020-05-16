@@ -6,6 +6,8 @@ import com.cheung.tim.server.exception.NotFoundException;
 import com.cheung.tim.server.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class PlayerService {
 
@@ -21,10 +23,7 @@ public class PlayerService {
     }
 
     public Player findPlayerById(PlayerDTO playerDTO) throws NotFoundException {
-        Player player = playerRepository.findById(playerDTO.getId()).get();
-        if (player == null) {
-            throw new NotFoundException(String.format("Player with id %s not found", playerDTO.getId()));
-        }
-        return player;
+        Optional<Player> player = playerRepository.findById(playerDTO.getId());
+        return player.orElseThrow(() -> new NotFoundException(String.format("Player with id %s not found", playerDTO.getId())));
     }
 }
