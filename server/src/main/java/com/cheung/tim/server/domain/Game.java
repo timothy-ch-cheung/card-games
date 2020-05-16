@@ -33,13 +33,13 @@ public class Game extends BaseEntity {
     @Getter
     @Setter
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
     private Player player1;
 
     @OneToOne
     @Getter
     @Setter
-    @JoinColumn(name = "second_player_id")
+    @JoinColumn(name = "second_player_id", unique = true)
     private Player player2;
 
     @Getter

@@ -7,11 +7,7 @@ public class PlayerDTO {
 
     @Getter
     @Setter
-    private Long id;
-
-    @Getter
-    @Setter
-    private String createdAt;
+    private String id;
 
     @Getter
     @Setter

@@ -3,6 +3,7 @@ package com.cheung.tim.server.domain;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -15,11 +16,12 @@ public class Player extends BaseEntity {
         this.username = username;
     }
 
-    @Id
     @Getter
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "user_id", columnDefinition = "CHAR(32)")
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @Id
+    private String userId;
 
     @Column(name = "username", nullable = false)
     @Getter
