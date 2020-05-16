@@ -26,7 +26,7 @@ public class GameService {
         if (player == null) {
             throw new BadRequestException("Player does not exist");
         } else if (gameRepository.countByPlayer(player) > 0) {
-            throw new BadRequestException(String.format("Player %s is already in a game", player.getUsername()));
+            throw new BadRequestException(String.format("Player %s is already in a game", gameDTO.getHost().getUsername()));
         }
         Game game = new Game(gameDTO.getLobbyName(), player, GameStatus.OPEN);
         return gameRepository.save(game);
