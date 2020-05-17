@@ -16,8 +16,13 @@ public class Player extends BaseEntity {
         this.username = username;
     }
 
+    public Player (String id, String username){
+        this.userId = id;
+        this.username = username;
+    }
+
     @Getter
-    @Column(name = "user_id", columnDefinition = "CHAR(32)")
+    @Column(name = "user_id", columnDefinition = "CHAR(32)", nullable = false)
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
     @Id

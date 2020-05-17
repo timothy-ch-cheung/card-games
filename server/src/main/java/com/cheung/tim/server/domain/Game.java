@@ -48,7 +48,7 @@ public class Game extends BaseEntity {
     private GameStatus gameStatus;
 
     @OneToMany
-    private List<Move> moves;
+    private List<Move> moves = new ArrayList<>();
 
     public List<Move> getMoves() {
         List<Move> movesCopy = new ArrayList<>();
