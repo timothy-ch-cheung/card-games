@@ -45,7 +45,7 @@ class PlayerServiceTest {
     @Test
     public void findPlayerById_shouldFindPlayer() {
         when(playerRepository.findById(anyString())).thenReturn(Optional.of(new Player()));
-        playerService.findPlayerById(playerDTO);
+        playerService.findPlayerById(playerDTO.getId());
         verify(playerRepository, times(1)).findById("40283481721d879601721d87b6350000");
     }
 
@@ -53,7 +53,7 @@ class PlayerServiceTest {
     public void findPlayerById_shouldThrowExceptionWhenPlayerNotFound() {
         when(playerRepository.findById(anyString())).thenReturn(Optional.empty());
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            playerService.findPlayerById(playerDTO);
+            playerService.findPlayerById(playerDTO.getId());
         });
         verify(playerRepository, times(1)).findById("40283481721d879601721d87b6350000");
         assertThat(exception.getMessage(), is("Player with id 40283481721d879601721d87b6350000 not found"));

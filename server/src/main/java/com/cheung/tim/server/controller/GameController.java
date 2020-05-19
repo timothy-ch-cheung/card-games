@@ -1,7 +1,6 @@
 package com.cheung.tim.server.controller;
 
 import com.cheung.tim.server.domain.Game;
-import com.cheung.tim.server.domain.Player;
 import com.cheung.tim.server.dto.GameDTO;
 import com.cheung.tim.server.dto.PlayerDTO;
 import com.cheung.tim.server.service.GameService;
@@ -39,6 +38,12 @@ public class GameController {
     public ResponseEntity<GameDTO> createGame(@RequestBody GameDTO gameDTO) {
         Game game = gameService.createGame(gameDTO);
         return ResponseEntity.ok(convertToDto(game));
+    }
+
+    @PatchMapping(path = "/join/{gameId}")
+    public ResponseEntity<Void> joinGame(@PathVariable Long gameId, @RequestBody PlayerDTO playerDTO) {
+        gameService.joinGame(gameId, playerDTO);
+        return ResponseEntity.noContent().header("Content-Length", "0").build();
     }
 
     @GetMapping(path = "/games")

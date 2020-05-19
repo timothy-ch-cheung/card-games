@@ -22,8 +22,8 @@ public class PlayerService {
         return playerRepository.save(player);
     }
 
-    public Player findPlayerById(PlayerDTO playerDTO) throws NotFoundException {
-        Optional<Player> player = playerRepository.findById(playerDTO.getId());
-        return player.orElseThrow(() -> new NotFoundException(String.format("Player with id %s not found", playerDTO.getId())));
+    public Player findPlayerById(String userId) throws NotFoundException {
+        Optional<Player> player = playerRepository.findById(userId);
+        return player.orElseThrow(() -> new NotFoundException(String.format("Player with id %s not found", userId)));
     }
 }

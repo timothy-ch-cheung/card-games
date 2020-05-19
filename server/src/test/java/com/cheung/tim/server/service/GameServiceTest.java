@@ -15,11 +15,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.cheung.tim.server.enums.GameStatus.OPEN;
+import static com.cheung.tim.server.enums.GameStatus.READY;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -63,9 +64,19 @@ class GameServiceTest {
     }
 
     @Test
-    public void createGame_shouldThrowExceptionIfPlayerAlreadyInGame() {
+    public void createGame_shouldThrowExceptionIfPlayerAlreadyInGameAsHost() {
         when(playerService.findPlayerById(any())).thenReturn(new Player());
-        when(gameRepository.countByPlayer(any())).thenReturn(new Long(1));
+        when(gameRepository.countByPlayerOne(any())).thenReturn(new Long(1));
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            gameService.createGame(getGameDTO());
+        });
+        assertThat(exception.getMessage(), is("Player John Smith is already in a game"));
+    }
+
+    @Test
+    public void createGame_shouldThrowExceptionIfPlayerAlreadyInGameAsJoin() {
+        when(playerService.findPlayerById(any())).thenReturn(new Player());
+        when(gameRepository.countByPlayerTwo(any())).thenReturn(new Long(1));
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
             gameService.createGame(getGameDTO());
         });
@@ -76,10 +87,66 @@ class GameServiceTest {
     public void createGame_shouldCreateGameSuccessfully() {
         GameDTO gameDTO = getGameDTO();
         when(playerService.findPlayerById(any())).thenReturn(new Player());
-        when(gameRepository.countByPlayer(any())).thenReturn(new Long(0));
+        when(gameRepository.countByPlayerOne(any())).thenReturn(new Long(0));
+        when(gameRepository.countByPlayerTwo(any())).thenReturn(new Long(0));
         when(gameRepository.save(any())).thenReturn(new Game(gameDTO.getLobbyName(), new Player(), OPEN));
-        gameService.createGame(gameDTO);
+
+        assertDoesNotThrow(() -> {
+            gameService.createGame(gameDTO);
+        });
         verify(gameRepository).save(any());
+    }
+
+    @Test
+    public void joinGame_shouldThrowExceptionIfPlayerAlreadyInGameAsHost() {
+        Player player = new Player("40283481721d879601721d87b6350000", "John Smith");
+        when(playerService.findPlayerById(any())).thenReturn(player);
+        when(gameRepository.countByPlayerOne(any())).thenReturn(new Long(1));
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            gameService.joinGame(1L, getPlayerDTO());
+        });
+        assertThat(exception.getMessage(), is("Player John Smith is already in a game"));
+    }
+
+    @Test
+    public void joinGame_shouldThrowExceptionIfPlayerAlreadyInGameAsJoin() {
+        Player player = new Player("40283481721d879601721d87b6350000", "John Smith");
+        when(playerService.findPlayerById(any())).thenReturn(player);
+        when(gameRepository.countByPlayerTwo(any())).thenReturn(new Long(1));
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            gameService.joinGame(1L, getPlayerDTO());
+        });
+        assertThat(exception.getMessage(), is("Player John Smith is already in a game"));
+    }
+
+    @Test
+    public void joinGame_shouldThrowExceptionIfGameAlreadyFull() {
+        Player player1 = new Player("9601721d87b635000040283481721d87", "Jane Smith");
+        Player player2 = new Player("87b635000049601721d0283481721d87", "Joanne Smith");
+        Game game = new Game("test_lobby", player1, OPEN);
+        game.setPlayer2(player2);
+        Player newPlayer = new Player("40283481721d879601721d87b6350000", "John Smith");
+        when(playerService.findPlayerById("40283481721d879601721d87b6350000")).thenReturn(newPlayer);
+        when(gameRepository.findByGameId(anyLong())).thenReturn(game);
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            gameService.joinGame(1L, getPlayerDTO());
+        });
+        assertThat(exception.getMessage(), is("Game with id 1 is already full"));
+    }
+
+    @Test
+    public void joinGame_shouldJoinGameSuccessfully() {
+        PlayerDTO playerDTO = getPlayerDTO();
+        Player player = new Player("40283481721d879601721d87b6350000", "John Smith");
+        when(playerService.findPlayerById(any())).thenReturn(player);
+        when(gameRepository.countByPlayerOne(any())).thenReturn(new Long(0));
+        when(gameRepository.countByPlayerTwo(any())).thenReturn(new Long(0));
+        when(gameRepository.findByGameId(1L)).thenReturn(new Game("test_lobby", new Player("Jane Smith"), OPEN));
+
+        assertDoesNotThrow(() -> {
+            gameService.joinGame(1L, playerDTO);
+        });
+        verify(gameRepository).updatePlayerTwoAndStatus(1L, player, READY);
     }
 
     public GameDTO getGameDTO() {

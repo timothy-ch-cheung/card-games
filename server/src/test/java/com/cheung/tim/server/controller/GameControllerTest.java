@@ -31,8 +31,7 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static uk.co.datumedge.hamcrest.json.SameJSONAs.sameJSONAs;
 
 @ExtendWith(SpringExtension.class)
@@ -143,6 +142,36 @@ class GameControllerTest {
 
         assertThat(response.getStatus(), is(200));
         assertThat(response.getContentAsString(), sameJSONAs(expectedJson));
+    }
+
+    @Test
+    public void joinGame_shouldReturn204() throws Exception {
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+                .patch("/join/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\":\"40283481721d879601721d87b6350000\"}")
+        ).andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        assertThat(response.getStatus(), is(204));
+        assertThat(response.getContentAsString(), is(""));
+    }
+
+    @Test
+    public void joinGame_shouldThrowBadRequestException() throws Exception {
+        doThrow(new BadRequestException("bad request")).when(gameService).joinGame(any(Long.class), any(PlayerDTO.class));
+
+        NestedServletException nestedServletException = assertThrows(NestedServletException.class, () -> {
+            mockMvc.perform(MockMvcRequestBuilders
+                    .patch("/join/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"id\":\"40283481721d879601721d87b6350000\"}")
+            ).andReturn();
+        });
+
+        assertThat(nestedServletException.getCause(), instanceOf(BadRequestException.class));
+        assertThat(nestedServletException.getCause().getMessage(), is("bad request"));
     }
 
     private GameDTO getGameDTO() {
