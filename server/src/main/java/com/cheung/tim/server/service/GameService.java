@@ -43,6 +43,9 @@ public class GameService {
         gameRepository.updatePlayerTwoAndStatus(gameId, player, GameStatus.READY);
     }
 
+    public void leaveGame(Long gameId, PlayerDTO playerDTO) {
+    }
+
     public List<Game> findOpenGames() {
         return gameRepository.findByGameStatus(GameStatus.OPEN);
     }
@@ -56,6 +59,6 @@ public class GameService {
     }
 
     private boolean isPlayerInGame(Player player) {
-        return gameRepository.countByPlayerOne(player) > 0 || gameRepository.countByPlayerTwo(player) > 0;
+        return gameRepository.countByPlayerOneInGame(player) > 0 || gameRepository.countByPlayerTwoInGame(player) > 0;
     }
 }

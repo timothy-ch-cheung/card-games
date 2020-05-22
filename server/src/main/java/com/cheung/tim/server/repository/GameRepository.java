@@ -18,11 +18,13 @@ public interface GameRepository extends CrudRepository<Game, Long> {
     @Query("SELECT g FROM Game g INNER JOIN g.player1 p1 WHERE p1.userId = g.player1.userId AND g.gameId = :id")
     Game findByGameId(Long id);
 
-    @Query("SELECT COUNT(g) FROM Game g INNER JOIN g.player1 p1 WHERE p1.userId = g.player1.userId AND g.player1 = :player")
-    Long countByPlayerOne(Player player);
+    @Query("SELECT COUNT(g) FROM Game g INNER JOIN g.player1 p1 WHERE p1.userId = g.player1.userId " +
+            "AND g.player1 = :player AND NOT g.gameStatus = 'ENDED' AND NOT g.gameStatus = 'DELETED'")
+    Long countByPlayerOneInGame(Player player);
 
-    @Query("SELECT COUNT(g) FROM Game g INNER JOIN g.player2 p2 WHERE p2.userId = g.player2.userId AND g.player2 = :player")
-    Long countByPlayerTwo(Player player);
+    @Query("SELECT COUNT(g) FROM Game g INNER JOIN g.player2 p2 WHERE p2.userId = g.player2.userId " +
+            "AND g.player2 = :player AND NOT g.gameStatus = 'ENDED' AND NOT g.gameStatus = 'DELETED'")
+    Long countByPlayerTwoInGame(Player player);
 
     @Modifying
     @Transactional

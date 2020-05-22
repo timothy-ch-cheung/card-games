@@ -46,6 +46,12 @@ public class GameController {
         return ResponseEntity.noContent().header("Content-Length", "0").build();
     }
 
+    @PatchMapping(path = "/leave/{gameId}")
+    public ResponseEntity<Void> leaveGame(@PathVariable Long gameId, @RequestBody PlayerDTO playerDTO) {
+        gameService.leaveGame(gameId, playerDTO);
+        return ResponseEntity.noContent().header("Content-Length", "0").build();
+    }
+
     @GetMapping(path = "/games")
     public ResponseEntity<Map<String, Object>> getGames() {
         List<Game> games = gameService.findOpenGames();

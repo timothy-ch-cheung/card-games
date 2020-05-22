@@ -66,7 +66,7 @@ class GameServiceTest {
     @Test
     public void createGame_shouldThrowExceptionIfPlayerAlreadyInGameAsHost() {
         when(playerService.findPlayerById(any())).thenReturn(new Player());
-        when(gameRepository.countByPlayerOne(any())).thenReturn(new Long(1));
+        when(gameRepository.countByPlayerOneInGame(any())).thenReturn(new Long(1));
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
             gameService.createGame(getGameDTO());
         });
@@ -76,7 +76,7 @@ class GameServiceTest {
     @Test
     public void createGame_shouldThrowExceptionIfPlayerAlreadyInGameAsJoin() {
         when(playerService.findPlayerById(any())).thenReturn(new Player());
-        when(gameRepository.countByPlayerTwo(any())).thenReturn(new Long(1));
+        when(gameRepository.countByPlayerTwoInGame(any())).thenReturn(new Long(1));
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
             gameService.createGame(getGameDTO());
         });
@@ -87,8 +87,8 @@ class GameServiceTest {
     public void createGame_shouldCreateGameSuccessfully() {
         GameDTO gameDTO = getGameDTO();
         when(playerService.findPlayerById(any())).thenReturn(new Player());
-        when(gameRepository.countByPlayerOne(any())).thenReturn(new Long(0));
-        when(gameRepository.countByPlayerTwo(any())).thenReturn(new Long(0));
+        when(gameRepository.countByPlayerOneInGame(any())).thenReturn(new Long(0));
+        when(gameRepository.countByPlayerTwoInGame(any())).thenReturn(new Long(0));
         when(gameRepository.save(any())).thenReturn(new Game(gameDTO.getLobbyName(), new Player(), OPEN));
 
         assertDoesNotThrow(() -> {
@@ -101,7 +101,7 @@ class GameServiceTest {
     public void joinGame_shouldThrowExceptionIfPlayerAlreadyInGameAsHost() {
         Player player = new Player("40283481721d879601721d87b6350000", "John Smith");
         when(playerService.findPlayerById(any())).thenReturn(player);
-        when(gameRepository.countByPlayerOne(any())).thenReturn(new Long(1));
+        when(gameRepository.countByPlayerOneInGame(any())).thenReturn(new Long(1));
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
             gameService.joinGame(1L, getPlayerDTO());
         });
@@ -112,7 +112,7 @@ class GameServiceTest {
     public void joinGame_shouldThrowExceptionIfPlayerAlreadyInGameAsJoin() {
         Player player = new Player("40283481721d879601721d87b6350000", "John Smith");
         when(playerService.findPlayerById(any())).thenReturn(player);
-        when(gameRepository.countByPlayerTwo(any())).thenReturn(new Long(1));
+        when(gameRepository.countByPlayerTwoInGame(any())).thenReturn(new Long(1));
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
             gameService.joinGame(1L, getPlayerDTO());
         });
@@ -139,8 +139,8 @@ class GameServiceTest {
         PlayerDTO playerDTO = getPlayerDTO();
         Player player = new Player("40283481721d879601721d87b6350000", "John Smith");
         when(playerService.findPlayerById(any())).thenReturn(player);
-        when(gameRepository.countByPlayerOne(any())).thenReturn(new Long(0));
-        when(gameRepository.countByPlayerTwo(any())).thenReturn(new Long(0));
+        when(gameRepository.countByPlayerOneInGame(any())).thenReturn(new Long(0));
+        when(gameRepository.countByPlayerTwoInGame(any())).thenReturn(new Long(0));
         when(gameRepository.findByGameId(1L)).thenReturn(new Game("test_lobby", new Player("Jane Smith"), OPEN));
 
         assertDoesNotThrow(() -> {
