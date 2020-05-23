@@ -55,6 +55,50 @@ class GameControllerTest {
     ArgumentCaptor lobbyNameCapture = ArgumentCaptor.forClass(String.class);
 
     @Test
+    public void getGame_shouldReturn200() throws Exception {
+        Player player = new Player("John Smith");
+        Game game = new Game("test_lobby", player, GameStatus.OPEN);
+        GameDTO gameDTO = getGameDTO();
+
+        when(gameService.getGame(anyLong())).thenReturn(game);
+        when(modelMapper.map(game, GameDTO.class)).thenReturn(gameDTO);
+
+        String expectedJson = "{\n" +
+                "   \"id\":null,\n" +
+                "   \"createdAt\":null,\n" +
+                "   \"lobbyName\":\"test_lobby\",\n" +
+                "   \"host\":{\n" +
+                "      \"username\":\"John Smith\"\n" +
+                "   },\n" +
+                "   \"guest\": null,\n" +
+                "   \"gameStatus\":\"OPEN\"\n" +
+                "}";
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+                .get("/game/1")
+        ).andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        assertThat(response.getStatus(), is(200));
+        assertThat(response.getContentAsString(), sameJSONAs(expectedJson));
+    }
+
+    @Test
+    public void getGame_shouldThrowNotFoundException() {
+        when(gameService.getGame(anyLong())).thenThrow(new NotFoundException("not found"));
+
+        NestedServletException nestedServletException = assertThrows(NestedServletException.class, () -> {
+            mockMvc.perform(MockMvcRequestBuilders
+                    .get("/game/1")
+            ).andReturn();
+                }
+        );
+        assertThat(nestedServletException.getCause(), instanceOf(NotFoundException.class));
+        assertThat(nestedServletException.getCause().getMessage(), is("not found"));
+    }
+
+    @Test
     public void createGame_shouldReturn200() throws Exception {
         Player player = new Player("John Smith");
         Game game = new Game("test_lobby", player, GameStatus.OPEN);
@@ -62,8 +106,6 @@ class GameControllerTest {
 
         when(gameService.createGame(any(PlayerDTO.class), anyString())).thenReturn(game);
         when(modelMapper.map(game, GameDTO.class)).thenReturn(gameDTO);
-        when(modelMapper.map(player, PlayerDTO.class)).thenReturn(new PlayerDTO("40283481721d879601721d87b6350000", "John Smith"));
-
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                 .post("/create")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -115,7 +157,6 @@ class GameControllerTest {
         when(gameService.findOpenGames()).thenReturn(games);
 
         when(modelMapper.map(game, GameDTO.class)).thenReturn(getGameDTO());
-        when(modelMapper.map(player, PlayerDTO.class)).thenReturn(new PlayerDTO("40283481721d879601721d87b6350000", "John Smith"));
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                 .get("/games").content("")).andReturn();

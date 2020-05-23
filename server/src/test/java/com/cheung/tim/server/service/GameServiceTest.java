@@ -56,6 +56,16 @@ class GameServiceTest {
     }
 
     @Test
+    public void getGame_shouldThrowNotFoundException() {
+        when(gameRepository.findByGameId(1L)).thenReturn(null);
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            gameService.getGame(1L);;
+        });
+        assertThat(exception.getMessage(), is("Game with id 1 does not exist"));
+        verify(gameRepository).findByGameId(1L);
+    }
+
+    @Test
     public void findOpenGames_shouldReturnEmptyListIfNoneFound() {
         when(gameRepository.findByGameStatus(OPEN)).thenReturn(new ArrayList<>());
         assertTrue(gameService.findOpenGames().isEmpty());
