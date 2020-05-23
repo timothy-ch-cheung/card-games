@@ -28,6 +28,11 @@ public interface GameRepository extends CrudRepository<Game, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE Game g SET g.player2 = :player, g.gameStatus = :status where g.gameId = :gameId")
-    void updatePlayerTwoAndStatus(Long gameId, Player player, GameStatus status);
+    @Query("UPDATE Game g SET g.player2 = :player where g.gameId = :gameId")
+    void updatePlayerTwo(Long gameId, Player player);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Game g SET g.gameStatus = :status where g.gameId = :gameId")
+    void updateStatus(Long gameId, GameStatus status);
 }

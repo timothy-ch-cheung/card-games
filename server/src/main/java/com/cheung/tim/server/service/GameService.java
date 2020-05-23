@@ -9,7 +9,10 @@ import com.cheung.tim.server.exception.BadRequestException;
 import com.cheung.tim.server.repository.GameRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
+
+import static com.cheung.tim.server.enums.GameStatus.*;
 
 @Service
 public class GameService {
@@ -27,10 +30,11 @@ public class GameService {
         if (isPlayerInGame(player)) {
             throw new BadRequestException(String.format("Player %s is already in a game", gameDTO.getHost().getUsername()));
         }
-        Game game = new Game(gameDTO.getLobbyName(), player, GameStatus.OPEN);
+        Game game = new Game(gameDTO.getLobbyName(), player, OPEN);
         return gameRepository.save(game);
     }
 
+    @Transactional
     public void joinGame(Long gameId, PlayerDTO playerDTO) {
         Player player = getPlayer(playerDTO.getId());
         if (isPlayerInGame(player)) {
@@ -40,14 +44,29 @@ public class GameService {
         if (game.getPlayer2() != null) {
             throw new BadRequestException(String.format("Game with id %s is already full", gameId));
         }
-        gameRepository.updatePlayerTwoAndStatus(gameId, player, GameStatus.READY);
+        gameRepository.updatePlayerTwo(gameId, player);
+        gameRepository.updateStatus(gameId, READY);
     }
 
+    @Transactional
     public void leaveGame(Long gameId, PlayerDTO playerDTO) {
+        Game game = gameRepository.findByGameId(gameId);
+        if (game == null) {
+            throw new BadRequestException(String.format("Game with id {} does not exist", gameId));
+        }
+
+        if (game.getPlayer1() != null && game.getPlayer1().equalId(playerDTO)) {
+            gameRepository.updateStatus(gameId, DELETED);
+        } else if (game.getPlayer2() != null && game.getPlayer2().equalId(playerDTO)) {
+            gameRepository.updateStatus(gameId, OPEN);
+            gameRepository.updatePlayerTwo(gameId, null);
+        } else {
+            throw new BadRequestException(String.format("Player {} is not in game with id {}", playerDTO.getUsername(), gameId));
+        }
     }
 
     public List<Game> findOpenGames() {
-        return gameRepository.findByGameStatus(GameStatus.OPEN);
+        return gameRepository.findByGameStatus(OPEN);
     }
 
     private Player getPlayer(String userId) {

@@ -1,5 +1,6 @@
 package com.cheung.tim.server.domain;
 
+import com.cheung.tim.server.dto.PlayerDTO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -32,4 +33,8 @@ public class Player extends BaseEntity {
     @Getter
     @Setter
     private String username;
+
+    public boolean equalId(PlayerDTO playerDTO) {
+        return this.userId.equals(playerDTO.getId());
+    }
 }

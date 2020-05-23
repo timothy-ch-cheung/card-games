@@ -5,4 +5,5 @@ public enum GameStatus {
     READY,
     PLAYING,
     ENDED,
+    DELETED,
 }
