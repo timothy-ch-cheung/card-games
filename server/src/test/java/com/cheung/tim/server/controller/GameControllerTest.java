@@ -6,6 +6,7 @@ import com.cheung.tim.server.dto.GameDTO;
 import com.cheung.tim.server.dto.PlayerDTO;
 import com.cheung.tim.server.enums.GameStatus;
 import com.cheung.tim.server.exception.BadRequestException;
+import com.cheung.tim.server.exception.NotFoundException;
 import com.cheung.tim.server.service.GameService;
 import com.cheung.tim.server.service.PlayerService;
 import org.junit.jupiter.api.Test;
@@ -50,7 +51,8 @@ class GameControllerTest {
     @MockBean
     ModelMapper modelMapper;
 
-    ArgumentCaptor gameDTOCapture = ArgumentCaptor.forClass(GameDTO.class);
+    ArgumentCaptor playerDTOCapture = ArgumentCaptor.forClass(PlayerDTO.class);
+    ArgumentCaptor lobbyNameCapture = ArgumentCaptor.forClass(String.class);
 
     @Test
     public void createGame_shouldReturn200() throws Exception {
@@ -58,7 +60,7 @@ class GameControllerTest {
         Game game = new Game("test_lobby", player, GameStatus.OPEN);
         GameDTO gameDTO = getGameDTO();
 
-        when(gameService.createGame(any(GameDTO.class))).thenReturn(game);
+        when(gameService.createGame(any(PlayerDTO.class), anyString())).thenReturn(game);
         when(modelMapper.map(game, GameDTO.class)).thenReturn(gameDTO);
         when(modelMapper.map(player, PlayerDTO.class)).thenReturn(new PlayerDTO("40283481721d879601721d87b6350000", "John Smith"));
 
@@ -75,18 +77,14 @@ class GameControllerTest {
                 "   \"createdAt\":null,\n" +
                 "   \"lobbyName\":\"test_lobby\",\n" +
                 "   \"host\":{\n" +
-                "      \"id\":\"40283481721d879601721d87b6350000\",\n" +
                 "      \"username\":\"John Smith\"\n" +
                 "   },\n" +
-                "   \"gameStatus\":\"OPEN\"\n" +
+                "   \"guest\": null,\n" +
+        "   \"gameStatus\":\"OPEN\"\n" +
                 "}";
 
-        verify(gameService).createGame((GameDTO) gameDTOCapture.capture());
-        assertThat(gameDTOCapture.getAllValues().size(), is(1));
-        GameDTO mappedDTO = (GameDTO) gameDTOCapture.getAllValues().get(0);
-
-        assertThat(mappedDTO.getLobbyName(), is("test_lobby"));
-        assertThat(mappedDTO.getHost().getId(), is("40283481721d879601721d87b6350000"));
+        verify(gameService).createGame((PlayerDTO) playerDTOCapture.capture(), (String) lobbyNameCapture.capture());
+        assertThat(lobbyNameCapture.getAllValues().size(), is(1));
 
         assertThat(response.getStatus(), is(200));
         assertThat(response.getContentAsString(), sameJSONAs(expectedJson));
@@ -94,7 +92,7 @@ class GameControllerTest {
 
     @Test
     public void createGame_shouldThrowBadRequestException() throws Exception {
-        when(gameService.createGame(any(GameDTO.class))).thenThrow(new BadRequestException("bad request"));
+        when(gameService.createGame(any(PlayerDTO.class), anyString())).thenThrow(new BadRequestException("bad request"));
 
         NestedServletException nestedServletException = assertThrows(NestedServletException.class, () -> {
                     mockMvc.perform(MockMvcRequestBuilders
@@ -132,9 +130,9 @@ class GameControllerTest {
                 "         \"createdAt\": null,\n" +
                 "         \"lobbyName\": \"test_lobby\",\n" +
                 "         \"host\": {\n" +
-                "            \"id\": \"40283481721d879601721d87b6350000\",\n" +
                 "            \"username\": \"John Smith\"\n" +
                 "         },\n" +
+                "         \"guest\": null,\n" +
                 "         \"gameStatus\": \"OPEN\"\n" +
                 "      }\n" +
                 "   ]\n" +
@@ -146,11 +144,7 @@ class GameControllerTest {
 
     @Test
     public void joinGame_shouldReturn204() throws Exception {
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders
-                .patch("/join/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"id\":\"40283481721d879601721d87b6350000\"}")
-        ).andReturn();
+        MvcResult result = performPatch("/join/1");
 
         MockHttpServletResponse response = result.getResponse();
 
@@ -159,19 +153,69 @@ class GameControllerTest {
     }
 
     @Test
-    public void joinGame_shouldThrowBadRequestException() throws Exception {
+    public void joinGame_shouldThrowBadRequestException() {
         doThrow(new BadRequestException("bad request")).when(gameService).joinGame(any(Long.class), any(PlayerDTO.class));
 
         NestedServletException nestedServletException = assertThrows(NestedServletException.class, () -> {
-            mockMvc.perform(MockMvcRequestBuilders
-                    .patch("/join/1")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content("{\"id\":\"40283481721d879601721d87b6350000\"}")
-            ).andReturn();
+            performPatch("/join/1");
         });
 
         assertThat(nestedServletException.getCause(), instanceOf(BadRequestException.class));
         assertThat(nestedServletException.getCause().getMessage(), is("bad request"));
+    }
+
+    @Test
+    public void joinGame_shouldThrowNotFoundException() {
+        doThrow(new NotFoundException("not found")).when(gameService).joinGame(any(Long.class), any(PlayerDTO.class));
+
+        NestedServletException nestedServletException = assertThrows(NestedServletException.class, () -> {
+            performPatch("/join/1");
+        });
+
+        assertThat(nestedServletException.getCause(), instanceOf(NotFoundException.class));
+        assertThat(nestedServletException.getCause().getMessage(), is("not found"));
+    }
+
+    @Test
+    public void leaveGame_shouldReturn204() throws Exception {
+        MvcResult result = performPatch("/leave/1");
+
+        MockHttpServletResponse response = result.getResponse();
+
+        assertThat(response.getStatus(), is(204));
+        assertThat(response.getContentAsString(), is(""));
+    }
+
+    @Test
+    public void leaveGame_shouldThrowBadRequestException() {
+        doThrow(new BadRequestException("bad request")).when(gameService).leaveGame(any(Long.class), any(PlayerDTO.class));
+
+        NestedServletException nestedServletException = assertThrows(NestedServletException.class, () -> {
+            performPatch("/leave/1");
+        });
+
+        assertThat(nestedServletException.getCause(), instanceOf(BadRequestException.class));
+        assertThat(nestedServletException.getCause().getMessage(), is("bad request"));
+    }
+
+    @Test
+    public void leaveGame_shouldThrowNotFoundException() {
+        doThrow(new NotFoundException("not found")).when(gameService).leaveGame(any(Long.class), any(PlayerDTO.class));
+
+        NestedServletException nestedServletException = assertThrows(NestedServletException.class, () -> {
+            performPatch("/leave/1");
+        });
+
+        assertThat(nestedServletException.getCause(), instanceOf(NotFoundException.class));
+        assertThat(nestedServletException.getCause().getMessage(), is("not found"));
+    }
+
+    private MvcResult performPatch(String endpoint) throws Exception {
+        return mockMvc.perform(MockMvcRequestBuilders
+                .patch(endpoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\":\"40283481721d879601721d87b6350000\"}")
+        ).andReturn();
     }
 
     private GameDTO getGameDTO() {

@@ -22,6 +22,7 @@ import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.co.datumedge.hamcrest.json.SameJSONAs.sameJSONAs;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = PlayerController.class)
@@ -57,6 +58,6 @@ class PlayerControllerTest {
         assertThat(((PlayerDTO) playerDTOCapture.getAllValues().get(0)).getUsername(), is("John Smith"));
 
         assertThat(response.getStatus(), is(200));
-        assertThat(response.getContentAsString(), is("{\"id\":\"40283481721d879601721d87b6350000\",\"username\":\"John Smith\"}"));
+        assertThat(response.getContentAsString(), sameJSONAs("{\"id\":\"40283481721d879601721d87b6350000\",\"username\":\"John Smith\"}"));
     }
 }

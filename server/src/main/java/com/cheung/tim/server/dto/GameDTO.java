@@ -19,7 +19,11 @@ public class GameDTO {
 
     @Getter
     @Setter
-    private PlayerDTO host;
+    private PublicPlayerDTO host;
+
+    @Getter
+    @Setter
+    private PublicPlayerDTO guest;
 
     @Getter
     @Setter

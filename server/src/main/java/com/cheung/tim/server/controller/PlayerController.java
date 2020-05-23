@@ -2,6 +2,7 @@ package com.cheung.tim.server.controller;
 
 import com.cheung.tim.server.domain.Player;
 import com.cheung.tim.server.dto.PlayerDTO;
+import com.cheung.tim.server.dto.PublicPlayerDTO;
 import com.cheung.tim.server.service.PlayerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class PlayerController {
         return new ResponseEntity<>(convertToDTO(this.playerService.createPlayer(player)), HttpStatus.OK);
     }
 
-    public PlayerDTO convertToDTO(Player player) {
+    private PlayerDTO convertToDTO(Player player) {
         return modelMapper.map(player, PlayerDTO.class);
     }
 }

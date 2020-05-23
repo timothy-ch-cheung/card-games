@@ -1,8 +1,10 @@
 package com.cheung.tim.server.controller;
 
 import com.cheung.tim.server.domain.Game;
+import com.cheung.tim.server.dto.CreateLobbyDTO;
 import com.cheung.tim.server.dto.GameDTO;
 import com.cheung.tim.server.dto.PlayerDTO;
+import com.cheung.tim.server.dto.PublicPlayerDTO;
 import com.cheung.tim.server.service.GameService;
 import com.cheung.tim.server.service.PlayerService;
 import org.modelmapper.ModelMapper;
@@ -14,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.cheung.tim.server.dto.PlayerDTO.convertToPublicPlayerDTO;
 
 @RestController
 public class GameController {
@@ -30,13 +34,14 @@ public class GameController {
     }
 
     @GetMapping(path = "/game/{gameId}")
-    public String getGame(@PathVariable String gameId) {
-        return "Path";
+    public ResponseEntity<GameDTO> getGame(@PathVariable Long gameId) {
+        Game game = gameService.getGame(gameId);
+        return ResponseEntity.ok(convertToDto(game));
     }
 
     @PostMapping(path = "/create")
-    public ResponseEntity<GameDTO> createGame(@RequestBody GameDTO gameDTO) {
-        Game game = gameService.createGame(gameDTO);
+    public ResponseEntity<GameDTO> createGame(@RequestBody CreateLobbyDTO createLobbyDTO) {
+        Game game = gameService.createGame(createLobbyDTO.getHost(), createLobbyDTO.getLobbyName());
         return ResponseEntity.ok(convertToDto(game));
     }
 
@@ -60,7 +65,8 @@ public class GameController {
 
     private GameDTO convertToDto(Game game) {
         GameDTO gameDto = modelMapper.map(game, GameDTO.class);
-        gameDto.setHost(modelMapper.map(game.getPlayer1(), PlayerDTO.class));
+        gameDto.setHost(convertToPublicPlayerDTO(game.getPlayer1()));
+        gameDto.setGuest(convertToPublicPlayerDTO(game.getPlayer2()));
         gameDto.setGameStatus(game.getGameStatus().toString());
         return gameDto;
     }

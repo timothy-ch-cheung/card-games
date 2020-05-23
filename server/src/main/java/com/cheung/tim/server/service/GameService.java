@@ -4,12 +4,13 @@ import com.cheung.tim.server.domain.Game;
 import com.cheung.tim.server.domain.Player;
 import com.cheung.tim.server.dto.GameDTO;
 import com.cheung.tim.server.dto.PlayerDTO;
-import com.cheung.tim.server.enums.GameStatus;
+import com.cheung.tim.server.dto.PublicPlayerDTO;
 import com.cheung.tim.server.exception.BadRequestException;
+import com.cheung.tim.server.exception.NotFoundException;
 import com.cheung.tim.server.repository.GameRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 import static com.cheung.tim.server.enums.GameStatus.*;
@@ -25,17 +26,25 @@ public class GameService {
         this.playerService = playerService;
     }
 
-    public Game createGame(GameDTO gameDTO) throws BadRequestException {
-        Player player = getPlayer(gameDTO.getHost().getId());
-        if (isPlayerInGame(player)) {
-            throw new BadRequestException(String.format("Player %s is already in a game", gameDTO.getHost().getUsername()));
+    public Game getGame(Long gameId) {
+        Game game = gameRepository.findByGameId(gameId);
+        if (game == null) {
+            throw new NotFoundException(String.format("Game with id %s does not exist", gameId));
         }
-        Game game = new Game(gameDTO.getLobbyName(), player, OPEN);
+        return game;
+    }
+
+    public Game createGame(PlayerDTO playerDTO, String lobbyName) throws BadRequestException {
+        Player player = getPlayer(playerDTO.getId());
+        if (isPlayerInGame(player)) {
+            throw new BadRequestException(String.format("Player %s is already in a game", playerDTO.getUsername()));
+        }
+        Game game = new Game(lobbyName, player, OPEN);
         return gameRepository.save(game);
     }
 
     @Transactional
-    public void joinGame(Long gameId, PlayerDTO playerDTO) {
+    public void joinGame(Long gameId, PlayerDTO playerDTO) throws BadRequestException, NotFoundException {
         Player player = getPlayer(playerDTO.getId());
         if (isPlayerInGame(player)) {
             throw new BadRequestException(String.format("Player %s is already in a game", player.getUsername()));
@@ -49,10 +58,10 @@ public class GameService {
     }
 
     @Transactional
-    public void leaveGame(Long gameId, PlayerDTO playerDTO) {
+    public void leaveGame(Long gameId, PlayerDTO playerDTO) throws BadRequestException, NotFoundException {
         Game game = gameRepository.findByGameId(gameId);
         if (game == null) {
-            throw new BadRequestException(String.format("Game with id {} does not exist", gameId));
+            throw new NotFoundException(String.format("Game with id %s does not exist", gameId));
         }
 
         if (game.getPlayer1() != null && game.getPlayer1().equalId(playerDTO)) {
@@ -61,7 +70,7 @@ public class GameService {
             gameRepository.updateStatus(gameId, OPEN);
             gameRepository.updatePlayerTwo(gameId, null);
         } else {
-            throw new BadRequestException(String.format("Player {} is not in game with id {}", playerDTO.getUsername(), gameId));
+            throw new BadRequestException(String.format("Player %s is not in game with id %s", playerDTO.getUsername(), gameId));
         }
     }
 
