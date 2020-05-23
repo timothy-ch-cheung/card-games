@@ -1,0 +1,7 @@
+.button-panel {
+    padding: 10px;
+    margin: 0 auto;
+    width: 70%;
+    display: table;
+    text-align: center;
+}
