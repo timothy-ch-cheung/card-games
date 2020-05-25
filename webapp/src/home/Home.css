@@ -1,7 +1,17 @@
 .button-panel {
     padding: 10px;
-    margin: 0 auto;
+    margin: 10px auto;
     width: 70%;
     display: table;
     text-align: center;
+}
+
+h1 {
+    text-align: center;
+    padding: 10px;
+}
+
+.container {
+    margin-top: 20px;
+    margin-bottom: 40px;
 }
