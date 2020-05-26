@@ -4,26 +4,14 @@ import Button from "react-bootstrap/Button";
 
 class CreateGame extends React.Component {
 
-    constructor(props, context) {
-        super(props, context);
-
-        this.handleShow = this.handleShow.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-
-        this.state = {
-            show: false,
-        };
-    }
-
-    handleClose() {
-        this.setState({ show: false });
-    }
-
-    handleShow() {
-        this.setState({ show: true });
-    }
+    onClose = e => {
+        this.props.onClose && this.props.onClose(e);
+    };
 
     render() {
+        if(!this.props.show){
+            return null;
+        }
         return (
             <div>
                 <style type="text/css">
@@ -49,10 +37,13 @@ class CreateGame extends React.Component {
                                 width: 170px;
                             }
                         }
+                        
+                        .create-game-modal {
+                            margin-top: 50px;
+                        }
                     `}
                 </style>
-                <Button size="xxl" variant="info" onClick={this.handleShow}>Create Game</Button>
-                <Modal show={this.state.show} onHide={this.handleClose}>
+                <Modal className="create-game-modal" show={this.props.show} onHide={this.props.onClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Lobby Name</Modal.Title>
                     </Modal.Header>
@@ -62,7 +53,7 @@ class CreateGame extends React.Component {
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={this.handleClose}>Close</Button>
+                        <Button variant="secondary" onClick={this.onClose}>Close</Button>
                         <Button variant="info">Create</Button>
                     </Modal.Footer>
                 </Modal>

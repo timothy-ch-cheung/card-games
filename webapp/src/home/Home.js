@@ -4,8 +4,22 @@ import Button from "react-bootstrap/Button";
 import './Home.css';
 import {LinkContainer} from 'react-router-bootstrap'
 import Board from "../components/Board";
+import CreateGame from "../components/CreateGame";
 
 class Home extends React.Component {
+
+    state = {
+        show: false
+    };
+
+    handleShow = () => {
+        this.setState({show: true});
+    }
+
+    handleHide = () => {
+        this.setState({show: false});
+    }
+
     render() {
         return (
             <div>
@@ -30,7 +44,10 @@ class Home extends React.Component {
                 <h1>Play with others:</h1>
                 <div className="button-panel">
                     <ButtonGroup aria-label="Basic example">
-                        <Button size="xl" variant="info">Create Game</Button>
+                        <Button size="xl" variant="info" onClick={e => {
+                            this.handleShow();
+                        }}>Create Game</Button>
+                        <CreateGame show={this.state.show} onClose={this.handleHide}/>
                         <LinkContainer to="/games">
                             <Button size="xl" variant="light">Join Game</Button>
                         </LinkContainer>
