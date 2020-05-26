@@ -1,6 +1,7 @@
 import * as React from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 
 class CreateGame extends React.Component {
 
@@ -8,8 +9,14 @@ class CreateGame extends React.Component {
         this.props.onClose && this.props.onClose(e);
     };
 
+    submitHandler = e => {
+        e.preventDefault();
+        this.onClose(e)
+        console.log("submitted");
+    };
+
     render() {
-        if(!this.props.show){
+        if (!this.props.show) {
             return null;
         }
         return (
@@ -45,17 +52,19 @@ class CreateGame extends React.Component {
                 </style>
                 <Modal className="create-game-modal" show={this.props.show} onHide={this.props.onClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Lobby Name</Modal.Title>
+                        <Modal.Title>Create Game</Modal.Title>
                     </Modal.Header>
+                    <Form onSubmit={this.submitHandler}>
+                        <Modal.Body>
+                            <Form.Label>Lobby Name</Form.Label>
+                            <Form.Control type="text" placeholder="Lobby name"/>
+                        </Modal.Body>
 
-                    <Modal.Body>
-                        <p>Modal body text goes here.</p>
-                    </Modal.Body>
-
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={this.onClose}>Close</Button>
-                        <Button variant="info">Create</Button>
-                    </Modal.Footer>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={this.onClose}>Close</Button>
+                            <Button type="submit" variant="info">Create</Button>
+                        </Modal.Footer>
+                    </Form>
                 </Modal>
             </div>
         )
