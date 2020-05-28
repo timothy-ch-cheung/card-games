@@ -7,9 +7,9 @@ import com.cheung.tim.server.service.PlayerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.websocket.server.PathParam;
 
 @RestController
 public class PlayerController {
@@ -25,7 +25,12 @@ public class PlayerController {
 
     @PostMapping(path = "/player")
     public ResponseEntity<PlayerDTO> createPlayer(@RequestBody PlayerDTO player) {
-        return new ResponseEntity<>(convertToDTO(this.playerService.createPlayer(player)), HttpStatus.OK);
+        return ResponseEntity.ok(convertToDTO(this.playerService.createPlayer(player)));
+    }
+
+    @GetMapping(path = "/player/{userId}")
+    public ResponseEntity<PlayerDTO> getPlayer(@PathVariable String userId){
+        return ResponseEntity.ok(convertToDTO(this.playerService.findPlayerById(userId)));
     }
 
     private PlayerDTO convertToDTO(Player player) {

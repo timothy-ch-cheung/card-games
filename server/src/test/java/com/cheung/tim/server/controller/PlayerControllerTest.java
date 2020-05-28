@@ -38,6 +38,7 @@ class PlayerControllerTest {
     ModelMapper modelMapper;
 
     ArgumentCaptor playerDTOCapture = ArgumentCaptor.forClass(PlayerDTO.class);
+    ArgumentCaptor stringCapture = ArgumentCaptor.forClass(String.class);
 
     @Test
     public void createPlayer_shouldReturn200() throws Exception {
@@ -56,6 +57,26 @@ class PlayerControllerTest {
         verify(playerService).createPlayer((PlayerDTO) playerDTOCapture.capture());
         assertThat(playerDTOCapture.getAllValues().size(), is(1));
         assertThat(((PlayerDTO) playerDTOCapture.getAllValues().get(0)).getUsername(), is("John Smith"));
+
+        assertThat(response.getStatus(), is(200));
+        assertThat(response.getContentAsString(), sameJSONAs("{\"id\":\"40283481721d879601721d87b6350000\",\"username\":\"John Smith\"}"));
+    }
+
+    @Test
+    public void getPlayer_shouldReturn200() throws Exception {
+        Player player = new Player("40283481721d879601721d87b6350000", "John Smith");
+        when(playerService.findPlayerById("40283481721d879601721d87b6350000")).thenReturn(player);
+        when(modelMapper.map(player, PlayerDTO.class)).thenReturn(new PlayerDTO("40283481721d879601721d87b6350000", "John Smith"));
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+                .get("/player/40283481721d879601721d87b6350000")
+        ).andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        verify(playerService).findPlayerById((String) stringCapture.capture());
+        assertThat(stringCapture.getAllValues().size(), is(1));
+        assertThat((stringCapture.getAllValues().get(0)), is("40283481721d879601721d87b6350000"));
 
         assertThat(response.getStatus(), is(200));
         assertThat(response.getContentAsString(), sameJSONAs("{\"id\":\"40283481721d879601721d87b6350000\",\"username\":\"John Smith\"}"));
