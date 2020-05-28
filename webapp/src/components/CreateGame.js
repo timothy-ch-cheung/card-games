@@ -2,6 +2,15 @@ import * as React from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import {useSelector} from "react-redux";
+
+function NicknameInput() {
+    const userId = useSelector(state => state.user);
+    if (userId != null) {
+        return null;
+    }
+    return <><Form.Label>Nickname</Form.Label><Form.Control type="text" placeholder="name"/></>;
+}
 
 class CreateGame extends React.Component {
 
@@ -19,6 +28,7 @@ class CreateGame extends React.Component {
         if (!this.props.show) {
             return null;
         }
+
         return (
             <div>
                 <style type="text/css">
@@ -48,6 +58,10 @@ class CreateGame extends React.Component {
                         .create-game-modal {
                             margin-top: 50px;
                         }
+                        
+                        input[type=text] {
+                            margin-bottom: 5px;
+                        }
                     `}
                 </style>
                 <Modal className="create-game-modal" show={this.props.show} onHide={this.props.onClose}>
@@ -56,6 +70,7 @@ class CreateGame extends React.Component {
                     </Modal.Header>
                     <Form onSubmit={this.submitHandler}>
                         <Modal.Body>
+                            <NicknameInput/>
                             <Form.Label>Lobby Name</Form.Label>
                             <Form.Control type="text" placeholder="Lobby name"/>
                         </Modal.Body>
