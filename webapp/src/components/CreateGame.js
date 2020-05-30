@@ -1,10 +1,10 @@
 import * as React from "react";
+import {useState} from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import axios from "axios";
-import set from "../actions"
 
 function NicknameInput() {
 
@@ -12,32 +12,27 @@ function NicknameInput() {
     if (userId != null) {
         return null;
     }
-    return <><Form.Label>Nickname</Form.Label><Form.Control required type="text" placeholder="name"  name="nickname"/></>;
+    return <><Form.Label>Nickname</Form.Label><Form.Control required type="text" placeholder="name"
+                                                            name="nickname"/></>;
 }
 
-function dispatchUserId(id) {
+function CreateGame(props) {
 
-}
+    const [validated, setValidated] = useState(false);
 
-class CreateGame extends React.Component{
-
-    constructor(props) {
-        super(props);
-        this.state = {validated: false};
-    }
-
-    onClose = e => {
-        this.props.onClose && this.props.onClose(e);
-        this.setState({validated : false})
+    const onClose = e => {
+        props.onClose && props.onClose(e);
+        setValidated(false);
     };
 
-    submitHandler = e => {
+
+    const submitHandler = e => {
         e.preventDefault();
         const form = e.currentTarget;
         const valid = form.checkValidity();
         if (valid === false) {
             e.stopPropagation();
-            this.setState({validated : true})
+            setValidated(true);
             return;
         }
 
@@ -50,14 +45,11 @@ class CreateGame extends React.Component{
             console.log(error);
         });
 
-        this.setState({validated : false})
-        this.onClose(e)
+        setValidated(false);
+        props.onClose();
     };
 
-    render() {
-        if (!this.props.show) {
-            return null;
-        }
+    if (props.show) {
 
         return (
             <div>
@@ -94,11 +86,11 @@ class CreateGame extends React.Component{
                         }
                     `}
                 </style>
-                <Modal className="create-game-modal" show={this.props.show} onHide={this.props.onClose}>
+                <Modal className="create-game-modal" show={props.show} onHide={props.onClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Create Game</Modal.Title>
                     </Modal.Header>
-                    <Form noValidate validated={this.state['validated']} onSubmit={this.submitHandler}>
+                    <Form noValidate validated={validated} onSubmit={submitHandler}>
                         <Modal.Body>
                             <NicknameInput/>
                             <Form.Label>Lobby Name</Form.Label>
@@ -106,13 +98,15 @@ class CreateGame extends React.Component{
                         </Modal.Body>
 
                         <Modal.Footer>
-                            <Button variant="secondary" onClick={this.onClose}>Close</Button>
+                            <Button variant="secondary" onClick={onClose}>Close</Button>
                             <Button type="submit" variant="info">Create</Button>
                         </Modal.Footer>
                     </Form>
                 </Modal>
             </div>
         )
+    } else {
+        return null;
     }
 }
 
