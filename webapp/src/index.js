@@ -6,19 +6,11 @@ import * as serviceWorker from './serviceWorker';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import {combineReducers, createStore} from 'redux';
 import {Provider} from 'react-redux';
+import axios from "axios";
 
-const set = value => {
-    return {
-        type: 'SET',
-        payload: value
-    }
-}
-
-const reset = () => {
-    return {
-        type: 'RESET'
-    }
-}
+delete axios.defaults.headers.common["Authorization"];
+axios.defaults.headers.common = {};
+axios.defaults.headers.common.accept = 'application/json';
 
 const userReducer = (state = null, action) => {
     switch (action.type) {

@@ -2,26 +2,56 @@ import * as React from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import axios from "axios";
+import set from "../actions"
 
 function NicknameInput() {
+
     const userId = useSelector(state => state.user);
     if (userId != null) {
         return null;
     }
-    return <><Form.Label>Nickname</Form.Label><Form.Control type="text" placeholder="name"/></>;
+    return <><Form.Label>Nickname</Form.Label><Form.Control required type="text" placeholder="name"  name="nickname"/></>;
 }
 
-class CreateGame extends React.Component {
+function dispatchUserId(id) {
+
+}
+
+class CreateGame extends React.Component{
+
+    constructor(props) {
+        super(props);
+        this.state = {validated: false};
+    }
 
     onClose = e => {
         this.props.onClose && this.props.onClose(e);
+        this.setState({validated : false})
     };
 
     submitHandler = e => {
         e.preventDefault();
+        const form = e.currentTarget;
+        const valid = form.checkValidity();
+        if (valid === false) {
+            e.stopPropagation();
+            this.setState({validated : true})
+            return;
+        }
+
+        axios.post('http://127.0.0.1:8080/player', {
+            username: e.target.nickname.value
+        }).then(function (response) {
+            console.log(response.data.id);
+            //this.dispatch(set(response.data.id));
+        }).catch(function (error) {
+            console.log(error);
+        });
+
+        this.setState({validated : false})
         this.onClose(e)
-        console.log("submitted");
     };
 
     render() {
@@ -68,11 +98,11 @@ class CreateGame extends React.Component {
                     <Modal.Header closeButton>
                         <Modal.Title>Create Game</Modal.Title>
                     </Modal.Header>
-                    <Form onSubmit={this.submitHandler}>
+                    <Form noValidate validated={this.state['validated']} onSubmit={this.submitHandler}>
                         <Modal.Body>
                             <NicknameInput/>
                             <Form.Label>Lobby Name</Form.Label>
-                            <Form.Control type="text" placeholder="Lobby name"/>
+                            <Form.Control required type="text" placeholder="Lobby name"/>
                         </Modal.Body>
 
                         <Modal.Footer>
