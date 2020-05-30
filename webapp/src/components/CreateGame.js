@@ -4,8 +4,8 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {useDispatch, useSelector} from "react-redux";
-import axios from "axios";
-import set from "../actions";
+import API from "../API";
+import {setPlayer} from "../actions";
 
 function NicknameInput() {
 
@@ -21,11 +21,25 @@ function CreateGame(props) {
 
     const [validated, setValidated] = useState(false);
     const dispatch = useDispatch();
+    const userId = useSelector(state => state.user);
 
     const onClose = e => {
         props.onClose && props.onClose(e);
         setValidated(false);
     };
+
+    const createGame = (lobbyName, playerId) => {
+        let id = (playerId != null) ? playerId : userId;
+        console.log(id);
+        API.post('/create', {
+            lobbyName: lobbyName,
+            host: {
+                id: id
+            }
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }
 
 
     const submitHandler = e => {
@@ -37,16 +51,22 @@ function CreateGame(props) {
             setValidated(true);
             return;
         }
+        let lobbyName = e.target.lobbyName.value;
 
-        axios.post('http://127.0.0.1:8080/player', {
-            username: e.target.nickname.value
-        }).then(function (response) {
-            console.log(response.data.id);
-            dispatch(set(response.data.id));
-        }).catch(function (error) {
-            console.log(error);
-        });
-
+        if(userId != null){
+            createGame(lobbyName);
+        }
+        else {
+            API.post('/player', {
+                username: e.target.nickname.value
+            }).then(function (response) {
+                console.log(response.data.id);
+                dispatch(setPlayer(response.data.id));
+                createGame(lobbyName, response.data.id)
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
         setValidated(false);
         props.onClose();
     };
@@ -96,7 +116,7 @@ function CreateGame(props) {
                         <Modal.Body>
                             <NicknameInput/>
                             <Form.Label>Lobby Name</Form.Label>
-                            <Form.Control required type="text" placeholder="Lobby name"/>
+                            <Form.Control required type="text" placeholder="Lobby name" name="lobbyName"/>
                         </Modal.Body>
 
                         <Modal.Footer>

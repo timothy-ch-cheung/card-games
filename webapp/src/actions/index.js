@@ -1,13 +1,12 @@
-const set = value => {
+export const setPlayer = value => {
     return {
-        type: 'SET',
+        type: 'SET_PLAYER',
         payload: value
     }
 }
 
-const reset = () => {
+export const resetPlayer = () => {
     return {
-        type: 'RESET'
+        type: 'RESET_GAME'
     }
 }
-export default set;

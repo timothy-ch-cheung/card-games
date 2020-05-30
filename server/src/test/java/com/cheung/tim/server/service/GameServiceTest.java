@@ -90,7 +90,7 @@ class GameServiceTest {
 
     @Test
     public void createGame_shouldThrowExceptionIfPlayerAlreadyInGameAsHost() {
-        when(playerService.findPlayerById(any())).thenReturn(new Player());
+        when(playerService.findPlayerById(any())).thenReturn(new Player("40283481721d879601721d87b6350000", "John Smith"));
         when(gameRepository.countByPlayerOneInGame(any())).thenReturn(new Long(1));
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
             gameService.createGame(getPlayerDTO(), "test lobby");
@@ -100,7 +100,7 @@ class GameServiceTest {
 
     @Test
     public void createGame_shouldThrowExceptionIfPlayerAlreadyInGameAsJoin() {
-        when(playerService.findPlayerById(any())).thenReturn(new Player());
+        when(playerService.findPlayerById(any())).thenReturn(new Player("40283481721d879601721d87b6350000", "John Smith"));
         when(gameRepository.countByPlayerTwoInGame(any())).thenReturn(new Long(1));
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
             gameService.createGame(getPlayerDTO(), "test lobby");

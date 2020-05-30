@@ -14,9 +14,20 @@ axios.defaults.headers.common.accept = 'application/json';
 
 const userReducer = (state = null, action) => {
     switch (action.type) {
-        case 'SET':
+        case 'SET_PLAYER':
             return action.payload;
-        case 'RESET':
+        case 'RESET_PLAYER':
+            return null;
+        default:
+            return state;
+    }
+}
+
+const gameReducer = (state = null, action) => {
+    switch (action.type) {
+        case 'SET_GAME':
+            return action.payload;
+        case 'RESET_GAME':
             return null;
         default:
             return state;
@@ -24,7 +35,8 @@ const userReducer = (state = null, action) => {
 }
 
 const allReducers = combineReducers({
-    user: userReducer
+    user: userReducer,
+    game: gameReducer
 })
 
 const store = createStore(allReducers);

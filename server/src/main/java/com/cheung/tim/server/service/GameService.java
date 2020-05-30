@@ -37,7 +37,7 @@ public class GameService {
     public Game createGame(PlayerDTO playerDTO, String lobbyName) throws BadRequestException {
         Player player = getPlayer(playerDTO.getId());
         if (isPlayerInGame(player)) {
-            throw new BadRequestException(String.format("Player %s is already in a game", playerDTO.getUsername()));
+            throw new BadRequestException(String.format("Player %s is already in a game", player.getUsername()));
         }
         Game game = new Game(lobbyName, player, OPEN);
         return gameRepository.save(game);
