@@ -1,16 +1,13 @@
-const Actions = () =>
-{
-    const set = value => {
-        return {
-            type: 'SET',
-            payload: value
-        }
-    }
-
-    const reset = () => {
-        return {
-            type: 'RESET'
-        }
+const set = value => {
+    return {
+        type: 'SET',
+        payload: value
     }
 }
-export default Actions;
+
+const reset = () => {
+    return {
+        type: 'RESET'
+    }
+}
+export default set;
