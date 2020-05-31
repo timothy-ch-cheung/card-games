@@ -4,24 +4,49 @@ import Button from "react-bootstrap/Button";
 
 function LobbyCard(props) {
     return (
-        <div>
+        <>
             <style type="text/css">
                 {`
                     .lobby-card {
                         margin: 5px;
+                        width: 18rem;
+                        flex-basis: 24%;
                     }
+                    
+                    @media(max-width: 1080px) {
+                        .lobby-card {
+                            flex-basis: 32%;
+                        }
+                    }
+                    
+                    @media(max-width: 800px) {
+                        .lobby-card {
+                            flex-basis: 48%;
+                        }
+                    }
+                    
+                    @media(max-width: 550px) {
+                        .lobby-card {
+                            flex-basis: 99%;
+                        }
+                    }
+                    
+                    .card-title {
+                        border-bottom: solid 1px #d6d6d6;
+                    }
+                    
                 `}
             </style>
-            <Card className="lobby-card" style={{width: '18rem'}}>
+            <Card className="lobby-card">
                 <Card.Body>
-                    <Card.Title>{props.lobbyName}</Card.Title>
+                    <Card.Title className="card-title">{props.lobbyName}</Card.Title>
                     <Card.Text>
                         Host: {props.host}
                     </Card.Text>
                     <Button variant="info">Join Game</Button>
                 </Card.Body>
             </Card>
-        </div>
+        </>
     );
 }
 

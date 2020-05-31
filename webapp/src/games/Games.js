@@ -4,6 +4,8 @@ import styled from "styled-components";
 import CreateGame from "../components/CreateGame";
 import Button from "react-bootstrap/Button";
 import API from "../API";
+import CardColumns from "react-bootstrap/CardColumns";
+import CardGroup from "react-bootstrap/CardGroup";
 
 const Divider = styled.div`
 border-bottom: 1px solid grey;
@@ -59,11 +61,14 @@ function Games() {
                             margin: 20px 10px 30px;
                         }
                         
-                        .grid {
-                             min-height: 100%;
-                             display: flex;
-                             flex-wrap: wrap;
-                             flex-direction: row;
+                        .container {
+                            max-width: 98%;
+                            margin: 0 auto;
+                        }
+                        
+                        .row {
+                            display: flex;
+                            flex-flow: row wrap;
                         }
 
                     `}
@@ -74,8 +79,10 @@ function Games() {
             <CreateGame show={show} onClose={handleHide}/>
             <Divider/>
             <h1 className="left-title">Public games</h1>
-            <div className="grid">
-                {games.map(renderCard)}
+            <div className="container">
+                <div className="row">
+                    {games.map(renderCard)}
+                </div>
             </div>
         </div>
     )
