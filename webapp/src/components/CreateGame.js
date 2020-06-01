@@ -5,7 +5,8 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {useDispatch, useSelector} from "react-redux";
 import API from "../API";
-import {setPlayer} from "../actions";
+import {setGame, setPlayer} from "../actions";
+import { useHistory } from "react-router-dom";
 
 function NicknameInput() {
 
@@ -22,6 +23,7 @@ function CreateGame(props) {
     const [validated, setValidated] = useState(false);
     const dispatch = useDispatch();
     const userId = useSelector(state => state.user);
+    const history = useHistory();
 
     const onClose = e => {
         props.onClose && props.onClose(e);
@@ -36,6 +38,9 @@ function CreateGame(props) {
             host: {
                 id: id
             }
+        }).then(function (response) {
+            dispatch(setGame(response.data.id));
+            history.push('/current-game')
         }).catch(function (error) {
             console.log(error);
         });

@@ -4,8 +4,6 @@ import styled from "styled-components";
 import CreateGame from "../components/CreateGame";
 import Button from "react-bootstrap/Button";
 import API from "../API";
-import CardColumns from "react-bootstrap/CardColumns";
-import CardGroup from "react-bootstrap/CardGroup";
 
 const Divider = styled.div`
 border-bottom: 1px solid grey;
