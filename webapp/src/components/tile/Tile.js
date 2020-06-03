@@ -23,7 +23,7 @@ class Tile extends React.Component {
 
     render() {
         return (
-            <Button className="btn-tile"></Button>
+            <Button data-testid="tile" className="btn-tile"></Button>
         );
     }
 
