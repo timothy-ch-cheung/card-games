@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<nav
+  className="navbar navbar-expand-lg navbar-dark bg-dark"
+>
+  <a
+    className="active navbar-brand"
+    href="/"
+    onClick={[Function]}
+    style={Object {}}
+  >
+    Noughts and Crosses
+  </a>
+  <button
+    aria-controls="basic-navbar-nav"
+    aria-label="Toggle navigation"
+    className="navbar-toggler collapsed"
+    onClick={[Function]}
+    type="button"
+  >
+    <span
+      className="navbar-toggler-icon"
+    />
+  </button>
+  <div
+    aria-expanded={null}
+    className="navbar-collapse collapse"
+  >
+    <div
+      className="mr-auto navbar-nav"
+      onKeyDown={[Function]}
+    >
+      <a
+        className="nav-link"
+        data-rb-event-key="/home"
+        href="/home"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+      >
+        Home
+      </a>
+      <a
+        className="nav-link"
+        data-rb-event-key="/games"
+        href="/games"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+      >
+        Games
+      </a>
+    </div>
+  </div>
+</nav>
+`;

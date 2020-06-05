@@ -1,5 +1,5 @@
 import React from 'react';
-import Navigation from "./components/Navigation";
+import Navigation from "./components/navigation/Navigation";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Home from "./home/Home";
 import Games from "./games/Games";

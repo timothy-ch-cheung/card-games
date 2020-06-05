@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import LobbyCard from "../components/LobbyCard";
+import LobbyCard from "../components/lobby-card/LobbyCard";
 import styled from "styled-components";
-import CreateGame from "../components/CreateGame";
+import CreateGame from "../components/create-game/CreateGame";
 import Button from "react-bootstrap/Button";
 import API from "../API";
 

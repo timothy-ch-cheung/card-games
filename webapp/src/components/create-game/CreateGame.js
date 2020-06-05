@@ -4,8 +4,8 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {useDispatch, useSelector} from "react-redux";
-import API from "../API";
-import {setGame, setPlayer} from "../actions";
+import API from "../../API";
+import {setGame, setPlayer} from "../../actions";
 import { useHistory } from "react-router-dom";
 
 function NicknameInput() {
