@@ -32,7 +32,6 @@ function CreateGame(props) {
 
     const createGame = (lobbyName, playerId) => {
         let id = (playerId != null) ? playerId : userId;
-        console.log(id);
         API.post('/create', {
             lobbyName: lobbyName,
             host: {
