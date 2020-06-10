@@ -49,11 +49,13 @@ function Lobby() {
                     .host {
                         display: inline;
                         float: left;
+                        min-width: 10%;
                     }
                     
                     .guest {
                         display: inline;
                         float: right;
+                        min-width: 10%;
                     }
                 `}
             </style>

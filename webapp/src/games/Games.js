@@ -41,7 +41,7 @@ function Games() {
     }
 
     const renderCard = (card, index) => {
-        return <LobbyCard lobbyName={card.lobbyName} host={card.host.username} key={index}/>
+        return <LobbyCard gameId={card.id} lobbyName={card.lobbyName} host={card.host.username} key={index}/>
     }
 
     return (
