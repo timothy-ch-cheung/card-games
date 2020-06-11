@@ -4,6 +4,10 @@ import styled from "styled-components";
 import CreateGame from "../components/create-game/CreateGame";
 import Button from "react-bootstrap/Button";
 import API from "../API";
+import CreatePlayer from "../components/create-player/CreatePlayer";
+import {useDispatch} from "react-redux";
+import {setGame} from "../actions";
+import {useHistory} from "react-router-dom";
 
 const Divider = styled.div`
 border-bottom: 1px solid grey;
@@ -11,8 +15,11 @@ margin: 10px;
 `;
 
 function Games() {
-
-    const [show, setShow] = useState(false);
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const [showCreateGameModal, setShowCreateGameModal] = useState(false);
+    const [showCreatePlayerModal, setShowCreatePlayerModal] = useState(false);
+    const [currentGameId, setCurrentGameId] = useState(null);
     const [games, setGames] = useState([]);
 
     useEffect(() => {
@@ -32,16 +39,39 @@ function Games() {
         }
     }, []);
 
-    const handleShow = () => {
-        setShow(true);
+    const joinGame = (gameId, userId) => {
+        API.patch(`/join/${gameId}`, {
+            host: {
+                id: userId
+            }
+        }).then(function (response) {
+            dispatch(setGame(gameId));
+            history.push('/current-game')
+        }).catch(function (error) {
+            console.log(error);
+        });
     }
 
-    const handleHide = () => {
-        setShow(false);
+    const handleShowCreateGameModal = () => {
+        setShowCreateGameModal(true);
+    }
+
+    const handleHideCreateGameModal = () => {
+        setShowCreateGameModal(false);
+    }
+
+    const handleShowCreatePlayerModal = (gameId) => {
+        setCurrentGameId(gameId);
+        setShowCreatePlayerModal(true);
+    }
+
+    const handleHideCreatePlayerModal = () => {
+        setShowCreatePlayerModal(false);
     }
 
     const renderCard = (card, index) => {
-        return <LobbyCard gameId={card.id} lobbyName={card.lobbyName} host={card.host.username} key={index}/>
+        return <LobbyCard gameId={card.id} lobbyName={card.lobbyName} host={card.host.username} key={index}
+                          onSubmit={joinGame} showModal={handleShowCreateGameModal()}/>
     }
 
     return (
@@ -72,9 +102,11 @@ function Games() {
                     `}
             </style>
             <Button size="xl" variant="info" onClick={e => {
-                handleShow();
+                handleShowCreateGameModal();
             }}>Create Game</Button>
-            <CreateGame show={show} onClose={handleHide}/>
+            <CreateGame show={showCreateGameModal} onClose={handleHideCreateGameModal}/>
+            <CreatePlayer show={showCreatePlayerModal} onClose={handleHideCreatePlayerModal}
+                          onShow={handleShowCreatePlayerModal} onSubmit={joinGame} gameId={currentGameId}/>
             <Divider/>
             <h1 className="left-title">Public games</h1>
             <div className="container">

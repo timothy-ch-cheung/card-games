@@ -1,27 +1,17 @@
 import React from 'react';
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import {useHistory} from "react-router-dom";
-import {setGame} from "../../actions";
-import {useDispatch, useSelector} from "react-redux";
-import API from "../../API";
+import {useSelector} from "react-redux";
 
 function LobbyCard(props) {
-    const history = useHistory();
-    const dispatch = useDispatch();
     const userId = useSelector(state => state.user);
 
-    const joinGame = () => {
-        API.patch(`/join/${props.gameId}`, {
-            host: {
-                id: userId
-            }
-        }).then(function (response) {
-            dispatch(setGame(props.gameId));
-            history.push('/current-game')
-        }).catch(function (error) {
-            console.log(error);
-        });
+    const onJoinGame = () => {
+        if (userId != null) {
+            props.onSubmit(props.gameId, userId);
+        } else {
+            props.showModal();
+        }
     }
 
     return (
@@ -64,7 +54,7 @@ function LobbyCard(props) {
                     <Card.Text>
                         Host: {props.host}
                     </Card.Text>
-                    <Button variant="info" onClick={joinGame}>Join Game</Button>
+                    <Button variant="info" onClick={onJoinGame}>Join Game</Button>
                 </Card.Body>
             </Card>
         </>
