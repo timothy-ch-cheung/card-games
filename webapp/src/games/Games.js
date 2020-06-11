@@ -41,9 +41,7 @@ function Games() {
 
     const joinGame = (gameId, userId) => {
         API.patch(`/join/${gameId}`, {
-            host: {
-                id: userId
-            }
+            id: userId
         }).then(function (response) {
             dispatch(setGame(gameId));
             history.push('/current-game')
@@ -71,7 +69,7 @@ function Games() {
 
     const renderCard = (card, index) => {
         return <LobbyCard gameId={card.id} lobbyName={card.lobbyName} host={card.host.username} key={index}
-                          onSubmit={joinGame} showModal={handleShowCreateGameModal()}/>
+                          onSubmit={joinGame} showModal={handleShowCreatePlayerModal}/>
     }
 
     return (
@@ -106,7 +104,7 @@ function Games() {
             }}>Create Game</Button>
             <CreateGame show={showCreateGameModal} onClose={handleHideCreateGameModal}/>
             <CreatePlayer show={showCreatePlayerModal} onClose={handleHideCreatePlayerModal}
-                          onShow={handleShowCreatePlayerModal} onSubmit={joinGame} gameId={currentGameId}/>
+                          onSubmit={joinGame} gameId={currentGameId}/>
             <Divider/>
             <h1 className="left-title">Public games</h1>
             <div className="container">

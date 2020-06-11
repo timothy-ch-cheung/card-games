@@ -3,9 +3,13 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import * as React from "react";
 import {useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
+import API from "../../API";
+import {setPlayer} from "../../actions";
 
 function CreatePlayer(props) {
+
+    const dispatch = useDispatch();
     const [validated, setValidated] = useState(false);
 
     const onClose = e => {
@@ -24,7 +28,15 @@ function CreatePlayer(props) {
         }
         setValidated(false);
         props.onClose();
-        props.onSubmit(props.gameId, e.target.nickname.value);
+        API.post('/player', {
+            username: e.target.nickname.value
+        }).then(function (response) {
+            console.log(response)
+            dispatch(setPlayer(response.data.id));
+            props.onSubmit(props.gameId, response.data.id);
+        }).catch(function (error) {
+            console.log(error);
+        });
     };
 
     return (
@@ -74,7 +86,7 @@ function CreatePlayer(props) {
 
                     <Modal.Footer>
                         <Button variant="secondary" onClick={onClose}>Close</Button>
-                        <Button type="submit" variant="info">{props.submitText}</Button>
+                        <Button type="submit" variant="info">Join Game</Button>
                     </Modal.Footer>
                 </Form>
             </Modal>

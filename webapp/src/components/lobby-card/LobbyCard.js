@@ -10,7 +10,7 @@ function LobbyCard(props) {
         if (userId != null) {
             props.onSubmit(props.gameId, userId);
         } else {
-            props.showModal();
+            props.showModal(props.gameId);
         }
     }
 
