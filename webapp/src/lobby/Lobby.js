@@ -1,16 +1,19 @@
 import Board from "../components/board/Board";
 import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import API from "../API";
+import Button from "react-bootstrap/Button";
+import {useHistory} from "react-router-dom";
+import {resetGame, setGame} from "../actions";
 
-function getGuest (game) {
+function getGuest(game) {
     if (game.guest != null) {
         return game.guest.username;
     }
     return "";
 }
 
-function getHost (game) {
+function getHost(game) {
     if (game.host != null) {
         return game.host.username;
     }
@@ -19,7 +22,11 @@ function getHost (game) {
 
 function Lobby() {
     const gameId = useSelector(state => state.game);
+    const userId = useSelector(state => state.user);
     const [game, setGame] = useState({});
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const [leaveText, setLeaveText] = useState("Leave Lobby");
 
     useEffect(() => {
         const getGame = () => {
@@ -37,6 +44,23 @@ function Lobby() {
             clearInterval(interval);
         }
     }, []);
+
+    const leaveGame = () => {
+        API.patch(`/leave/${gameId}`, {
+            id: userId
+        }).then(function (response) {
+            dispatch(setGame(gameId));
+            history.push('/current-game')
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }
+
+    const onLeaveGame = () => {
+        leaveGame();
+        dispatch(resetGame());
+        history.push('/games')
+    }
 
     return (
         <div>
@@ -64,6 +88,7 @@ function Lobby() {
                 <h3 className="guest">GUEST: {getGuest(game)}</h3>
             </div>
             <Board/>
+            <Button variant="info" className="leave-game" onClick={onLeaveGame}>{leaveText}</Button>
         </div>
     );
 

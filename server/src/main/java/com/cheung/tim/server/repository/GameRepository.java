@@ -15,7 +15,7 @@ public interface GameRepository extends CrudRepository<Game, Long> {
     @Query("SELECT g FROM Game g INNER JOIN g.player1 p1 WHERE p1.userId = g.player1.userId AND g.gameStatus = :gameStatus")
     List<Game> findByGameStatus(GameStatus gameStatus);
 
-    @Query("SELECT g FROM Game g INNER JOIN g.player1 p1 WHERE p1.userId = g.player1.userId AND g.gameId = :id")
+    @Query("SELECT g FROM Game g INNER JOIN g.player1 p1 WHERE p1.userId = g.player1.userId AND g.gameId = :id AND NOT g.gameStatus = 'DELETED'")
     Game findByGameId(Long id);
 
     @Query("SELECT COUNT(g) FROM Game g INNER JOIN g.player1 p1 WHERE p1.userId = g.player1.userId " +
