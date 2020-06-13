@@ -2,14 +2,10 @@ package com.cheung.tim.server.controller;
 
 import com.cheung.tim.server.domain.Player;
 import com.cheung.tim.server.dto.PlayerDTO;
-import com.cheung.tim.server.dto.PublicPlayerDTO;
 import com.cheung.tim.server.service.PlayerService;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.websocket.server.PathParam;
 
 @RestController
 public class PlayerController {
@@ -29,7 +25,7 @@ public class PlayerController {
     }
 
     @GetMapping(path = "/player/{userId}")
-    public ResponseEntity<PlayerDTO> getPlayer(@PathVariable String userId){
+    public ResponseEntity<PlayerDTO> getPlayer(@PathVariable String userId) {
         return ResponseEntity.ok(convertToDTO(this.playerService.findPlayerById(userId)));
     }
 
