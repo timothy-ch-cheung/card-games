@@ -20,7 +20,7 @@ function getHost(game) {
     return "";
 }
 
-function Lobby() {
+function Lobby(props) {
     const gameId = useSelector(state => state.game);
     const userId = useSelector(state => state.user);
     const [game, setGame] = useState({});
@@ -32,7 +32,10 @@ function Lobby() {
         const getGame = () => {
             API.get(`/game/${gameId}`).then(function (response) {
                 setGame(response.data);
-            })
+            }).catch(function (error) {
+                props.onShowError(error.status)
+                history.push("/games")
+            });
         };
 
         getGame();
