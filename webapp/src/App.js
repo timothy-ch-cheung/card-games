@@ -13,7 +13,7 @@ function App() {
     const onShowError = (text) => {
         setErrorText(text);
         setShowError(true);
-        setTimeout(() => {setShowError(false)}, 3000);
+        setTimeout(() => {setShowError(false)}, 5000);
     }
 
     return (

@@ -33,7 +33,7 @@ function Lobby(props) {
             API.get(`/game/${gameId}`).then(function (response) {
                 setGame(response.data);
             }).catch(function (error) {
-                props.onShowError(error.status)
+                props.onShowError(error.response.data.message)
                 history.push("/games")
             });
         };
