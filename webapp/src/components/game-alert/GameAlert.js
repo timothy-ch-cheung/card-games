@@ -1,6 +1,5 @@
 import React from "react";
 import Alert from "react-bootstrap/Alert";
-import Fade from "react-bootstrap/cjs/Fade";
 
 function GameAlert(props) {
     const alertStyle = {
@@ -10,10 +9,10 @@ function GameAlert(props) {
         top: "10%",
         left: 0,
         right: 0,
-        marginLeft: "auto",
-        marginRight: "auto",
+        margin: "10px auto",
         padding: "10px"
     }
+
     if (props.show) {
         return (
             <>
@@ -40,6 +39,7 @@ function GameAlert(props) {
         )
     }
     return null;
+
 }
 
 export default GameAlert;

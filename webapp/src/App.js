@@ -12,8 +12,12 @@ function App() {
 
     const onShowError = (text) => {
         setErrorText(text);
-        setShowError(true);
-        setTimeout(() => {setShowError(false)}, 5000);
+        setTimeout(() => {
+            setShowError(true)
+        }, 500);
+        setTimeout(() => {
+            setShowError(false)
+        }, 5000);
     }
 
     return (
@@ -25,7 +29,8 @@ function App() {
                     <Route exact path='/' component={Home}/>
                     <Route exact path='/home' component={Home}/>
                     <Route exact path='/games' component={Games}/>
-                    <Route exact path='/current-game' render={props => (<Lobby onShowError={onShowError}/>)}/>
+                    <Route exact path='/current-game' render={() => (<Lobby onShowError={onShowError}/>)}/>
+
                     <Route render={function () {
                         return <p>Not found</p>
                     }}/>
