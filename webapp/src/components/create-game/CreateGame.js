@@ -6,7 +6,7 @@ import Form from "react-bootstrap/Form";
 import {useDispatch, useSelector} from "react-redux";
 import API from "../../API";
 import {setGame, setPlayer} from "../../actions";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 function NicknameInput() {
 
@@ -57,14 +57,12 @@ function CreateGame(props) {
         }
         let lobbyName = e.target.lobbyName.value;
 
-        if(userId != null){
+        if (userId != null) {
             createGame(lobbyName);
-        }
-        else {
+        } else {
             API.post('/player', {
                 username: e.target.nickname.value
             }).then(function (response) {
-                console.log(response.data.id);
                 dispatch(setPlayer(response.data.id));
                 createGame(lobbyName, response.data.id)
             }).catch(function (error) {
