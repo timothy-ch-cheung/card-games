@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import API from "../API";
 import Button from "react-bootstrap/Button";
 import {useHistory} from "react-router-dom";
-import {resetGame, setGame} from "../actions";
+import {resetGame} from "../actions";
 
 function getGuest(game) {
     if (game.guest != null) {
@@ -48,21 +48,15 @@ function Lobby(props) {
         }
     }, []);
 
-    const leaveGame = () => {
+    const onLeaveGame = () => {
         API.patch(`/leave/${gameId}`, {
             id: userId
         }).then(function (response) {
-            dispatch(setGame(gameId));
-            history.push('/current-game')
+            dispatch(resetGame());
+            history.push('/games')
         }).catch(function (error) {
             console.log(error);
         });
-    }
-
-    const onLeaveGame = () => {
-        leaveGame();
-        dispatch(resetGame());
-        history.push('/games')
     }
 
     return (
