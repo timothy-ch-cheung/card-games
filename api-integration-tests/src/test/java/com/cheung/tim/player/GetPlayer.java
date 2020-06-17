@@ -6,9 +6,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.cheung.tim.Config.ENDPOINT;
+import static com.cheung.tim.Util.loadResponse;
+import static com.cheung.tim.Util.maskId;
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class GetPlayer {
 
@@ -26,8 +30,11 @@ public class GetPlayer {
     }
 
     @Test
-    public void createPlayer() {
+    public void getExistingPlayer() {
         Response response = get(ENDPOINT + PLAYER + "/" + playerId);
-        response.then().body("username", is("John"));
+        String actualBody = maskId(response.getBody().asString());
+
+        assertThat(response.statusCode(), is(200));
+        assertThat(actualBody, is(jsonEquals(loadResponse("getPlayerSuccess"))));
     }
 }
