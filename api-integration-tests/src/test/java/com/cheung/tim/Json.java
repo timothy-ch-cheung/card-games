@@ -12,11 +12,34 @@ import java.util.stream.Stream;
 
 import static org.apache.commons.lang3.StringUtils.repeat;
 
-public class Util {
+public class Json {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String BASE_DIR = "src/test/resources/";
 
-    public static String loadResponse(String responseName) {
+    private static final String PLAYER_ID_TOKEN = "${player_id}";
+
+    private String json;
+
+    private Json(String json) {
+        this.json = json;
+    }
+
+    public static Json Json(String path){
+        return new Json(loadResponse(path));
+    }
+
+    public Json replacePlayerId(String id){
+        this.json = this.json.replace(PLAYER_ID_TOKEN, id);
+        return this;
+    }
+
+    public String toString(){
+        return this.json;
+    }
+
+
+
+    private static String loadResponse(String responseName) {
         StringBuilder stringBuilder = new StringBuilder();
         try (Stream<String> stream = Files.lines(Paths.get(BASE_DIR + "responses/" + responseName + ".json"), StandardCharsets.UTF_8)) {
             stream.forEach(s -> stringBuilder.append(s).append("\n"));
@@ -25,17 +48,5 @@ public class Util {
         }
 
         return stringBuilder.toString();
-    }
-
-    public static String maskId(String json) {
-        try {
-            ObjectNode node = (ObjectNode) OBJECT_MAPPER.readTree(json);
-            node.put("id", repeat("x", node.get("id").asText().length()));
-            json = node.toString();
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return json;
-
     }
 }

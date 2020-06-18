@@ -1,4 +1,4 @@
 {
-  "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "id": "${player_id}",
   "username": "John"
 }
