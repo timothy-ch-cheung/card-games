@@ -1,0 +1,7 @@
+{
+  "timestamp": "${json-unit.ignore-element}",
+  "status": 400,
+  "error": "Bad Request",
+  "message": "Username must not be null or empty",
+  "path": "/player"
+}

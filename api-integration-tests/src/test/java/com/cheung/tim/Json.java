@@ -13,8 +13,6 @@ public class Json {
 
     private static final String PLAYER_ID_TOKEN = "${player_id}";
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
     private String json;
 
     private Json(String json) {

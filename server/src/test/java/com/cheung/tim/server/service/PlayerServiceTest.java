@@ -2,10 +2,15 @@ package com.cheung.tim.server.service;
 
 import com.cheung.tim.server.domain.Player;
 import com.cheung.tim.server.dto.PlayerDTO;
+import com.cheung.tim.server.exception.BadRequestException;
 import com.cheung.tim.server.exception.NotFoundException;
 import com.cheung.tim.server.repository.PlayerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -57,5 +62,17 @@ class PlayerServiceTest {
         });
         verify(playerRepository, times(1)).findById("40283481721d879601721d87b6350000");
         assertThat(exception.getMessage(), is("Player with id 40283481721d879601721d87b6350000 not found"));
+    }
+
+    @ParameterizedTest
+    @NullSource
+    @EmptySource
+    @ValueSource(strings = {" ", "   ", "\t", "\n"})
+    public void findPlayerById_shouldThrowExceptionWhenEmptyUsername(String playerId) {
+        when(playerRepository.findById(anyString())).thenReturn(Optional.empty());
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            playerService.findPlayerById(playerId);
+        });
+        assertThat(exception.getMessage(), is("id must match regex [a-z0-9]{32}"));
     }
 }

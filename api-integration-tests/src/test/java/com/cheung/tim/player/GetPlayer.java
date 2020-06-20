@@ -48,4 +48,15 @@ public class GetPlayer {
         assertThat(response.statusCode(), is(404));
         assertThat(actualBody, is(jsonEquals(expectedBody)));
     }
+
+    @Test
+    public void getPlayerIncorrectIdFormat() {
+        Response response = get(ENDPOINT + PLAYER + "/abcde");
+
+        String expectedBody = JsonResponse("getPlayerIncorrectFormat").replacePlayerId("abcde").toString();
+        String actualBody = response.getBody().asString();
+
+        assertThat(response.statusCode(), is(400));
+        assertThat(actualBody, is(jsonEquals(expectedBody)));
+    }
 }
