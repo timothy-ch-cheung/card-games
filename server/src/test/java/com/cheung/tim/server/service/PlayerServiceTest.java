@@ -48,6 +48,14 @@ class PlayerServiceTest {
     }
 
     @Test
+    public void createPlayer_shouldThrowExceptionWhenNullDTO() {
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            playerService.createPlayer(null);
+        });
+        assertThat(exception.getMessage(), is("Username must not be null or empty"));
+    }
+
+    @Test
     public void findPlayerById_shouldFindPlayer() {
         when(playerRepository.findById(anyString())).thenReturn(Optional.of(new Player()));
         playerService.findPlayerById(playerDTO.getId());

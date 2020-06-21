@@ -2,10 +2,8 @@ package com.cheung.tim.server.service;
 
 import com.cheung.tim.server.domain.Game;
 import com.cheung.tim.server.domain.Player;
-import com.cheung.tim.server.dto.CreateLobbyDTO;
 import com.cheung.tim.server.dto.GameDTO;
 import com.cheung.tim.server.dto.PlayerDTO;
-import com.cheung.tim.server.dto.PublicPlayerDTO;
 import com.cheung.tim.server.enums.GameStatus;
 import com.cheung.tim.server.exception.BadRequestException;
 import com.cheung.tim.server.exception.NotFoundException;
@@ -13,7 +11,9 @@ import com.cheung.tim.server.repository.GameRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -59,7 +59,8 @@ class GameServiceTest {
     public void getGame_shouldThrowNotFoundException() {
         when(gameRepository.findByGameId(1L)).thenReturn(null);
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            gameService.getGame(1L);;
+            gameService.getGame(1L);
+            ;
         });
         assertThat(exception.getMessage(), is("Game with id 1 does not exist"));
         verify(gameRepository).findByGameId(1L);
@@ -106,6 +107,34 @@ class GameServiceTest {
             gameService.createGame(getPlayerDTO(), "test lobby");
         });
         assertThat(exception.getMessage(), is("Player John Smith is already in a game"));
+    }
+
+    @Test
+    public void createGame_shouldThrowExceptionIfPlayerDTONull() {
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            gameService.createGame(null, "test lobby");
+        });
+        assertThat(exception.getMessage(), is("Lobby name or Host not supplied"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"", "abcde", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "435465433"})
+    public void createGame_shouldThrowExceptionIfPlayerDTOIncorrectIdFormat(String playerId) {
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            gameService.createGame(new PlayerDTO(playerId, "John"), "test lobby");
+        });
+        assertThat(exception.getMessage(), is("Lobby name or Host not supplied"));
+    }
+
+    @ParameterizedTest
+    @NullSource
+    @EmptySource
+    @ValueSource(strings = {" ", "   ", "\n", "\t"})
+    public void createGame_shouldThrowExceptionIfLobbyNameEmpty(String lobbyName) {
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            gameService.createGame(getPlayerDTO(), lobbyName);
+        });
+        assertThat(exception.getMessage(), is("Lobby name or Host not supplied"));
     }
 
     @Test
