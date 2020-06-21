@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.cheung.tim.server.enums.GameStatus.*;
+import static com.cheung.tim.server.service.PlayerService.PLAYER_ID_REGEX;
+import static org.apache.commons.lang.StringUtils.isBlank;
 
 @Service
 public class GameService {
@@ -35,6 +37,9 @@ public class GameService {
     }
 
     public Game createGame(PlayerDTO playerDTO, String lobbyName) throws BadRequestException {
+        if (playerDTO == null || !playerDTO.getId().matches(PLAYER_ID_REGEX) || isBlank(lobbyName)) {
+            throw new BadRequestException("Lobby name or Host not supplied");
+        }
         Player player = getPlayer(playerDTO.getId());
         if (isPlayerInGame(player)) {
             throw new BadRequestException(String.format("Player %s is already in a game", player.getUsername()));

@@ -12,6 +12,9 @@ public class Json {
     private static final String BASE_DIR = "src/test/resources/";
 
     private static final String PLAYER_ID_TOKEN = "${player_id}";
+    private static final String GAME_ID_TOKEN = "${game_id}";
+    private static final String PLAYER_NAME_TOKEN = "${player_name}";
+    private static final String LOBBY_NAME_TOKEN = "${lobby_name}";
 
     private String json;
 
@@ -29,6 +32,21 @@ public class Json {
 
     public Json replacePlayerId(String id) {
         this.json = this.json.replace(PLAYER_ID_TOKEN, id);
+        return this;
+    }
+
+    public Json replacePlayerName(String name) {
+        this.json = this.json.replace(PLAYER_NAME_TOKEN, name);
+        return this;
+    }
+
+    public Json replaceGameId(String id) {
+        this.json = this.json.replace(GAME_ID_TOKEN, id);
+        return this;
+    }
+
+    public Json replaceLobbyName(String name) {
+        this.json = this.json.replace(LOBBY_NAME_TOKEN, name);
         return this;
     }
 

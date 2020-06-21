@@ -22,7 +22,7 @@ public class PlayerService {
     }
 
     public Player createPlayer(PlayerDTO playerDTO) {
-        if (StringUtils.isBlank(playerDTO.getUsername())){
+        if (playerDTO == null || StringUtils.isBlank(playerDTO.getUsername())){
             throw new BadRequestException("Username must not be null or empty");
         }
         Player player = new Player(playerDTO.getUsername());

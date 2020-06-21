@@ -4,8 +4,12 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static com.cheung.tim.Config.ENDPOINT;
+import static com.cheung.tim.Json.JsonRequest;
 import static com.cheung.tim.Json.JsonResponse;
 import static com.cheung.tim.Resource.PLAYER;
 import static io.restassured.RestAssured.get;
@@ -58,5 +62,14 @@ public class GetPlayer {
 
         assertThat(response.statusCode(), is(400));
         assertThat(actualBody, is(jsonEquals(expectedBody)));
+    }
+
+    @ParameterizedTest
+    @EmptySource
+    @ValueSource(strings = {" ", "   ", "\t", "\n"})
+    public void getPlayerEmptyPlayerName(String playerName) {
+        Response response = get(ENDPOINT + PLAYER + "/" + playerName);
+
+        assertThat(response.statusCode(), is(405));
     }
 }

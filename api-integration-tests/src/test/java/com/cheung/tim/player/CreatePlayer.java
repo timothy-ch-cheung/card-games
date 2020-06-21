@@ -3,6 +3,9 @@ package com.cheung.tim.player;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static com.cheung.tim.Config.ENDPOINT;
 import static com.cheung.tim.Json.JsonRequest;
@@ -34,6 +37,19 @@ public class CreatePlayer {
     public void createPlayerEmptyBody() {
         Response response = given().contentType(ContentType.JSON)
                 .body("{}")
+                .when()
+                .post(ENDPOINT + PLAYER);
+
+        assertThat(response.statusCode(), is(400));
+        assertThat(response.getBody().asString(), jsonEquals(JsonResponse("createPlayerEmptyBody").toString()));
+    }
+
+    @ParameterizedTest
+    @EmptySource
+    @ValueSource(strings = {" ", "   "})
+    public void createPlayerEmptyPlayerName(String playerName) {
+        Response response = given().contentType(ContentType.JSON)
+                .body(JsonRequest("createPlayer").replacePlayerName(playerName).toString())
                 .when()
                 .post(ENDPOINT + PLAYER);
 
