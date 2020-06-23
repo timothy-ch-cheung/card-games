@@ -55,7 +55,10 @@ public class GameService {
             throw new BadRequestException(String.format("Player %s is already in a game", player.getUsername()));
         }
         Game game = gameRepository.findByGameId(gameId);
-        if (game.getPlayer2() != null) {
+        if (game == null){
+            throw new NotFoundException(String.format("Game with id %s does not exist", gameId));
+        }
+        else if (game.getPlayer2() != null) {
             throw new BadRequestException(String.format("Game with id %s is already full", gameId));
         }
         gameRepository.updatePlayerTwo(gameId, player);
