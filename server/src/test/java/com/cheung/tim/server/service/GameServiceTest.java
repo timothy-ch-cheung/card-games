@@ -83,10 +83,10 @@ class GameServiceTest {
     @Test
     public void createGame_shouldThrowExceptionIfPlayerDoesNotExist() {
         when(playerService.findPlayerById(any())).thenReturn(null);
-        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
             gameService.createGame(getPlayerDTO(), "test lobby");
         });
-        assertThat(exception.getMessage(), is("Player does not exist"));
+        assertThat(exception.getMessage(), is("Player with id 40283481721d879601721d87b6350000 not found"));
     }
 
     @Test
@@ -215,18 +215,35 @@ class GameServiceTest {
     }
 
     @Test
-    public void leaveGame_shouldThrowNotBadRequestPlayerNotInGame() {
+    public void leaveGame_shouldThrowBadRequestPlayerNotInGame() {
         PlayerDTO playerDTO = new PlayerDTO("40283481721d87b63500001721d87960", "Janet Smith");
         Player player1 = new Player("40283481721d879601721d87b6350000", "John Smith");
         Player player2 = new Player("1721d87b635000040283481721d87960", "Jane Smith");
         Game game = new Game("test_lobby", player1, OPEN);
         game.setPlayer2(player2);
         when(gameRepository.findByGameId(1L)).thenReturn(game);
+        when(playerService.findPlayerById("40283481721d87b63500001721d87960")).thenReturn(new Player("40283481721d87b63500001721d87960", "Janet Smith"));
 
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
             gameService.leaveGame(1L, playerDTO);
         });
         assertThat(exception.getMessage(), is("Player Janet Smith is not in game with id 1"));
+    }
+
+    @Test
+    public void leaveGame_shouldThrowNotFoundPlayerDoesNotExist() {
+        PlayerDTO playerDTO = new PlayerDTO("00000000000000000000000000000000", "Janet Smith");
+
+        Player player1 = new Player("40283481721d879601721d87b6350000", "John Smith");
+        Player player2 = new Player("1721d87b635000040283481721d87960", "Jane Smith");
+        Game game = new Game("test_lobby", player1, OPEN);
+        game.setPlayer2(player2);
+        when(gameRepository.findByGameId(1L)).thenReturn(game);
+
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            gameService.leaveGame(1L, playerDTO);
+        });
+        assertThat(exception.getMessage(), is("Player with id 00000000000000000000000000000000 not found"));
     }
 
     @Test
