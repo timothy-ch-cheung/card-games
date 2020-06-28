@@ -2,10 +2,8 @@ package com.cheung.tim.server.service;
 
 import com.cheung.tim.server.domain.Game;
 import com.cheung.tim.server.domain.Player;
-import com.cheung.tim.server.dto.CreateLobbyDTO;
 import com.cheung.tim.server.dto.GameDTO;
 import com.cheung.tim.server.dto.PlayerDTO;
-import com.cheung.tim.server.dto.PublicPlayerDTO;
 import com.cheung.tim.server.enums.GameStatus;
 import com.cheung.tim.server.exception.BadRequestException;
 import com.cheung.tim.server.exception.NotFoundException;
@@ -13,7 +11,9 @@ import com.cheung.tim.server.repository.GameRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -59,7 +59,7 @@ class GameServiceTest {
     public void getGame_shouldThrowNotFoundException() {
         when(gameRepository.findByGameId(1L)).thenReturn(null);
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            gameService.getGame(1L);;
+            gameService.getGame(1L);
         });
         assertThat(exception.getMessage(), is("Game with id 1 does not exist"));
         verify(gameRepository).findByGameId(1L);
@@ -82,10 +82,10 @@ class GameServiceTest {
     @Test
     public void createGame_shouldThrowExceptionIfPlayerDoesNotExist() {
         when(playerService.findPlayerById(any())).thenReturn(null);
-        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
             gameService.createGame(getPlayerDTO(), "test lobby");
         });
-        assertThat(exception.getMessage(), is("Player does not exist"));
+        assertThat(exception.getMessage(), is("Player with id 40283481721d879601721d87b6350000 not found"));
     }
 
     @Test
@@ -106,6 +106,34 @@ class GameServiceTest {
             gameService.createGame(getPlayerDTO(), "test lobby");
         });
         assertThat(exception.getMessage(), is("Player John Smith is already in a game"));
+    }
+
+    @Test
+    public void createGame_shouldThrowExceptionIfPlayerDTONull() {
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            gameService.createGame(null, "test lobby");
+        });
+        assertThat(exception.getMessage(), is("Lobby name or Host not supplied"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"", "abcde", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "435465433"})
+    public void createGame_shouldThrowExceptionIfPlayerDTOIncorrectIdFormat(String playerId) {
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            gameService.createGame(new PlayerDTO(playerId, "John"), "test lobby");
+        });
+        assertThat(exception.getMessage(), is("Lobby name or Host not supplied"));
+    }
+
+    @ParameterizedTest
+    @NullSource
+    @EmptySource
+    @ValueSource(strings = {" ", "   ", "\n", "\t"})
+    public void createGame_shouldThrowExceptionIfLobbyNameEmpty(String lobbyName) {
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            gameService.createGame(getPlayerDTO(), lobbyName);
+        });
+        assertThat(exception.getMessage(), is("Lobby name or Host not supplied"));
     }
 
     @Test
@@ -186,18 +214,35 @@ class GameServiceTest {
     }
 
     @Test
-    public void leaveGame_shouldThrowNotBadRequestPlayerNotInGame() {
+    public void leaveGame_shouldThrowBadRequestPlayerNotInGame() {
         PlayerDTO playerDTO = new PlayerDTO("40283481721d87b63500001721d87960", "Janet Smith");
         Player player1 = new Player("40283481721d879601721d87b6350000", "John Smith");
         Player player2 = new Player("1721d87b635000040283481721d87960", "Jane Smith");
         Game game = new Game("test_lobby", player1, OPEN);
         game.setPlayer2(player2);
         when(gameRepository.findByGameId(1L)).thenReturn(game);
+        when(playerService.findPlayerById("40283481721d87b63500001721d87960")).thenReturn(new Player("40283481721d87b63500001721d87960", "Janet Smith"));
 
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
             gameService.leaveGame(1L, playerDTO);
         });
         assertThat(exception.getMessage(), is("Player Janet Smith is not in game with id 1"));
+    }
+
+    @Test
+    public void leaveGame_shouldThrowNotFoundPlayerDoesNotExist() {
+        PlayerDTO playerDTO = new PlayerDTO("00000000000000000000000000000000", "Janet Smith");
+
+        Player player1 = new Player("40283481721d879601721d87b6350000", "John Smith");
+        Player player2 = new Player("1721d87b635000040283481721d87960", "Jane Smith");
+        Game game = new Game("test_lobby", player1, OPEN);
+        game.setPlayer2(player2);
+        when(gameRepository.findByGameId(1L)).thenReturn(game);
+
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            gameService.leaveGame(1L, playerDTO);
+        });
+        assertThat(exception.getMessage(), is("Player with id 00000000000000000000000000000000 not found"));
     }
 
     @Test

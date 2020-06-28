@@ -85,17 +85,13 @@ class GameControllerTest {
     }
 
     @Test
-    public void getGame_shouldThrowNotFoundException() {
+    public void getGame_shouldThrowNotFoundException()  throws Exception{
         when(gameService.getGame(anyLong())).thenThrow(new NotFoundException("not found"));
 
-        NestedServletException nestedServletException = assertThrows(NestedServletException.class, () -> {
-            mockMvc.perform(MockMvcRequestBuilders
-                    .get("/game/1")
-            ).andReturn();
-                }
-        );
-        assertThat(nestedServletException.getCause(), instanceOf(NotFoundException.class));
-        assertThat(nestedServletException.getCause().getMessage(), is("not found"));
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/game/1")).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+
+        assertThat(response.getStatus(), is(404));
     }
 
     @Test
@@ -134,18 +130,16 @@ class GameControllerTest {
 
     @Test
     public void createGame_shouldThrowBadRequestException() throws Exception {
-        when(gameService.createGame(any(PlayerDTO.class), anyString())).thenThrow(new BadRequestException("bad request"));
+        when(gameService.createGame(any(PlayerDTO.class), anyString())).thenThrow(new BadRequestException(""));
 
-        NestedServletException nestedServletException = assertThrows(NestedServletException.class, () -> {
-                    mockMvc.perform(MockMvcRequestBuilders
-                            .post("/create")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(getCreateRequest())
-                    ).andReturn();
-                }
-        );
-        assertThat(nestedServletException.getCause(), instanceOf(BadRequestException.class));
-        assertThat(nestedServletException.getCause().getMessage(), is("bad request"));
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+                .post("/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getCreateRequest())).andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        assertThat(response.getStatus(), is(400));
     }
 
     @Test
@@ -194,27 +188,23 @@ class GameControllerTest {
     }
 
     @Test
-    public void joinGame_shouldThrowBadRequestException() {
-        doThrow(new BadRequestException("bad request")).when(gameService).joinGame(any(Long.class), any(PlayerDTO.class));
+    public void joinGame_shouldThrowBadRequestException() throws Exception{
+        doThrow(new BadRequestException("")).when(gameService).joinGame(any(Long.class), any(PlayerDTO.class));
 
-        NestedServletException nestedServletException = assertThrows(NestedServletException.class, () -> {
-            performPatch("/join/1");
-        });
+        MvcResult result = performPatch("/join/1");
+        MockHttpServletResponse response = result.getResponse();
 
-        assertThat(nestedServletException.getCause(), instanceOf(BadRequestException.class));
-        assertThat(nestedServletException.getCause().getMessage(), is("bad request"));
+        assertThat(response.getStatus(), is(400));
     }
 
     @Test
-    public void joinGame_shouldThrowNotFoundException() {
+    public void joinGame_shouldThrowNotFoundException() throws Exception{
         doThrow(new NotFoundException("not found")).when(gameService).joinGame(any(Long.class), any(PlayerDTO.class));
 
-        NestedServletException nestedServletException = assertThrows(NestedServletException.class, () -> {
-            performPatch("/join/1");
-        });
+        MvcResult result = performPatch("/join/1");
+        MockHttpServletResponse response = result.getResponse();
 
-        assertThat(nestedServletException.getCause(), instanceOf(NotFoundException.class));
-        assertThat(nestedServletException.getCause().getMessage(), is("not found"));
+        assertThat(response.getStatus(), is(404));
     }
 
     @Test
@@ -228,27 +218,23 @@ class GameControllerTest {
     }
 
     @Test
-    public void leaveGame_shouldThrowBadRequestException() {
+    public void leaveGame_shouldThrowBadRequestException() throws Exception{
         doThrow(new BadRequestException("bad request")).when(gameService).leaveGame(any(Long.class), any(PlayerDTO.class));
 
-        NestedServletException nestedServletException = assertThrows(NestedServletException.class, () -> {
-            performPatch("/leave/1");
-        });
+        MvcResult result = performPatch("/leave/1");
+        MockHttpServletResponse response = result.getResponse();
 
-        assertThat(nestedServletException.getCause(), instanceOf(BadRequestException.class));
-        assertThat(nestedServletException.getCause().getMessage(), is("bad request"));
+        assertThat(response.getStatus(), is(400));
     }
 
     @Test
-    public void leaveGame_shouldThrowNotFoundException() {
+    public void leaveGame_shouldThrowNotFoundException() throws Exception{
         doThrow(new NotFoundException("not found")).when(gameService).leaveGame(any(Long.class), any(PlayerDTO.class));
 
-        NestedServletException nestedServletException = assertThrows(NestedServletException.class, () -> {
-            performPatch("/leave/1");
-        });
+        MvcResult result = performPatch("/leave/1");
+        MockHttpServletResponse response = result.getResponse();
 
-        assertThat(nestedServletException.getCause(), instanceOf(NotFoundException.class));
-        assertThat(nestedServletException.getCause().getMessage(), is("not found"));
+        assertThat(response.getStatus(), is(404));
     }
 
     private MvcResult performPatch(String endpoint) throws Exception {

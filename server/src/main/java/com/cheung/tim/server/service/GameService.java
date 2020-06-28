@@ -2,9 +2,7 @@ package com.cheung.tim.server.service;
 
 import com.cheung.tim.server.domain.Game;
 import com.cheung.tim.server.domain.Player;
-import com.cheung.tim.server.dto.GameDTO;
 import com.cheung.tim.server.dto.PlayerDTO;
-import com.cheung.tim.server.dto.PublicPlayerDTO;
 import com.cheung.tim.server.exception.BadRequestException;
 import com.cheung.tim.server.exception.NotFoundException;
 import com.cheung.tim.server.repository.GameRepository;
@@ -14,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.cheung.tim.server.enums.GameStatus.*;
+import static com.cheung.tim.server.service.PlayerService.PLAYER_ID_REGEX;
+import static org.apache.commons.lang.StringUtils.isBlank;
 
 @Service
 public class GameService {
@@ -35,6 +35,9 @@ public class GameService {
     }
 
     public Game createGame(PlayerDTO playerDTO, String lobbyName) throws BadRequestException {
+        if (playerDTO == null || !playerDTO.getId().matches(PLAYER_ID_REGEX) || isBlank(lobbyName)) {
+            throw new BadRequestException("Lobby name or Host not supplied");
+        }
         Player player = getPlayer(playerDTO.getId());
         if (isPlayerInGame(player)) {
             throw new BadRequestException(String.format("Player %s is already in a game", player.getUsername()));
@@ -50,7 +53,9 @@ public class GameService {
             throw new BadRequestException(String.format("Player %s is already in a game", player.getUsername()));
         }
         Game game = gameRepository.findByGameId(gameId);
-        if (game.getPlayer2() != null) {
+        if (game == null) {
+            throw new NotFoundException(String.format("Game with id %s does not exist", gameId));
+        } else if (game.getPlayer2() != null) {
             throw new BadRequestException(String.format("Game with id %s is already full", gameId));
         }
         gameRepository.updatePlayerTwo(gameId, player);
@@ -70,7 +75,11 @@ public class GameService {
             gameRepository.updateStatus(gameId, OPEN);
             gameRepository.updatePlayerTwo(gameId, null);
         } else {
-            throw new BadRequestException(String.format("Player %s is not in game with id %s", playerDTO.getUsername(), gameId));
+            Player player = getPlayer(playerDTO.getId());
+            if (player != null) {
+                throw new BadRequestException(String.format("Player %s is not in game with id %s", player.getUsername(), gameId));
+            }
+            throw new NotFoundException(String.format("Player with id %s not found", playerDTO.getId()));
         }
     }
 
@@ -81,7 +90,7 @@ public class GameService {
     private Player getPlayer(String userId) {
         Player player = playerService.findPlayerById(userId);
         if (player == null) {
-            throw new BadRequestException("Player does not exist");
+            throw new NotFoundException(String.format("Player with id %s not found", userId));
         }
         return player;
     }
