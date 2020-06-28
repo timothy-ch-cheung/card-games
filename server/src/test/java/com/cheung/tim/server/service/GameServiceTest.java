@@ -60,7 +60,6 @@ class GameServiceTest {
         when(gameRepository.findByGameId(1L)).thenReturn(null);
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
             gameService.getGame(1L);
-            ;
         });
         assertThat(exception.getMessage(), is("Game with id 1 does not exist"));
         verify(gameRepository).findByGameId(1L);
