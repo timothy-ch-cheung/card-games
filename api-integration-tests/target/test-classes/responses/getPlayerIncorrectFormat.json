@@ -1,0 +1,7 @@
+{
+  "timestamp": "${json-unit.ignore-element}",
+  "status": 400,
+  "error": "Bad Request",
+  "message": "id must match regex [a-z0-9]{32}",
+  "path": "/player/${player_id}"
+}
