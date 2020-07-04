@@ -4,7 +4,8 @@ import Games from "./Games";
 import Adapter from 'enzyme-adapter-react-16';
 
 configure({ adapter: new Adapter() })
-test('matches snapshot', () => {
+
+test('Matches Games snapshot', () => {
     const tree = shallow(<Games/>);
     expect(tree).toMatchSnapshot()
 });

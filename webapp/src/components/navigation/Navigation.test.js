@@ -1,14 +1,17 @@
 import React from 'react';
-import renderer from "react-test-renderer";
 import Navigation from "./Navigation";
 import {MemoryRouter} from "react-router-dom";
+import {configure, shallow} from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
 
-test('matches snapshot', () => {
-    const tree = renderer.create(
-        <MemoryRouter initialEntries={['/']}><
+configure({adapter: new Adapter()});
+
+test('Matches Navigation snapshot', () => {
+    const tree = shallow(
+        <MemoryRouter initialEntries={[]}><
             Navigation/>
         </MemoryRouter>
-    ).toJSON();
+    );
 
     expect(tree).toMatchSnapshot()
 });

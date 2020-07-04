@@ -22,42 +22,15 @@ exports[`matches snapshot 1`] = `
   <div
     className="board"
   >
-    <button
-      className="sc-AxjAm cYkxHS btn-tile"
-      data-testid="tile"
-    />
-    <button
-      className="sc-AxjAm cYkxHS btn-tile"
-      data-testid="tile"
-    />
-    <button
-      className="sc-AxjAm cYkxHS btn-tile"
-      data-testid="tile"
-    />
-    <button
-      className="sc-AxjAm cYkxHS btn-tile"
-      data-testid="tile"
-    />
-    <button
-      className="sc-AxjAm cYkxHS btn-tile"
-      data-testid="tile"
-    />
-    <button
-      className="sc-AxjAm cYkxHS btn-tile"
-      data-testid="tile"
-    />
-    <button
-      className="sc-AxjAm cYkxHS btn-tile"
-      data-testid="tile"
-    />
-    <button
-      className="sc-AxjAm cYkxHS btn-tile"
-      data-testid="tile"
-    />
-    <button
-      className="sc-AxjAm cYkxHS btn-tile"
-      data-testid="tile"
-    />
+    <Tile />
+    <Tile />
+    <Tile />
+    <Tile />
+    <Tile />
+    <Tile />
+    <Tile />
+    <Tile />
+    <Tile />
   </div>
 </div>
 `;
