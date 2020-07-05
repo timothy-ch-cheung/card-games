@@ -1,7 +1,0 @@
-{
-  "timestamp": "${json-unit.ignore-element}",
-  "status": 400,
-  "error": "Bad Request",
-  "message": "Lobby name or Host not supplied",
-  "path": "/create"
-}

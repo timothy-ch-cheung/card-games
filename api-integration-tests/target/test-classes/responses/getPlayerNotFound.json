@@ -1,7 +1,0 @@
-{
-  "timestamp": "${json-unit.ignore-element}",
-  "status": 404,
-  "error": "Not Found",
-  "message": "Player with id ${player_id} not found",
-  "path": "/player/${player_id}"
-}

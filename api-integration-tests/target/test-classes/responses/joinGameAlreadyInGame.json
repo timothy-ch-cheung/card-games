@@ -1,7 +1,0 @@
-{
-  "timestamp": "${json-unit.ignore-element}",
-  "status": 400,
-  "error": "Bad Request",
-  "message": "Player John is already in a game",
-  "path": "/join/${game_id}"
-}
