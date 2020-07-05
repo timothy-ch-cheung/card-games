@@ -1,0 +1,10 @@
+{
+  "id": "${json-unit.ignore-element}",
+  "createdAt": "${json-unit.ignore-element}",
+  "lobbyName": "test lobby",
+  "host": {
+    "username": "John"
+  },
+  "guest": null,
+  "gameStatus": "OPEN"
+}

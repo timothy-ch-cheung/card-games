@@ -1,0 +1,7 @@
+{
+  "timestamp": "${json-unit.ignore-element}",
+  "status": 404,
+  "error": "Not Found",
+  "message": "Game with id ${game_id} does not exist",
+  "path": "/leave/${game_id}"
+}
