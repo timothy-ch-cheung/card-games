@@ -11,7 +11,7 @@ test('renders tile', () => {
   expect(tile).toBeInTheDocument();
 });
 
-test('matches snapshot', () => {
+test('Matches Tile snapshot', () => {
   const tree = renderer.create(<Tile/>).toJSON();
   expect(tree).toMatchSnapshot()
 });
