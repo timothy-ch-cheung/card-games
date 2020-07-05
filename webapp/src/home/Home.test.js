@@ -5,7 +5,7 @@ import Home from "./Home";
 
 configure({ adapter: new Adapter() })
 
-test('matches snapshot', () => {
+test('Matches Home snapshot', () => {
     const tree = shallow(<Home/>);
     expect(tree).toMatchSnapshot()
 });
