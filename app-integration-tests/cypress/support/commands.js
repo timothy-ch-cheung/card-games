@@ -23,3 +23,33 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+Cypress.Commands.add("createGame", (lobbyName, nickname) => {
+    cy.fixture('createPlayer.json').then((createPlayer) => {
+        if (nickname !== undefined) {
+            createPlayer.username = nickname;
+        }
+
+        cy.request({
+            url: 'localhost:8080/player', // assuming you've exposed a seeds route
+            method: 'POST',
+            body: createPlayer,
+        })
+            .its('body')
+            .then((body) => {
+
+                cy.fixture('createGame.json').then((createGame) => {
+                        if (lobbyName !== undefined) {
+                            createGame.lobbyName = lobbyName;
+                        }
+                        createGame.host.id = body.id;
+
+                        cy.request({
+                            url: 'localhost:8080/create',
+                            method: 'POST',
+                            body: createGame
+                        })
+                    }
+                );
+            })
+    })
+});
