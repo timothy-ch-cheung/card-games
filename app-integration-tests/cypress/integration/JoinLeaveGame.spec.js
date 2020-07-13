@@ -1,5 +1,5 @@
-const fillInDialog = () => {
-    cy.get('input[name="nickname"]').type('John');
+const fillInDialog = (nickname) => {
+    cy.get('input[name="nickname"]').type(nickname? nickname : 'John');
     cy.get('input[name="lobbyName"]').type('John\'s Lobby');
     cy.contains('.modal-dialog .btn', 'Create').click({force: true});
 }
@@ -42,5 +42,35 @@ describe('Leave Game ', () => {
         cy.contains('.btn', 'Leave Lobby').click();
         cy.contains('Public games');
 
+    });
+});
+
+describe('When nickname is stored from joining a game: ', () => {
+    before(() => {
+        cy.visit('/games');
+        cy.createGame("Nickname Store Lobby");
+        cy.wait(10000);
+    });
+
+    beforeEach(() => {
+        cy.visit('/games');
+        let lobbyCardBtn = cy.contains('.card-title', "Nickname Store Lobby").parent().children('.btn');
+        lobbyCardBtn.click();
+        cy.get('input[name="nickname"]').type('Jane');
+        cy.contains('.modal-dialog .btn', 'Join Game').click();
+        cy.contains('.btn', 'Leave Lobby').click();
+    })
+
+    it('user does not need to enter nickname to create game', () => {
+        cy.contains('.btn','Create Game').click();
+        cy.get('input[name="lobbyName"]').type('Jane\'s Lobby');
+        cy.contains('.modal-dialog .btn', 'Create').click({force: true});
+        cy.get('.lobby-banner .host').invoke('text').should('eq','HOST: Jane');
+    });
+
+    it('user does not need to enter nickname to join game', () => {
+        let lobbyCardBtn = cy.contains('.card-title', "Nickname Store Lobby").parent().children('.btn');
+        lobbyCardBtn.click();
+        cy.get('.lobby-banner .guest').invoke('text').should('eq','GUEST: Jane');
     });
 });
