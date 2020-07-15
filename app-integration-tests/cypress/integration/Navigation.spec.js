@@ -1,14 +1,12 @@
 describe('Address bar navigation:', () => {
     it('Root', () => {
         cy.visit('')
-        cy.contains('Play against a Bot:')
-        cy.contains('Play with others:')
+        cy.contains('PLAY:')
     });
 
     it('Home', () => {
         cy.visit('/home')
-        cy.contains('Play against a Bot:')
-        cy.contains('Play with others:')
+        cy.contains('PLAY:')
     });
 
     it('Games', () => {
@@ -21,15 +19,13 @@ describe('Interaction navigation:', () => {
     it('Clicking title on the nav bar brings user to Home page', () => {
         cy.visit('')
         cy.get('.navbar a[href="/"]').click();
-        cy.contains('Play against a Bot:');
-        cy.contains('Play with others:');
+        cy.contains('PLAY:')
     });
 
     it('Clicking Home on the nav bar brings user to Home page', () => {
         cy.visit('')
         cy.get('.navbar a[href="/home"]').click();
-        cy.contains('Play against a Bot:');
-        cy.contains('Play with others:');
+        cy.contains('PLAY:')
     });
 
     it('Clicking Games on the nav bar brings user to Games page', () => {
