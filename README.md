@@ -1,6 +1,6 @@
 # Card Games
 
-![website screenshot(doc/webpage.png)
+![website screenshot](doc/webpage.png)
 
 ## Front End
 - React
