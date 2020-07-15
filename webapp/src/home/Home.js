@@ -3,8 +3,8 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Button from "react-bootstrap/Button";
 import './Home.css';
 import {LinkContainer} from 'react-router-bootstrap'
-import Board from "../components/board/Board";
 import CreateGame from "../components/create-game/CreateGame";
+import Image from "react-bootstrap/Image";
 
 class Home extends React.Component {
 
@@ -36,12 +36,13 @@ class Home extends React.Component {
                                 font-size: 1.2rem;
                                 width: 150px;
                             }
-                        }
+                        }                        
                     `}
                 </style>
-                <h1>Play against a Bot:</h1>
-                <Board/>
-                <h1>Play with others:</h1>
+                <div style={{width:"100%", display:"flex", justifyContent: "center", marginTop:"10px", marginBottom:"10px"}}>
+                    <Image className={"no-drag"} src="card-banner.svg" fluid style={{width:"70%"}}/>
+                </div>
+                <h1>PLAY:</h1>
                 <div className="button-panel">
                     <ButtonGroup aria-label="Basic example">
                         <Button size="xl" variant="info" onClick={e => {
