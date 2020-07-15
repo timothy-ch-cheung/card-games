@@ -65,6 +65,7 @@ function Lobby(props) {
                 {`
                     .lobby-banner {
                         margin: 10px;
+                        height: 30px;
                     }
                     
                     .host {
@@ -78,13 +79,19 @@ function Lobby(props) {
                         float: right;
                         min-width: 10%;
                     }
+                    
+                    .leave-game {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        margin: 10px;
+                    }
                 `}
             </style>
             <div className="lobby-banner">
                 <h3 className="host">HOST: {getHost(game)}</h3>
                 <h3 className="guest">GUEST: {getGuest(game)}</h3>
             </div>
-            <Board/>
             <Button variant="info" className="leave-game" onClick={onLeaveGame}>{leaveText}</Button>
         </div>
     );
