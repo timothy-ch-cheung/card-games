@@ -30,13 +30,12 @@ describe('When nickname is stored from creating a game: ', () => {
         cy.contains('.btn', 'Leave Lobby').click();
     });
 
-    //TODO: Fix primary key constraint bug when leaving game as Host
-    // it('user does not need to enter nickname to create game', () => {
-    //     cy.contains('.btn','Create Game').click();
-    //     cy.get('input[name="lobbyName"]').type('Jane\'s Lobby');
-    //     cy.contains('.modal-dialog .btn', 'Create').click({force: true});
-    //     cy.get('.lobby-banner .host').invoke('text').should('eq','HOST: Jane');
-    // });
+    it('user does not need to enter nickname to create game', () => {
+        cy.contains('.btn','Create Game').click();
+        cy.get('input[name="lobbyName"]').type('Jane\'s Lobby');
+        cy.contains('.modal-dialog .btn', 'Create').click({force: true});
+        cy.get('.lobby-banner .host').invoke('text').should('eq','HOST: Jane');
+    });
 
     it('user does not need to enter nickname to join game', () => {
         let lobbyName = Math.floor(Math.random() * 1000);
