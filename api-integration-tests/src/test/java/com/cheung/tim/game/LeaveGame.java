@@ -87,7 +87,7 @@ public class LeaveGame {
                 .body(JsonRequest("leaveGame").replacePlayerId(this.playerOne).toString())
                 .when()
                 .patch(ENDPOINT + LEAVE + "/" + this.gameId.toString());
-        System.out.println(this.gameId);
+
         assertThat(response.statusCode(), is(204));
         assertThat(response.getBody().asString(), is(""));
 
