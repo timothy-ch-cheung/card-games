@@ -31,7 +31,10 @@ class GetGame {
 
     @Test
     public void getGameWithValidId() {
-        String expectedResponse = JsonResponse("getGameSuccess").replaceGameId(this.gameId.toString()).toString();
+        String expectedResponse = JsonResponse("getGameSuccess")
+                .replaceGameId(this.gameId.toString())
+                .replaceGameStatus("OPEN")
+                .toString();
         Response response = get(ENDPOINT + GAME + "/" + this.gameId);
 
         assertThat(response.getStatusCode(), is(200));
@@ -48,8 +51,12 @@ class GetGame {
     }
 
     public static String createPlayer() {
+        return createPlayer("John");
+    }
+
+    public static String createPlayer(String name) {
         Response response = given().contentType(ContentType.JSON)
-                .body("{\"username\": \"John\"}")
+                .body(String.format("{\"username\": \"%s\"}", name))
                 .when()
                 .post(ENDPOINT + PLAYER);
         return response.path("id");

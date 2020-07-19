@@ -5,6 +5,8 @@
   "host": {
     "username": "John"
   },
-  "guest": null,
+  "guest": {
+    "username": "Jane"
+  },
   "gameStatus": "${game_status}"
 }

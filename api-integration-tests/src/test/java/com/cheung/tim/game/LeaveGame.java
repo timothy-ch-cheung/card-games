@@ -37,6 +37,11 @@ public class LeaveGame {
 
     @Test
     public void leaveGameAsGuest() {
+        String expectedGameState = JsonResponse("getGameSuccess")
+                .replaceGameId(this.gameId.toString())
+                .replaceGameStatus("OPEN")
+                .toString();
+
         Response response = given().contentType(ContentType.JSON)
                 .body(JsonRequest("leaveGame").replacePlayerId(this.playerTwo).toString())
                 .when()
@@ -44,11 +49,18 @@ public class LeaveGame {
 
         assertThat(response.statusCode(), is(204));
         assertThat(response.getBody().asString(), is(""));
-        assertThat(get(ENDPOINT + GAME + "/" + this.gameId).path("gameStatus"), is("OPEN"));
+
+        Response game = get(ENDPOINT + GAME + "/" + this.gameId);
+        assertThat(game.getBody().asString(), jsonEquals(expectedGameState));
     }
 
     @Test
     public void leaveGameAsHost() {
+        String expectedGameState = JsonResponse("getGame")
+                .replaceGameId(this.gameId.toString())
+                .replaceGameStatus("DELETED")
+                .toString();
+
         Response response = given().contentType(ContentType.JSON)
                 .body(JsonRequest("leaveGame").replacePlayerId(this.playerOne).toString())
                 .when()
@@ -56,8 +68,33 @@ public class LeaveGame {
 
         assertThat(response.statusCode(), is(204));
         assertThat(response.getBody().asString(), is(""));
-        assertThat(get(ENDPOINT + GAME + "/" + this.gameId).path("gameStatus"), is("DELETED"));
+
+        Response game = get(ENDPOINT + GAME + "/" + this.gameId);
+        assertThat(game.getBody().asString(), jsonEquals(expectedGameState));
     }
+    @Test
+    public void leaveGameAsHostWhenGuestIsPresent() {
+        String expectedGameState = JsonResponse("getGame")
+                .replaceGameId(this.gameId.toString())
+                .replaceGameStatus("DELETED")
+                .toString();
+
+        given().contentType(ContentType.JSON)
+                .body(JsonRequest("joinGame").replacePlayerId(this.playerTwo).toString())
+                .when()
+                .patch(ENDPOINT + JOIN + "/" + this.gameId.toString());
+        Response response = given().contentType(ContentType.JSON)
+                .body(JsonRequest("leaveGame").replacePlayerId(this.playerOne).toString())
+                .when()
+                .patch(ENDPOINT + LEAVE + "/" + this.gameId.toString());
+
+        assertThat(response.statusCode(), is(204));
+        assertThat(response.getBody().asString(), is(""));
+
+        Response game = get(ENDPOINT + GAME + "/" + this.gameId);
+        assertThat(game.getBody().asString(), jsonEquals(expectedGameState));
+    }
+
 
     @Test
     public void leaveGameThatDoesNotExist() {

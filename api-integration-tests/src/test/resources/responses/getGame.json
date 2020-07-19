@@ -2,9 +2,7 @@
   "id": ${game_id},
   "createdAt": "${json-unit.ignore-element}",
   "lobbyName": "test lobby",
-  "host": {
-    "username": "John"
-  },
+  "host": null,
   "guest": null,
   "gameStatus": "${game_status}"
 }

@@ -8,9 +8,11 @@ import org.junit.jupiter.api.Test;
 import static com.cheung.tim.Config.ENDPOINT;
 import static com.cheung.tim.Json.JsonRequest;
 import static com.cheung.tim.Json.JsonResponse;
+import static com.cheung.tim.Resource.GAME;
 import static com.cheung.tim.Resource.JOIN;
 import static com.cheung.tim.game.GetGame.createGame;
 import static com.cheung.tim.game.GetGame.createPlayer;
+import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.CoreMatchers.is;
@@ -27,7 +29,12 @@ public class JoinGame {
 
     @Test
     public void joinGameExisting() {
-        String playerId = createPlayer();
+        String expectedGameState = JsonResponse("getGameReady")
+                .replaceGameId(this.gameId.toString())
+                .replaceGameStatus("READY")
+                .toString();
+
+        String playerId = createPlayer("Jane");
         Response response = given().contentType(ContentType.JSON)
                 .body(JsonRequest("joinGame").replacePlayerId(playerId).toString())
                 .when()
@@ -35,6 +42,9 @@ public class JoinGame {
 
         assertThat(response.statusCode(), is(204));
         assertThat(response.getBody().asString(), is(""));
+
+        Response game = get(ENDPOINT + GAME + "/" + this.gameId);
+        assertThat(game.getBody().asString(), jsonEquals(expectedGameState));
     }
 
     @Test

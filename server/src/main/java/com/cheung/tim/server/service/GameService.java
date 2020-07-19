@@ -71,6 +71,8 @@ public class GameService {
 
         if (game.getPlayer1() != null && game.getPlayer1().equalId(playerDTO)) {
             gameRepository.updateStatus(gameId, DELETED);
+            gameRepository.updatePlayerOne(gameId, null);
+            gameRepository.updatePlayerTwo(gameId, null);
         } else if (game.getPlayer2() != null && game.getPlayer2().equalId(playerDTO)) {
             gameRepository.updateStatus(gameId, OPEN);
             gameRepository.updatePlayerTwo(gameId, null);
