@@ -161,6 +161,18 @@ class GameServiceTest {
     }
 
     @Test
+    public void joinGame_shouldThrowExceptionIfGameDoesNotExist() {
+        Player player = new Player("40283481721d879601721d87b6350000", "John Smith");
+        when(playerService.findPlayerById(any())).thenReturn(player);
+        when(gameRepository.countByPlayerOneInGame(any())).thenReturn(new Long(0));
+        when(gameRepository.countByPlayerTwoInGame(any())).thenReturn(new Long(0));
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            gameService.joinGame(123456L, getPlayerDTO());
+        });
+        assertThat(exception.getMessage(), is("Game with id 123456 does not exist"));
+    }
+
+    @Test
     public void joinGame_shouldThrowExceptionIfPlayerAlreadyInGameAsJoin() {
         Player player = new Player("40283481721d879601721d87b6350000", "John Smith");
         when(playerService.findPlayerById(any())).thenReturn(player);
@@ -255,6 +267,7 @@ class GameServiceTest {
             gameService.leaveGame(1L, playerDTO);
         });
         verify(gameRepository).updateStatus(1L, DELETED);
+        verify(gameRepository).updatePlayerOne(1L, null);
         verify(gameRepository, never()).updatePlayerTwo(any(), any());
     }
 
@@ -272,6 +285,7 @@ class GameServiceTest {
         });
         verify(gameRepository).updateStatus(1L, OPEN);
         verify(gameRepository).updatePlayerTwo(1L, null);
+        verify(gameRepository, never()).updatePlayerOne(any(), any());
     }
 
     public GameDTO getGameDTO() {
