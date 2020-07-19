@@ -268,7 +268,7 @@ class GameServiceTest {
         });
         verify(gameRepository).updateStatus(1L, DELETED);
         verify(gameRepository).updatePlayerOne(1L, null);
-        verify(gameRepository, never()).updatePlayerTwo(any(), any());
+        verify(gameRepository).updatePlayerTwo(1L, null);
     }
 
     @Test
