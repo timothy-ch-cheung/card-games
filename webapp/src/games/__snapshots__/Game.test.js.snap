@@ -1,37 +1,188 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Matches Games snapshot 1`] = `
-<ContextProvider
-  value={
+<Provider
+  store={
     Object {
-      "store": Object {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Subscription {
-        "handleChangeWrapper": [Function],
-        "listeners": Object {
-          "notify": [Function],
-        },
-        "onStateChange": [Function],
-        "parentSub": undefined,
-        "store": Object {
-          "clearActions": [Function],
-          "dispatch": [Function],
-          "getActions": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        },
-        "unsubscribe": null,
-      },
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
     }
   }
 >
-  <Games />
-</ContextProvider>
+  <Games>
+    <div>
+      <style
+        type="text/css"
+      >
+        
+                        .left-title {
+                            text-align: left;
+                        }
+                        
+                        .btn-xl {
+                            font-size: 1.5rem;
+                            border: grey solid 1px;
+                            width: 200px;
+                            margin: 20px 10px 30px;
+                        }
+                        
+                        .container {
+                            max-width: 98%;
+                            margin: 0 auto;
+                        }
+                        
+                        .row {
+                            display: flex;
+                            flex-flow: row wrap;
+                        }
+
+                    
+      </style>
+      <Button
+        active={false}
+        disabled={false}
+        onClick={[Function]}
+        size="xl"
+        type="button"
+        variant="info"
+      >
+        <button
+          className="btn btn-info btn-xl"
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+        >
+          Create Game
+        </button>
+      </Button>
+      <CreateGame
+        onClose={[Function]}
+        show={false}
+      />
+      <CreatePlayer
+        gameId={null}
+        onClose={[Function]}
+        onSubmit={[Function]}
+        show={false}
+      >
+        <div>
+          <style
+            type="text/css"
+          >
+            
+                        .modal-header button {
+                           display: none;
+                        }
+                        
+                        .btn-xxl {
+                            font-size: 1.6rem;
+                            border: grey solid 1px;
+                            width: 220px;
+                            margin: 20px 10px 30px;
+                        }
+                        
+                        .left-title {
+                            text-align: left;
+                        }
+                        
+                        @media screen and (max-width: 768px) {
+                            .btn-xxl {
+                                font-size: 1.3rem;
+                                width: 170px;
+                            }
+                        }
+                        
+                        .create-player-modal {
+                            margin-top: 50px;
+                        }
+                        
+                        input[type=text] {
+                            margin-bottom: 5px;
+                        }
+                    
+          </style>
+          <Bootstrap(Modal)
+            className="create-player-modal"
+            onHide={[Function]}
+            show={false}
+          >
+            <Modal
+              animation={true}
+              autoFocus={true}
+              backdrop={true}
+              bsPrefix="modal"
+              className="create-player-modal"
+              dialogAs={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "displayName": "ModalDialog",
+                  "render": [Function],
+                }
+              }
+              enforceFocus={true}
+              keyboard={true}
+              onHide={[Function]}
+              restoreFocus={true}
+              show={false}
+            >
+              <Modal
+                autoFocus={true}
+                backdrop={true}
+                backdropTransition={[Function]}
+                className="create-player-modal modal"
+                containerClassName="modal-open"
+                enforceFocus={true}
+                keyboard={true}
+                manager={
+                  BootstrapModalManager {
+                    "adjustAndStore": [Function],
+                    "containers": Array [],
+                    "data": Array [],
+                    "handleContainerOverflow": true,
+                    "hideSiblingNodes": true,
+                    "modals": Array [],
+                    "restore": [Function],
+                    "scrollbarSize": 0,
+                  }
+                }
+                onClick={[Function]}
+                onEnter={[Function]}
+                onEntering={[Function]}
+                onExited={[Function]}
+                onHide={[Function]}
+                onMouseUp={[Function]}
+                renderBackdrop={[Function]}
+                restoreFocus={true}
+                show={false}
+                style={Object {}}
+                transition={[Function]}
+              />
+            </Modal>
+          </Bootstrap(Modal)>
+        </div>
+      </CreatePlayer>
+      <styled.div>
+        <div
+          className="sc-AxjAm dcPIMr"
+        />
+      </styled.div>
+      <h1
+        className="left-title"
+      >
+        Public games
+      </h1>
+      <div
+        className="container"
+      >
+        <div
+          className="row"
+        />
+      </div>
+    </div>
+  </Games>
+</Provider>
 `;

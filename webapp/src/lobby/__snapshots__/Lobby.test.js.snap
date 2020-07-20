@@ -1,37 +1,81 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Matches Lobby snapshot 1`] = `
-<ContextProvider
-  value={
+<Provider
+  store={
     Object {
-      "store": Object {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Subscription {
-        "handleChangeWrapper": [Function],
-        "listeners": Object {
-          "notify": [Function],
-        },
-        "onStateChange": [Function],
-        "parentSub": undefined,
-        "store": Object {
-          "clearActions": [Function],
-          "dispatch": [Function],
-          "getActions": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        },
-        "unsubscribe": null,
-      },
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
     }
   }
 >
-  <Lobby />
-</ContextProvider>
+  <Lobby>
+    <div>
+      <style
+        type="text/css"
+      >
+        
+                    .lobby-banner {
+                        margin: 10px;
+                        height: 30px;
+                    }
+                    
+                    .host {
+                        display: inline;
+                        float: left;
+                        min-width: 10%;
+                    }
+                    
+                    .guest {
+                        display: inline;
+                        float: right;
+                        min-width: 10%;
+                    }
+                    
+                    .leave-game {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        margin: 10px;
+                    }
+                
+      </style>
+      <div
+        className="lobby-banner"
+      >
+        <h3
+          className="host"
+        >
+          HOST: 
+        </h3>
+        <h3
+          className="guest"
+        >
+          GUEST: 
+        </h3>
+      </div>
+      <Button
+        active={false}
+        className="leave-game"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+        variant="info"
+      >
+        <button
+          className="leave-game btn btn-info"
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+        >
+          Leave Lobby
+        </button>
+      </Button>
+    </div>
+  </Lobby>
+</Provider>
 `;
