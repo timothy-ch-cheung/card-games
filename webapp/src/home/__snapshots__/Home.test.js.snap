@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`matches snapshot 1`] = `
+exports[`Matches Home snapshot 1`] = `
 <div>
   <style
     type="text/css"
@@ -17,15 +17,36 @@ exports[`matches snapshot 1`] = `
                                 font-size: 1.2rem;
                                 width: 150px;
                             }
-                        }
+                        }                        
                     
   </style>
+  <div
+    style={
+      Object {
+        "display": "flex",
+        "justifyContent": "center",
+        "marginBottom": "10px",
+        "marginTop": "10px",
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      className="no-drag"
+      fluid={true}
+      rounded={false}
+      roundedCircle={false}
+      src="card-banner.svg"
+      style={
+        Object {
+          "width": "70%",
+        }
+      }
+      thumbnail={false}
+    />
+  </div>
   <h1>
-    Play against a Bot:
-  </h1>
-  <Board />
-  <h1>
-    Play with others:
+    PLAY:
   </h1>
   <div
     className="button-panel"

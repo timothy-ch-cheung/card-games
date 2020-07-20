@@ -1,5 +1,5 @@
 import React from 'react';
-import {configure, shallow} from 'enzyme';
+import {configure, mount} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Lobby from "./Lobby";
 import configureStore from "redux-mock-store";
@@ -11,6 +11,6 @@ const mockStore = configureStore([]);
 let store = mockStore({});
 
 test('Matches Lobby snapshot', () => {
-    const tree = shallow(<Provider store={store}><Lobby/></Provider>);
+    const tree = mount(<Provider store={store}><Lobby/></Provider>);
     expect(tree).toMatchSnapshot()
 });
