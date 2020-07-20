@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Matches CreateGame snapshot 1`] = `null`;
+
+exports[`matches snapshot 1`] = `null`;

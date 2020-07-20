@@ -24,3 +24,28 @@ exports[`Matches Navigation snapshot 1`] = `
   <Navigation />
 </Router>
 `;
+
+exports[`matches snapshot 1`] = `
+<Router
+  history={
+    Object {
+      "action": "POP",
+      "block": [Function],
+      "canGo": [Function],
+      "createHref": [Function],
+      "entries": Array [],
+      "go": [Function],
+      "goBack": [Function],
+      "goForward": [Function],
+      "index": -1,
+      "length": 0,
+      "listen": [Function],
+      "location": undefined,
+      "push": [Function],
+      "replace": [Function],
+    }
+  }
+>
+  <Navigation />
+</Router>
+`;

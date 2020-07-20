@@ -6,3 +6,10 @@ exports[`Matches Tile snapshot 1`] = `
   data-testid="tile"
 />
 `;
+
+exports[`matches snapshot 1`] = `
+<button
+  className="sc-AxjAm cYkxHS btn-tile"
+  data-testid="tile"
+/>
+`;
