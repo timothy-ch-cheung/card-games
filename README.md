@@ -1,4 +1,5 @@
 # Card Games
+[![CircleCI](https://circleci.com/gh/timothy-ch-cheung/card-games.svg?style=svg)](https://app.circleci.com/pipelines/github/timothy-ch-cheung)
 
 ![website screenshot](doc/webpage.png)
 
