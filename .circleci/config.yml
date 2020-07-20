@@ -3,12 +3,27 @@ version: 2.1
 orbs:
   maven: circleci/maven@0.0.12
 
-workflows:
-  build:
-    jobs:
-      working_directory: ~/server
+jobs:
+  build: 
+    
+    working_directory: ~/card-games/server
+
+    docker: 
+      - image: circleci/openjdk:8-jdk-stretch 
+
+    steps: 
+
+      - checkout 
+
+      - restore_cache: 
+          
+          key: card-games/server-{{ checksum "pom.xml" }}
       
-      steps:
-        - checkout:
-            path: ~/server
-        - run: mvn clean install
+      - run: mvn dependency:go-offline
+      
+      - save_cache: 
+          paths:
+            - ~/.m2
+          key: card-games/server-{{ checksum "pom.xml" }}
+      
+      - run: mvn package 
