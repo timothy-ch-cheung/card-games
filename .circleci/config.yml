@@ -7,7 +7,8 @@ workflows:
   build:
     jobs:
       working_directory: ~/server
+      
       steps:
-      - checkout:
-          path: ~/server
-      - run: mvn clean install
+        - checkout:
+            path: ~/server
+        - run: mvn clean install
