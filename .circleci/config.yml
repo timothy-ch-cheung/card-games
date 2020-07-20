@@ -13,8 +13,9 @@ jobs:
 
     steps:
 
-      - checkout: ~/card-games/server
-
+      - checkout:
+          path: ~/card-games
+      
       - restore_cache: 
           
           key: card-games-{{ checksum "pom.xml" }}
