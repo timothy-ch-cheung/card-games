@@ -11,9 +11,9 @@ jobs:
     docker: 
       - image: circleci/openjdk:8-jdk-stretch 
 
-    steps: 
+    steps:
 
-      - checkout 
+      - checkout: ~/card-games/server
 
       - restore_cache: 
           
