@@ -4,45 +4,46 @@ orbs:
   maven: circleci/maven@0.0.12
 
 jobs:
-  build_server:
-    working_directory: ~/card-games/server
+  build:
+    server:
+      working_directory: ~/card-games/server
 
-    docker:
-      - image: circleci/openjdk:8-jdk-stretch
+      docker:
+        - image: circleci/openjdk:8-jdk-stretch
 
-    steps:
-      - checkout:
-          path: ~/card-games
+      steps:
+        - checkout:
+            path: ~/card-games
 
-      - restore_cache:
-          key: card-games-{{ checksum "pom.xml" }}
+        - restore_cache:
+            key: card-games-{{ checksum "pom.xml" }}
 
-      - run: mvn dependency:go-offline
+        - run: mvn dependency:go-offline
 
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: card-games-{{ checksum "pom.xml" }}
+        - save_cache:
+            paths:
+              - ~/.m2
+            key: card-games-{{ checksum "pom.xml" }}
 
-      - run: mvn package
+        - run: mvn package
 
-  build_webapp:
-    working_directory: ~/card-games/webapp
+    webapp:
+      working_directory: ~/card-games/webapp
 
-    docker:
-      - image: circleci/node:stretch
+      docker:
+        - image: circleci/node:stretch
 
-    steps:
-      - checkout:
-          path: ~/card-games
+      steps:
+        - checkout:
+            path: ~/card-games
 
-      - restore_cache:
-          keys:
-            - card-games-{{ checksum "package.json" }}
+        - restore_cache:
+            keys:
+              - card-games-{{ checksum "package.json" }}
 
-      - save_cache:
-          paths:
-            - node_modules
-          key: card-games-{{ checksum "package.json" }}
+        - save_cache:
+            paths:
+              - node_modules
+            key: card-games-{{ checksum "package.json" }}
 
-      - run: npm test a
+        - run: npm test a
