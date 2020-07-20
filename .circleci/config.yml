@@ -17,13 +17,13 @@ jobs:
 
       - restore_cache: 
           
-          key: card-games/server-{{ checksum "pom.xml" }}
+          key: card-games-{{ checksum "pom.xml" }}
       
       - run: mvn dependency:go-offline
       
       - save_cache: 
           paths:
             - ~/.m2
-          key: card-games/server-{{ checksum "pom.xml" }}
+          key: card-games-{{ checksum "pom.xml" }}
       
       - run: mvn package 
