@@ -1,0 +1,13 @@
+version: 2.1
+
+orbs:
+  maven: circleci/maven@0.0.12
+
+workflows:
+  build:
+    jobs:
+      working_directory: ~/server
+      steps:
+      - checkout:
+          path: ~/server
+      - run: mvn clean install
