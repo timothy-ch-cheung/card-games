@@ -45,6 +45,8 @@ jobs:
             - node_modules
           key: card-games-{{ checksum "package.json" }}
 
+      - run: npm install
+
       - run: npm test a
 
 workflows:
