@@ -56,7 +56,7 @@ jobs:
       - image: circleci/openjdk:8-jdk-stretch
 
         environment:
-          process.env.CI: false
+          CI: false
 
     steps:
       - checkout:
