@@ -32,8 +32,8 @@ function Lobby(props) {
             API.get(`/game/${gameId}`).then(function (response) {
                 setGame(response.data);
             }).catch(function (error) {
-                props.onShowError(error.response.data.message)
-                history.push("/games")
+                props.onShowError(error.response.data.message);
+                history.push("/games/public");
             });
         };
 
@@ -53,7 +53,7 @@ function Lobby(props) {
             id: userId
         }).then(function (response) {
             dispatch(resetGame());
-            history.push('/games')
+            history.push('/games/public');
         }).catch(function (error) {
             console.log(error);
         });

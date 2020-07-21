@@ -16,7 +16,7 @@ describe('Create Game ', () => {
     });
 
     it('from Games screen', () => {
-        cy.visit('/games')
+        cy.visit('/games/public')
         cy.contains('.btn','Create Game').click();
         fillInDialog()
     });
@@ -24,7 +24,7 @@ describe('Create Game ', () => {
 
 describe('When nickname is stored from creating a game: ', () => {
     beforeEach(() => {
-        cy.visit('/games');
+        cy.visit('/games/public');
         cy.contains('.btn','Create Game').click();
         fillInDialog('Jane');
         cy.contains('.btn', 'Leave Lobby').click();

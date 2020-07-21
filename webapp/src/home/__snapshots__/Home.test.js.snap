@@ -72,7 +72,7 @@ exports[`Matches Home snapshot 1`] = `
         show={false}
       />
       <withRouter(LinkContainer)
-        to="/games"
+        to="/games/public"
       >
         <Button
           active={false}

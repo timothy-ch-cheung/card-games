@@ -49,7 +49,7 @@ class Home extends React.Component {
                             this.handleShow();
                         }}>Create Game</Button>
                         <CreateGame show={this.state.show} onClose={this.handleHide}/>
-                        <LinkContainer to="/games">
+                        <LinkContainer to="/games/public">
                             <Button size="xl" variant="light">Join Game</Button>
                         </LinkContainer>
                     </ButtonGroup>

@@ -28,7 +28,7 @@ function App() {
                 <Switch>
                     <Route exact path='/' component={Home}/>
                     <Route exact path='/home' component={Home}/>
-                    <Route exact path='/games' component={Games}/>
+                    <Route exact path='/games/public' component={Games}/>
                     <Route exact path='/current-game' render={() => (<Lobby onShowError={onShowError}/>)}/>
 
                     <Route render={function () {

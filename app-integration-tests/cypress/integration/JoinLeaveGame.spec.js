@@ -7,7 +7,7 @@ const fillInDialog = (nickname) => {
 describe('Join Game ', () => {
     it('user not created', () => {
         let lobbyName = Math.floor(Math.random() * 1000);
-        cy.visit('/games');
+        cy.visit('/games/public');
         cy.createGame(lobbyName);
         cy.wait(10000);
         let lobbyCardBtn = cy.contains('.card-title', lobbyName).parent().children('.btn');
@@ -22,7 +22,7 @@ describe('Join Game ', () => {
 
 describe('Leave Game ', () => {
     it('as Host', () => {
-        cy.visit('/games');
+        cy.visit('/games/public');
         cy.contains('.btn', 'Create Game').click();
         fillInDialog();
         cy.get('.lobby-banner .host').invoke('text').should('eq', 'HOST: John');
@@ -32,7 +32,7 @@ describe('Leave Game ', () => {
 
     it('as Guest', () => {
         let lobbyName = Math.floor(Math.random() * 1000);
-        cy.visit('/games');
+        cy.visit('/games/public');
         cy.createGame(lobbyName);
         cy.wait(10000);
         let lobbyCardBtn = cy.contains('.card-title', lobbyName).parent().children('.btn');
@@ -47,13 +47,13 @@ describe('Leave Game ', () => {
 
 describe('When nickname is stored from joining a game: ', () => {
     before(() => {
-        cy.visit('/games');
+        cy.visit('/games/public');
         cy.createGame("Nickname Store Lobby");
         cy.wait(10000);
     });
 
     beforeEach(() => {
-        cy.visit('/games');
+        cy.visit('/games/public');
         let lobbyCardBtn = cy.contains('.card-title', "Nickname Store Lobby").parent().children('.btn');
         lobbyCardBtn.click();
         cy.get('input[name="nickname"]').type('Jane');

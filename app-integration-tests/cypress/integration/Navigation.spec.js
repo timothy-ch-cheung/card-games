@@ -10,7 +10,7 @@ describe('Address bar navigation:', () => {
     });
 
     it('Games', () => {
-        cy.visit('/games')
+        cy.visit('/games/public')
         cy.contains('Public games')
     });
 });
@@ -30,13 +30,13 @@ describe('Interaction navigation:', () => {
 
     it('Clicking Games on the nav bar brings user to Games page', () => {
         cy.visit('')
-        cy.get('.navbar a[href="/games"]').click();
+        cy.get('.navbar a[href="/games/public"]').click();
         cy.contains('Public games')
     });
 
     it('Clicking the Join Game button brings user to Games page', () => {
         cy.visit('')
-        cy.get('a[href="/games"].btn').click();
+        cy.get('a[href="/games/public"].btn').click();
         cy.contains('Public games')
     });
 });
