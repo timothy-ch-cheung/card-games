@@ -59,7 +59,7 @@ jobs:
       - checkout:
           path: ~/card-games
 
-      - run: mvn clean install -e -DskipTests -P package
+      - run: mvn clean install -X -DskipTests -P package
 
       - store_artifacts:
           path: target/*.jar
