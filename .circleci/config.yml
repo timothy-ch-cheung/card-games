@@ -54,12 +54,15 @@ jobs:
 
     docker:
       - image: circleci/openjdk:8-jdk-stretch
+      
+      environment:
+        process.env.CI: false
 
     steps:
       - checkout:
           path: ~/card-games
 
-      - run: mvn clean install -X -DskipTests -P package
+      - run: mvn clean install -DskipTests -P package
 
       - store_artifacts:
           path: target/*.jar
