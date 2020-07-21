@@ -62,7 +62,7 @@ jobs:
       - run: mvn clean install -DskipTests -P package
 
       - store_artifacts:
-          path: target/*.jar
+          path: target/
 
 workflows:
   version: 2
