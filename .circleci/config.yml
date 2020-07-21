@@ -55,9 +55,6 @@ jobs:
     docker:
       - image: circleci/openjdk:8-jdk-stretch
 
-        environment:
-          CI: false
-
     steps:
       - checkout:
           path: ~/card-games

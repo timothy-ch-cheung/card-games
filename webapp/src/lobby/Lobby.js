@@ -1,4 +1,3 @@
-import Board from "../components/board/Board";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import API from "../API";
@@ -46,9 +45,10 @@ function Lobby(props) {
         return () => {
             clearInterval(interval);
         }
-    }, []);
+    }, [gameId, history, props]);
 
     const onLeaveGame = () => {
+        setLeaveText("Leave Lobby");
         API.patch(`/leave/${gameId}`, {
             id: userId
         }).then(function (response) {
