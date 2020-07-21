@@ -54,9 +54,9 @@ jobs:
 
     docker:
       - image: circleci/openjdk:8-jdk-stretch
-      
-      environment:
-        process.env.CI: false
+
+        environment:
+          process.env.CI: false
 
     steps:
       - checkout:
