@@ -24,7 +24,7 @@ jobs:
             - ~/.m2
           key: card-games-{{ checksum "pom.xml" }}
 
-      - run: mvn package
+      - run: mvn test
 
   webapp:
     working_directory: ~/card-games/webapp
@@ -49,9 +49,30 @@ jobs:
 
       - run: npm test a
 
+  package:
+    working_directory: ~/card-games/server
+
+    docker:
+      - image: circleci/openjdk:8-jdk-stretch
+
+    steps:
+      - checkout:
+          path: ~/card-games
+
+      - run: mvn clean install -DskipTests -P package
+
+      - run: ls target | grep server.*jar$ | xargs -I{} mv target/{} target/server.jar
+
+      - store_artifacts:
+          path: target/server.jar
+
 workflows:
   version: 2
   build:
     jobs:
       - server
       - webapp
+      - package:
+          requires:
+            - server
+            - webapp

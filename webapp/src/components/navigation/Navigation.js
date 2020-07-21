@@ -25,7 +25,7 @@ class Navigation extends React.Component {
                 <Navbar.Collapse>
                     <Nav className="mr-auto">
                         <LinkContainer to="/home"><NavLink className={"no-drag"}>Home</NavLink></LinkContainer>
-                        <LinkContainer to="/games"><NavLink className={"no-drag"}>Games</NavLink></LinkContainer>
+                        <LinkContainer to="/games/public"><NavLink className={"no-drag"}>Games</NavLink></LinkContainer>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

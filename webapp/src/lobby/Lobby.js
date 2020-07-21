@@ -1,4 +1,3 @@
-import Board from "../components/board/Board";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import API from "../API";
@@ -33,8 +32,8 @@ function Lobby(props) {
             API.get(`/game/${gameId}`).then(function (response) {
                 setGame(response.data);
             }).catch(function (error) {
-                props.onShowError(error.response.data.message)
-                history.push("/games")
+                props.onShowError(error.response.data.message);
+                history.push("/games/public");
             });
         };
 
@@ -46,14 +45,15 @@ function Lobby(props) {
         return () => {
             clearInterval(interval);
         }
-    }, []);
+    }, [gameId, history, props]);
 
     const onLeaveGame = () => {
+        setLeaveText("Leave Lobby");
         API.patch(`/leave/${gameId}`, {
             id: userId
         }).then(function (response) {
             dispatch(resetGame());
-            history.push('/games')
+            history.push('/games/public');
         }).catch(function (error) {
             console.log(error);
         });
