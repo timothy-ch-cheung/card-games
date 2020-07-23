@@ -80,8 +80,8 @@ jobs:
       - checkout
 
       - run:
-          name: Setup Heroku
-          command: bash .circleci/setup-heroku.sh
+        name: Setup Heroku
+        command: bash .circleci/setup-heroku.sh
 
       - run:
         command: |
