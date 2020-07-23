@@ -60,8 +60,6 @@ jobs:
       - checkout:
           path: ~/card-games
 
-      - run: mkdir workspace
-
       - run: mvn clean install -DskipTests -P package
 
       - run: ls target | grep server.*jar$ | xargs -I{} mv target/{} target/server.jar
@@ -70,9 +68,9 @@ jobs:
           path: target/server.jar
 
       - persist_to_workspace:
-          root: workspace
+          root: .
           paths:
-            - ../target/server.jar
+            - target/server.jar
 
   deploy:
     machine:
@@ -91,9 +89,9 @@ jobs:
       - run: heroku plugins:install java
 
       - attach_workspace:
-          at: server/workspace
+          at: server
 
-      - run: heroku deploy:jar server/workspace/server.jar --app $HEROKU_APP_NAME
+      - run: heroku deploy:jar server/server.jar --app $HEROKU_APP_NAME
 
 workflows:
   version: 2
