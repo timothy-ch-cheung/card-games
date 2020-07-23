@@ -79,14 +79,11 @@ jobs:
     steps:
       - checkout
 
-      - run:
-        name: Setup Heroku
-        command: bash .circleci/setup-heroku.sh
+      - run: bash .circleci/setup-heroku.sh
 
-      - run:
-        command: |
-          heroku plugins:install java
-          heroku deploy:jar server/target/server.jar --app $HEROKU_APP_NAME
+      - run: heroku plugins:install java
+
+      - run: heroku deploy:jar server/target/server.jar --app $HEROKU_APP_NAME
 
 workflows:
   version: 2
