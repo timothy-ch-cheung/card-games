@@ -1,7 +1,10 @@
 import axios from 'axios';
 
+const production  = 'https://card-games-tcc.herokuapp.com';
+const development = 'http://localhost:8080';
+
 const instance = axios.create({
-    baseURL: 'http://127.0.0.1:8080'
+    baseURL: process.env.NODE_ENV === 'development' ? development : production
 });
 
 export default instance;

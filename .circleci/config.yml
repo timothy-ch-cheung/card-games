@@ -66,6 +66,32 @@ jobs:
       - store_artifacts:
           path: target/server.jar
 
+      - persist_to_workspace:
+          root: .
+          paths:
+            - target/server.jar
+
+  deploy:
+    machine:
+      enabled: true
+
+    working_directory: ~/card-games
+
+    environment:
+      HEROKU_APP_NAME: card-games-tcc
+
+    steps:
+      - checkout
+
+      - run: bash .circleci/setup-heroku.sh
+
+      - run: heroku plugins:install java
+
+      - attach_workspace:
+          at: server
+
+      - run: heroku deploy:jar server/target/server.jar --app $HEROKU_APP_NAME
+
 workflows:
   version: 2
   build:
@@ -76,3 +102,6 @@ workflows:
           requires:
             - server
             - webapp
+      - deploy:
+          requires:
+            - package
