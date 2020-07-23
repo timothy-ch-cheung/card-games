@@ -68,7 +68,10 @@ jobs:
           path: target/server.jar
 
   deploy:
-    executor: heroku/default
+    machine:
+      enabled: true
+
+    working_directory: ~/card-games
 
     environment:
       HEROKU_APP_NAME: card-games-tcc
@@ -76,10 +79,12 @@ jobs:
     steps:
       - checkout
 
-      - heroku/install
+      - run:
+        name: Setup Heroku
+          command: bash .circleci/setup-heroku.sh
 
       - run:
-        command: >
+        command: |
           heroku plugins:install java
           heroku deploy:jar server/target/server.jar --app $HEROKU_APP_NAME
 
