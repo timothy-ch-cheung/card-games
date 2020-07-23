@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   maven: circleci/maven@0.0.12
+  heroku: circleci/heroku@1.1.1
 
 jobs:
   server:
@@ -66,6 +67,22 @@ jobs:
       - store_artifacts:
           path: target/server.jar
 
+  deploy:
+    executor: heroku/default
+
+    environment:
+      HEROKU_APP_NAME: card-games-tcc
+
+    steps:
+      - checkout
+
+      - heroku/install
+
+      - run:
+        command: >
+          heroku plugins:install java
+          heroku deploy:jar server/target/server.jar --app $HEROKU_APP_NAME
+
 workflows:
   version: 2
   build:
@@ -76,3 +93,6 @@ workflows:
           requires:
             - server
             - webapp
+      - deploy:
+          requires:
+            - package
