@@ -170,11 +170,53 @@ exports[`Matches Games snapshot 1`] = `
           className="sc-AxjAm dcPIMr"
         />
       </styled.div>
-      <h1
-        className="left-title"
+      <div
+        className="banner"
       >
-        Public games
-      </h1>
+        <h1
+          className="left-title"
+          style={
+            Object {
+              "marginLeft": "10px",
+            }
+          }
+        >
+          Public games
+        </h1>
+        <Button
+          active={false}
+          disabled={false}
+          onClick={[Function]}
+          style={
+            Object {
+              "height": "40px",
+              "marginRight": "10px",
+              "textAlign": "left",
+              "width": "100px",
+            }
+          }
+          type="button"
+          variant="info"
+        >
+          <button
+            className="btn btn-info"
+            disabled={false}
+            onClick={[Function]}
+            style={
+              Object {
+                "height": "40px",
+                "marginRight": "10px",
+                "textAlign": "left",
+                "width": "100px",
+              }
+            }
+            type="button"
+          >
+            Refresh
+             
+          </button>
+        </Button>
+      </div>
       <div
         className="container"
       >
