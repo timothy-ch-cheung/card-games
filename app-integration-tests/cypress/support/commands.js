@@ -30,7 +30,7 @@ Cypress.Commands.add("createGame", (lobbyName, nickname) => {
         }
 
         cy.request({
-            url: `${Cypress.config().baseUrl}/player`,
+            url: `${Cypress.config().serverUrl}/player`,
             method: 'POST',
             body: createPlayer,
         })
@@ -44,7 +44,7 @@ Cypress.Commands.add("createGame", (lobbyName, nickname) => {
                         createGame.host.id = body.id;
 
                         cy.request({
-                            url: `${Cypress.config().baseUrl}/create`,
+                            url: `${Cypress.config().serverUrl}/create`,
                             method: 'POST',
                             body: createGame
                         })

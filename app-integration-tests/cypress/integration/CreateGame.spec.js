@@ -40,7 +40,7 @@ describe('When nickname is stored from creating a game: ', () => {
     it('user does not need to enter nickname to join game', () => {
         let lobbyName = Math.floor(Math.random() * 1000);
         cy.createGame(lobbyName);
-        cy.wait(10000);
+        cy.get('[data-test=refresh-btn]').click();
         let lobbyCardBtn = cy.contains('.card-title', lobbyName).parent().children('.btn');
         lobbyCardBtn.click();
         cy.get('.lobby-banner .guest').invoke('text').should('eq','GUEST: Jane');

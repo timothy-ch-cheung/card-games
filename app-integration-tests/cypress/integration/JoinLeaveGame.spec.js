@@ -9,7 +9,7 @@ describe('Join Game ', () => {
         let lobbyName = Math.floor(Math.random() * 1000);
         cy.visit('/games/public');
         cy.createGame(lobbyName);
-        cy.wait(10000);
+        cy.get('[data-test=refresh-btn]').click();
         let lobbyCardBtn = cy.contains('.card-title', lobbyName).parent().children('.btn');
         lobbyCardBtn.click();
         cy.get('input[name="nickname"]').type('Jane');
@@ -34,7 +34,7 @@ describe('Leave Game ', () => {
         let lobbyName = Math.floor(Math.random() * 1000);
         cy.visit('/games/public');
         cy.createGame(lobbyName);
-        cy.wait(10000);
+        cy.get('[data-test=refresh-btn]').click();
         let lobbyCardBtn = cy.contains('.card-title', lobbyName).parent().children('.btn');
         lobbyCardBtn.click();
         cy.get('input[name="nickname"]').type('Jane');
@@ -49,7 +49,7 @@ describe('When nickname is stored from joining a game: ', () => {
     before(() => {
         cy.visit('/games/public');
         cy.createGame("Nickname Store Lobby");
-        cy.wait(10000);
+        cy.get('[data-test=refresh-btn]').click();
     });
 
     beforeEach(() => {

@@ -126,7 +126,7 @@ function Games() {
                                     setTimeout(function() {setShowRefreshSpinner(false);}, 500 - timeElapsed);
                                 }
                             })
-                        }}>
+                        }} data-test="refresh-btn">
                     Refresh{" "}
                     {showRefreshSpinner && <Spinner
                         as="span"
@@ -137,7 +137,7 @@ function Games() {
                         style={{marginBottom: "2px"}}
                     />}</Button>
             </div>
-            <div className="container">
+            <div className="container" data-test="lobby-cards-container">
                 <div className="row">
                     {games.map(renderCard)}
                 </div>

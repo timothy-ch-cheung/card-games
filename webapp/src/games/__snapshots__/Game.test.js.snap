@@ -185,6 +185,7 @@ exports[`Matches Games snapshot 1`] = `
         </h1>
         <Button
           active={false}
+          data-test="refresh-btn"
           disabled={false}
           onClick={[Function]}
           style={
@@ -200,6 +201,7 @@ exports[`Matches Games snapshot 1`] = `
         >
           <button
             className="btn btn-info"
+            data-test="refresh-btn"
             disabled={false}
             onClick={[Function]}
             style={
@@ -219,6 +221,7 @@ exports[`Matches Games snapshot 1`] = `
       </div>
       <div
         className="container"
+        data-test="lobby-cards-container"
       >
         <div
           className="row"
