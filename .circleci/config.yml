@@ -130,3 +130,6 @@ workflows:
       - deploy:
           requires:
             - package
+      - api-test:
+          requires:
+            - deploy
