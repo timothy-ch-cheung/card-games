@@ -23,6 +23,10 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+const queueCleanup = (gameId, playerId) => {
+    cy.writeFile('games_cleanup.txt', `${gameId} ${playerId}\n`, { flag: 'a+' })
+};
+
 Cypress.Commands.add("createGame", (lobbyName, nickname) => {
     cy.fixture('createPlayer.json').then((createPlayer) => {
         if (nickname !== undefined) {
@@ -41,15 +45,24 @@ Cypress.Commands.add("createGame", (lobbyName, nickname) => {
                         if (lobbyName !== undefined) {
                             createGame.lobbyName = lobbyName;
                         }
-                        createGame.host.id = body.id;
+                        let playerId = body.id;
+                        createGame.host.id = playerId;
 
                         cy.request({
                             url: `${Cypress.config().serverUrl}/create`,
                             method: 'POST',
                             body: createGame
                         })
+                            .its('body')
+                            .then(
+                            (body) => {
+                                let gameId = body.id;
+                                queueCleanup(gameId, playerId)
+                            }
+                        );
                     }
                 );
             })
     })
 });
+
