@@ -12,6 +12,7 @@ import static com.cheung.tim.Config.ENDPOINT;
 import static com.cheung.tim.Json.JsonRequest;
 import static com.cheung.tim.Json.JsonResponse;
 import static com.cheung.tim.Resource.*;
+import static com.cheung.tim.game.Game.Lobby;
 import static com.cheung.tim.game.GetGame.createGame;
 import static com.cheung.tim.game.GetGame.createPlayer;
 import static io.restassured.RestAssured.get;
@@ -21,12 +22,14 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class GetGame {
+class GetGame extends BaseGameTest {
     private Integer gameId;
 
     @BeforeEach
     public void setup() {
-        this.gameId = createGame(createPlayer());
+        String playerId = createPlayer();
+        this.gameId = createGame(playerId);
+        queueCleanup(Lobby(playerId, gameId));
     }
 
     @Test
@@ -76,15 +79,20 @@ class GetGame {
     }
 }
 
-class GetGames {
+class GetGames extends BaseGameTest {
     @BeforeEach
     public void setup() {
         ArrayList<String> players = new ArrayList();
+        ArrayList<Integer> games = new ArrayList();
         for (int i = 0; i < 3; i++) {
             players.add(createPlayer());
         }
         for (String id : players) {
-            createGame(id);
+            games.add(createGame(id));
+        }
+
+        for (int i = 0; i < games.size(); i++) {
+            queueCleanup(Lobby(players.get(i), games.get(i)));
         }
     }
 

@@ -10,21 +10,25 @@ import static com.cheung.tim.Json.JsonRequest;
 import static com.cheung.tim.Json.JsonResponse;
 import static com.cheung.tim.Resource.GAME;
 import static com.cheung.tim.Resource.JOIN;
+import static com.cheung.tim.game.Game.Lobby;
 import static com.cheung.tim.game.GetGame.createGame;
 import static com.cheung.tim.game.GetGame.createPlayer;
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
+import static java.lang.Integer.parseInt;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class JoinGame {
+public class JoinGame extends BaseGameTest {
 
     private Integer gameId;
 
     @BeforeEach
     public void setup() {
-        this.gameId = createGame(createPlayer());
+        String playerId = createPlayer();
+        this.gameId = createGame(playerId);
+        queueCleanup(Lobby(playerId, gameId));
     }
 
     @Test
@@ -61,7 +65,8 @@ public class JoinGame {
 
     @Test
     public void joinGamePlayerAlreadyInGame() {
-        String secondGameId = createGame(createPlayer()).toString();
+        String secondPlayerId = createPlayer();
+        String secondGameId = createGame(secondPlayerId).toString();
         String playerId = createPlayer();
         given().contentType(ContentType.JSON)
                 .body(JsonRequest("joinGame").replacePlayerId(playerId).toString())
@@ -75,6 +80,8 @@ public class JoinGame {
 
         assertThat(response.statusCode(), is(400));
         assertThat(response.getBody().asString(), jsonEquals(JsonResponse("joinGameAlreadyInGame").replaceGameId(secondGameId).toString()));
+
+        queueCleanup(Lobby(secondPlayerId, parseInt(secondGameId)));
     }
 
     @Test

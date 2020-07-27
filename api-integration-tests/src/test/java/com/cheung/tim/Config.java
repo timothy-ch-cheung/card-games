@@ -6,5 +6,5 @@ public class Config {
     public static final String DEVELOPMENT = ROOT_URL + ":" + PORT;
     public static final String PRODUCTION = "https://card-games-tcc.herokuapp.com";
 
-    public static String ENDPOINT = PRODUCTION;
+    public static String ENDPOINT = DEVELOPMENT;
 }
