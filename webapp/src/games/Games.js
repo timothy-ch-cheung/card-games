@@ -8,6 +8,8 @@ import CreatePlayer from "../components/create-player/CreatePlayer";
 import {useDispatch} from "react-redux";
 import {setGame} from "../actions";
 import {useHistory} from "react-router-dom";
+import '../App.css';
+import Spinner from "react-bootstrap/Spinner";
 
 const Divider = styled.div`
 border-bottom: 1px solid grey;
@@ -19,6 +21,7 @@ function Games() {
     const history = useHistory();
     const [showCreateGameModal, setShowCreateGameModal] = useState(false);
     const [showCreatePlayerModal, setShowCreatePlayerModal] = useState(false);
+    const [showRefreshSpinner, setShowRefreshSpinner] = useState(false);
     const [currentGameId, setCurrentGameId] = useState(null);
     const [games, setGames] = useState([]);
 
@@ -28,7 +31,6 @@ function Games() {
                 setGames(response.data.games)
             })
         };
-
         getGames();
         const interval = setInterval(function () {
             getGames();
@@ -65,6 +67,23 @@ function Games() {
 
     const handleHideCreatePlayerModal = () => {
         setShowCreatePlayerModal(false);
+    }
+
+    const handleClickRefresh = () => {
+        let startTime = new Date();
+        setShowRefreshSpinner(true);
+        API.get("/games").then(function (response) {
+            setGames(response.data.games);
+        }).then(function () {
+            let currentTime = new Date();
+            let timeElapsed = currentTime - startTime;
+            if(timeElapsed > 500) {
+                setShowRefreshSpinner(false);
+            }
+            else {
+                setTimeout(function() {setShowRefreshSpinner(false);}, 500 - timeElapsed);
+            }
+        })
     }
 
     const renderCard = (card, index) => {
@@ -106,8 +125,21 @@ function Games() {
             <CreatePlayer show={showCreatePlayerModal} onClose={handleHideCreatePlayerModal}
                           onSubmit={joinGame} gameId={currentGameId}/>
             <Divider/>
-            <h1 className="left-title">Public games</h1>
-            <div className="container">
+            <div className="banner">
+                <h1 className="left-title" style={{marginLeft: "10px"}}>Public games</h1>
+                <Button variant="info" style={{marginRight: "10px", height: "40px", width: "100px", textAlign: "left"}}
+                        onClick={handleClickRefresh} data-test="refresh-btn">
+                    Refresh{" "}
+                    {showRefreshSpinner && <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                        style={{marginBottom: "2px"}}
+                    />}</Button>
+            </div>
+            <div className="container" data-test="lobby-cards-container">
                 <div className="row">
                     {games.map(renderCard)}
                 </div>
