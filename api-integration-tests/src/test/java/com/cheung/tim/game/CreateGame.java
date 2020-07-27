@@ -13,12 +13,13 @@ import static com.cheung.tim.Json.JsonRequest;
 import static com.cheung.tim.Json.JsonResponse;
 import static com.cheung.tim.Resource.CREATE;
 import static com.cheung.tim.Resource.PLAYER;
+import static com.cheung.tim.game.Game.Lobby;
 import static io.restassured.RestAssured.given;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class CreateGame {
+public class CreateGame extends BaseGameTest {
 
     private String playerId;
 
@@ -49,6 +50,8 @@ public class CreateGame {
 
         assertThat(response.statusCode(), is(200));
         assertThat(response.getBody().asString(), jsonEquals(expectedResponse));
+
+        queueCleanup(Lobby(playerId, response.path("id")));
     }
 
     @Test

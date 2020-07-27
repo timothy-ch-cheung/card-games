@@ -9,6 +9,7 @@ import static com.cheung.tim.Config.ENDPOINT;
 import static com.cheung.tim.Json.JsonRequest;
 import static com.cheung.tim.Json.JsonResponse;
 import static com.cheung.tim.Resource.*;
+import static com.cheung.tim.game.Game.Lobby;
 import static com.cheung.tim.game.GetGame.createGame;
 import static com.cheung.tim.game.GetGame.createPlayer;
 import static io.restassured.RestAssured.get;
@@ -17,7 +18,7 @@ import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class LeaveGame {
+public class LeaveGame extends BaseGameTest {
 
     private Integer gameId;
     private String playerOne;
@@ -33,6 +34,8 @@ public class LeaveGame {
                 .body(JsonRequest("joinGame").replacePlayerId(this.playerTwo).toString())
                 .when()
                 .patch(ENDPOINT + JOIN + "/" + gameId.toString());
+
+        queueCleanup(Lobby(playerOne, gameId));
     }
 
     @Test
@@ -72,6 +75,7 @@ public class LeaveGame {
         Response game = get(ENDPOINT + GAME + "/" + this.gameId);
         assertThat(game.getBody().asString(), jsonEquals(expectedGameState));
     }
+
     @Test
     public void leaveGameAsHostWhenGuestIsPresent() {
         String expectedGameState = JsonResponse("getGame")
@@ -115,7 +119,7 @@ public class LeaveGame {
                 .toString();
 
         String otherPlayer = createPlayer();
-        createGame(otherPlayer);
+        Integer otherGame = createGame(otherPlayer);
 
         Response response = given().contentType(ContentType.JSON)
                 .body(JsonRequest("leaveGame").replacePlayerId(otherPlayer).toString())
@@ -124,6 +128,8 @@ public class LeaveGame {
 
         assertThat(response.statusCode(), is(400));
         assertThat(response.getBody().asString(), jsonEquals(expectedResponse));
+
+        queueCleanup(Lobby(otherPlayer, otherGame));
     }
 
     @Test
@@ -140,7 +146,7 @@ public class LeaveGame {
                 .patch(ENDPOINT + JOIN + "/" + gameId.toString());
 
         String otherPlayer = createPlayer();
-        createGame(otherPlayer);
+        Integer otherGame = createGame(otherPlayer);
 
         Response response = given().contentType(ContentType.JSON)
                 .body(JsonRequest("leaveGame").replacePlayerId(otherPlayer).toString())
@@ -149,5 +155,7 @@ public class LeaveGame {
 
         assertThat(response.statusCode(), is(400));
         assertThat(response.getBody().asString(), jsonEquals(expectedResponse));
+
+        queueCleanup(Lobby(otherPlayer, otherGame));
     }
 }
