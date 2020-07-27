@@ -10,15 +10,15 @@ import static com.cheung.tim.Json.JsonRequest;
 import static com.cheung.tim.Json.JsonResponse;
 import static com.cheung.tim.Resource.*;
 import static com.cheung.tim.game.Game.Lobby;
-import static com.cheung.tim.game.GetGame.createGame;
-import static com.cheung.tim.game.GetGame.createPlayer;
+import static com.cheung.tim.game.GetGameTest.createGame;
+import static com.cheung.tim.game.GetGameTest.createPlayer;
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class LeaveGame extends BaseGameTest {
+public class LeaveGameTest extends BaseGameTest {
 
     private Integer gameId;
     private String playerOne;
