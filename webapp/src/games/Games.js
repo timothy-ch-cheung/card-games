@@ -69,6 +69,23 @@ function Games() {
         setShowCreatePlayerModal(false);
     }
 
+    const handleClickRefresh = () => {
+        let startTime = new Date();
+        setShowRefreshSpinner(true);
+        API.get("/games").then(function (response) {
+            setGames(response.data.games);
+        }).then(function () {
+            let currentTime = new Date();
+            let timeElapsed = currentTime - startTime;
+            if(timeElapsed > 500) {
+                setShowRefreshSpinner(false);
+            }
+            else {
+                setTimeout(function() {setShowRefreshSpinner(false);}, 500 - timeElapsed);
+            }
+        })
+    }
+
     const renderCard = (card, index) => {
         return <LobbyCard gameId={card.id} lobbyName={card.lobbyName} host={card.host.username} key={index}
                           onSubmit={joinGame} showModal={handleShowCreatePlayerModal}/>
@@ -111,22 +128,7 @@ function Games() {
             <div className="banner">
                 <h1 className="left-title" style={{marginLeft: "10px"}}>Public games</h1>
                 <Button variant="info" style={{marginRight: "10px", height: "40px", width: "100px", textAlign: "left"}}
-                        onClick={() => {
-                            let startTime = new Date();
-                            setShowRefreshSpinner(true);
-                            API.get("/games").then(function (response) {
-                                setGames(response.data.games);
-                            }).then(function () {
-                                let currentTime = new Date();
-                                let timeElapsed = currentTime - startTime;
-                                if(timeElapsed > 500) {
-                                    setShowRefreshSpinner(false);
-                                }
-                                else {
-                                    setTimeout(function() {setShowRefreshSpinner(false);}, 500 - timeElapsed);
-                                }
-                            })
-                        }} data-test="refresh-btn">
+                        onClick={handleClickRefresh} data-test="refresh-btn">
                     Refresh{" "}
                     {showRefreshSpinner && <Spinner
                         as="span"
