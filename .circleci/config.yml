@@ -11,7 +11,6 @@ executors:
     environment:
       TEST_ENV: PRODUCTION
       CYPRESS_baseUrl: https://card-games-tcc.herokuapp.com
-      serverUrl: https://card-games-tcc.herokuapp.com
 
 jobs:
   server:

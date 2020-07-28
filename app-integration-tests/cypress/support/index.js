@@ -21,6 +21,9 @@ import './commands'
 
 before(() => {
     cy.writeFile('games_cleanup.txt', '');
+    if (Cypress.env('TEST_ENV') === 'PRODUCTION') {
+        Cypress.env('serverUrl', Cypress.config.baseUrl);
+    }
 });
 
 afterEach(() => {
