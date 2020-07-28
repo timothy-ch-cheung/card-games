@@ -149,7 +149,7 @@ workflows:
           executor: cypress-chrome
           browser: chrome
           cache-key: >-
-            card-games-webapp-test-{{ checksum "app-integration-test/package.json"
+            card-games-webapp-test-{{ checksum "app-integration-tests/package.json"
             }}
           requires:
             - deploy
