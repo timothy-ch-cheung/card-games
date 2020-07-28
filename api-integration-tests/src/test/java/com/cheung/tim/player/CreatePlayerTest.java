@@ -17,7 +17,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.matchesPattern;
 
-public class CreatePlayer {
+public class CreatePlayerTest {
 
     public static final String PLAYER_ID_REGEX = "[a-z0-9]{32}";
 

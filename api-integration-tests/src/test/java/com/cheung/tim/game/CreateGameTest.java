@@ -19,7 +19,7 @@ import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class CreateGame extends BaseGameTest {
+public class CreateGameTest extends BaseGameTest {
 
     private String playerId;
 

@@ -11,8 +11,8 @@ import static com.cheung.tim.Json.JsonResponse;
 import static com.cheung.tim.Resource.GAME;
 import static com.cheung.tim.Resource.JOIN;
 import static com.cheung.tim.game.Game.Lobby;
-import static com.cheung.tim.game.GetGame.createGame;
-import static com.cheung.tim.game.GetGame.createPlayer;
+import static com.cheung.tim.game.GetGameTest.createGame;
+import static com.cheung.tim.game.GetGameTest.createPlayer;
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static java.lang.Integer.parseInt;
@@ -20,7 +20,7 @@ import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class JoinGame extends BaseGameTest {
+public class JoinGameTest extends BaseGameTest {
 
     private Integer gameId;
 

@@ -15,14 +15,14 @@ jobs:
           path: ~/card-games
 
       - restore_cache:
-          key: card-games-{{ checksum "pom.xml" }}
+          key: card-games-server-{{ checksum "pom.xml" }}
 
       - run: mvn dependency:go-offline
 
       - save_cache:
           paths:
             - ~/.m2
-          key: card-games-{{ checksum "pom.xml" }}
+          key: card-games-server-{{ checksum "pom.xml" }}
 
       - run: mvn test
 
@@ -38,12 +38,12 @@ jobs:
 
       - restore_cache:
           keys:
-            - card-games-{{ checksum "package.json" }}
+            - card-games-webapp-{{ checksum "package.json" }}
 
       - save_cache:
           paths:
             - node_modules
-          key: card-games-{{ checksum "package.json" }}
+          key: card-games-webapp-{{ checksum "package.json" }}
 
       - run: npm install
 
@@ -92,6 +92,31 @@ jobs:
 
       - run: heroku deploy:jar server/target/server.jar --app $HEROKU_APP_NAME
 
+  api-test:
+    working_directory: ~/card-games/api-integration-tests
+
+    docker:
+      - image: circleci/openjdk:8-jdk-stretch
+
+    environment:
+      TEST_ENV: PRODUCTION
+
+    steps:
+      - checkout:
+          path: ~/card-games
+
+      - restore_cache:
+          key: card-games-api-test-{{ checksum "pom.xml" }}
+
+      - run: mvn dependency:go-offline
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: card-games-api-test-{{ checksum "pom.xml" }}
+
+      - run: mvn test
+
 workflows:
   version: 2
   build:
@@ -105,3 +130,6 @@ workflows:
       - deploy:
           requires:
             - package
+      - api-test:
+          requires:
+            - deploy

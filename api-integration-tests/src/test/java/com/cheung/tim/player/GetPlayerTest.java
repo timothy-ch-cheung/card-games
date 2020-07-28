@@ -18,7 +18,7 @@ import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class GetPlayer {
+public class GetPlayerTest {
 
     private String playerId;
 
