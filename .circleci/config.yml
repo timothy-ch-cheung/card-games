@@ -2,6 +2,16 @@ version: 2.1
 
 orbs:
   maven: circleci/maven@0.0.12
+  cypress: cypress-io/cypress@1
+
+executors:
+  cypress-chrome:
+    docker:
+      - image: "cypress/browsers:node12.14.1-chrome83-ff77"
+    environment:
+      TEST_ENV: PRODUCTION
+      CYPRESS_baseUrl: https://card-games-tcc.herokuapp.com
+      serverUrl: https://card-games-tcc.herokuapp.com
 
 jobs:
   server:
@@ -117,35 +127,6 @@ jobs:
 
       - run: mvn test
 
-  webapp-test:
-    docker:
-      - image: cypress/base:8
-        environment:
-          TERM: xterm
-
-    environment:
-      TEST_ENV: PRODUCTION
-      CYPRESS_baseUrl: https://card-games-tcc.herokuapp.com
-      serverUrl: https://card-games-tcc.herokuapp.com
-
-    working_directory: ~/card-games/app-integration-tests
-    steps:
-      - checkout:
-          path: ~/card-games
-
-      - restore_cache:
-          keys:
-            - card-games-webapp-test-{{ checksum "package.json" }}
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: card-games-webapp-test-{{ checksum "package.json" }}
-
-      - run: npm ci
-
-      - run: npx cypress run --browser chrome --headless
-
 workflows:
   version: 2
   build:
@@ -162,6 +143,7 @@ workflows:
       - api-test:
           requires:
             - deploy
-      - webapp-test:
-          requires:
-            - deploy
+      - cypress/run:
+          working_directory: app-integration-tests
+          executor: cypress-chrome
+          browser: chrome
