@@ -24,6 +24,9 @@ before(() => {
     if (Cypress.env('TEST_ENV') === 'PRODUCTION') {
         Cypress.env('serverUrl', Cypress.config.baseUrl);
     }
+    else {
+        Cypress.env('serverUrl', 'http://localhost:8080');
+    }
 });
 
 afterEach(() => {
