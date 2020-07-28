@@ -49,7 +49,7 @@ after(() => {
                 cy.fixture('leaveGame.json').then((leaveGame) => {
                     leaveGame.id = playerId;
                     cy.request({
-                        url: `${Cypress.config().serverUrl}/leave/${gameId}`,
+                        url: `${Cypress.env('serverUrl')}/leave/${gameId}`,
                         method: 'PATCH',
                         body: leaveGame,
                     })
