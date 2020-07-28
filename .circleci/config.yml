@@ -9,7 +9,7 @@ executors:
     docker:
       - image: "cypress/browsers:node12.14.1-chrome83-ff77"
     environment:
-      TEST_ENV: PRODUCTION
+      CYPRESS_TEST_ENV: PRODUCTION
       CYPRESS_baseUrl: https://card-games-tcc.herokuapp.com
 
 jobs:
