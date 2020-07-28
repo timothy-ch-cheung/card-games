@@ -21,6 +21,12 @@ import './commands'
 
 before(() => {
     cy.writeFile('games_cleanup.txt', '');
+    if (Cypress.env('TEST_ENV') === 'PRODUCTION') {
+        Cypress.env('serverUrl', Cypress.config().baseUrl);
+    }
+    else {
+        Cypress.env('serverUrl', 'http://localhost:8080');
+    }
 });
 
 afterEach(() => {
@@ -49,7 +55,7 @@ after(() => {
                 cy.fixture('leaveGame.json').then((leaveGame) => {
                     leaveGame.id = playerId;
                     cy.request({
-                        url: `${Cypress.config().serverUrl}/leave/${gameId}`,
+                        url: `${Cypress.env('serverUrl')}/leave/${gameId}`,
                         method: 'PATCH',
                         body: leaveGame,
                     })

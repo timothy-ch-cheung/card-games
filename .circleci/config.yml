@@ -2,6 +2,15 @@ version: 2.1
 
 orbs:
   maven: circleci/maven@0.0.12
+  cypress: cypress-io/cypress@1.25.1
+
+executors:
+  cypress-chrome:
+    docker:
+      - image: "cypress/browsers:node12.14.1-chrome83-ff77"
+    environment:
+      CYPRESS_TEST_ENV: PRODUCTION
+      CYPRESS_baseUrl: https://card-games-tcc.herokuapp.com
 
 jobs:
   server:
@@ -131,5 +140,15 @@ workflows:
           requires:
             - package
       - api-test:
+          requires:
+            - deploy
+      - cypress/run:
+          name: webapp-tests
+          working_directory: app-integration-tests
+          executor: cypress-chrome
+          browser: chrome
+          cache-key: >-
+            card-games-webapp-test-{{ checksum "app-integration-tests/package.json"
+            }}
           requires:
             - deploy
