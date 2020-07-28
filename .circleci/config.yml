@@ -143,12 +143,6 @@ workflows:
       - api-test:
           requires:
             - deploy
-      - cypress/install:
-          cache-key: >-
-            card-games-webapp-test-{{ checksum "app-integration-test/package.json"
-            }}
-          requires:
-            - deploy
       - cypress/run:
           name: webapp-tests
           working_directory: app-integration-tests
@@ -158,4 +152,4 @@ workflows:
             card-games-webapp-test-{{ checksum "app-integration-test/package.json"
             }}
           requires:
-            - cypress/install
+            - deploy
