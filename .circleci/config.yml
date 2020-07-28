@@ -142,7 +142,7 @@ jobs:
             - node_modules
           key: card-games-webapp-test-{{ checksum "package.json" }}
 
-      - run: npm install
+      - run: npm ci
 
       - run: npx cypress run --browser chrome --headless
 
