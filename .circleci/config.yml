@@ -137,7 +137,7 @@ workflows:
   build:
     jobs:
       - server:
-          context: SonarCloud
+          context: SONAR_CLOUD_SERVER
       - webapp
       - package:
           requires:
