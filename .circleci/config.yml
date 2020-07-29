@@ -33,7 +33,13 @@ jobs:
             - ~/.m2
           key: card-games-server-{{ checksum "pom.xml" }}
 
-      - run: mvn test
+      - run:
+          name: Run unit tests
+          command: mvn test
+
+      - run:
+          name: Analyze on SonarCloud
+          command: mvn verify sonar:sonar
 
   webapp:
     working_directory: ~/card-games/webapp
@@ -130,7 +136,8 @@ workflows:
   version: 2
   build:
     jobs:
-      - server
+      - server:
+          context: SonarCloud
       - webapp
       - package:
           requires:
