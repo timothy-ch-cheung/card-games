@@ -21,7 +21,7 @@ class GameTest {
     }
 
     @Test
-    public void getMoves_returnsCopy() {
+    void getMoves_returnsCopy() {
         List<Move> moves = this.game.getMoves();
         assertThat(moves.size(), is(0));
         moves.add(new Move());
@@ -29,7 +29,7 @@ class GameTest {
     }
 
     @Test
-    public void addMove() throws Exception {
+    void addMove() throws Exception {
         Move move = new Move();
         this.game.addMove(move);
         assertThat(this.game.getMoves().size(), is(1));

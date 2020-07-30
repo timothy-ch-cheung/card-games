@@ -29,7 +29,7 @@ public class PlayerService {
         return playerRepository.save(player);
     }
 
-    public Player findPlayerById(String userId) throws NotFoundException {
+    public Player findPlayerById(String userId) {
         if (userId == null || !userId.matches(PLAYER_ID_REGEX)){
             throw new BadRequestException("id must match regex [a-z0-9]{32}");
         }

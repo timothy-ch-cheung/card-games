@@ -5,9 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
-@Table(name ="MOVES")
+@Table(name = "MOVES")
 @RequiredArgsConstructor
 public class Move extends BaseEntity {
 
@@ -36,11 +37,29 @@ public class Move extends BaseEntity {
     @JoinColumn(name = "game_id", nullable = false)
     private Game game;
 
+    public Move(Move move){
+        this.moveId = move.moveId;
+        this.colNum = move.colNum;
+        this.rowNum = move.rowNum;
+        this.player = move.player;
+        this.game = move.game;
+
+    }
+
     @Override
-    public Object clone () {
-        Move move = new Move();
-        move.setColNum(this.colNum);
-        move.setColNum(this.rowNum);
-        return move;
+    public int hashCode() {
+        return Objects.hash(moveId, colNum, rowNum, player, game);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Move otherMove = (Move) obj;
+        return Objects.equals(moveId, otherMove.moveId);
     }
 }

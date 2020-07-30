@@ -55,7 +55,7 @@ class GameControllerTest {
     ArgumentCaptor lobbyNameCapture = ArgumentCaptor.forClass(String.class);
 
     @Test
-    public void getGame_shouldReturn200() throws Exception {
+    void getGame_shouldReturn200() throws Exception {
         Player player = new Player("John Smith");
         Game game = new Game("test_lobby", player, GameStatus.OPEN);
         GameDTO gameDTO = getGameDTO();
@@ -85,7 +85,7 @@ class GameControllerTest {
     }
 
     @Test
-    public void getGame_shouldThrowNotFoundException()  throws Exception{
+    void getGame_shouldThrowNotFoundException()  throws Exception{
         when(gameService.getGame(anyLong())).thenThrow(new NotFoundException("not found"));
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/game/1")).andReturn();
@@ -95,7 +95,7 @@ class GameControllerTest {
     }
 
     @Test
-    public void createGame_shouldReturn200() throws Exception {
+    void createGame_shouldReturn200() throws Exception {
         Player player = new Player("John Smith");
         Game game = new Game("test_lobby", player, GameStatus.OPEN);
         GameDTO gameDTO = getGameDTO();
@@ -129,7 +129,7 @@ class GameControllerTest {
     }
 
     @Test
-    public void createGame_shouldThrowBadRequestException() throws Exception {
+    void createGame_shouldThrowBadRequestException() throws Exception {
         when(gameService.createGame(any(PlayerDTO.class), anyString())).thenThrow(new BadRequestException(""));
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
@@ -143,7 +143,7 @@ class GameControllerTest {
     }
 
     @Test
-    public void getGames_shouldReturn200() throws Exception {
+    void getGames_shouldReturn200() throws Exception {
         List<Game> games = new ArrayList();
         Player player = new Player("John Smith");
         Game game = new Game("test_lobby", player, GameStatus.OPEN);
@@ -178,7 +178,7 @@ class GameControllerTest {
     }
 
     @Test
-    public void joinGame_shouldReturn204() throws Exception {
+    void joinGame_shouldReturn204() throws Exception {
         MvcResult result = performPatch("/join/1");
 
         MockHttpServletResponse response = result.getResponse();
@@ -188,7 +188,7 @@ class GameControllerTest {
     }
 
     @Test
-    public void joinGame_shouldThrowBadRequestException() throws Exception{
+    void joinGame_shouldThrowBadRequestException() throws Exception{
         doThrow(new BadRequestException("")).when(gameService).joinGame(any(Long.class), any(PlayerDTO.class));
 
         MvcResult result = performPatch("/join/1");
@@ -198,7 +198,7 @@ class GameControllerTest {
     }
 
     @Test
-    public void joinGame_shouldThrowNotFoundException() throws Exception{
+    void joinGame_shouldThrowNotFoundException() throws Exception{
         doThrow(new NotFoundException("not found")).when(gameService).joinGame(any(Long.class), any(PlayerDTO.class));
 
         MvcResult result = performPatch("/join/1");
@@ -208,7 +208,7 @@ class GameControllerTest {
     }
 
     @Test
-    public void leaveGame_shouldReturn204() throws Exception {
+    void leaveGame_shouldReturn204() throws Exception {
         MvcResult result = performPatch("/leave/1");
 
         MockHttpServletResponse response = result.getResponse();
@@ -218,7 +218,7 @@ class GameControllerTest {
     }
 
     @Test
-    public void leaveGame_shouldThrowBadRequestException() throws Exception{
+    void leaveGame_shouldThrowBadRequestException() throws Exception{
         doThrow(new BadRequestException("bad request")).when(gameService).leaveGame(any(Long.class), any(PlayerDTO.class));
 
         MvcResult result = performPatch("/leave/1");
@@ -228,7 +228,7 @@ class GameControllerTest {
     }
 
     @Test
-    public void leaveGame_shouldThrowNotFoundException() throws Exception{
+    void leaveGame_shouldThrowNotFoundException() throws Exception{
         doThrow(new NotFoundException("not found")).when(gameService).leaveGame(any(Long.class), any(PlayerDTO.class));
 
         MvcResult result = performPatch("/leave/1");

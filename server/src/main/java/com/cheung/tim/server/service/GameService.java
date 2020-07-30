@@ -18,6 +18,7 @@ import static org.apache.commons.lang.StringUtils.isBlank;
 @Service
 public class GameService {
 
+    public static final String GAME_NOT_EXIST = "Game with id %s does not exist";
     private GameRepository gameRepository;
     private PlayerService playerService;
 
@@ -29,12 +30,12 @@ public class GameService {
     public Game getGame(Long gameId) {
         Game game = gameRepository.findByGameId(gameId);
         if (game == null) {
-            throw new NotFoundException(String.format("Game with id %s does not exist", gameId));
+            throw new NotFoundException(String.format(GAME_NOT_EXIST, gameId));
         }
         return game;
     }
 
-    public Game createGame(PlayerDTO playerDTO, String lobbyName) throws BadRequestException {
+    public Game createGame(PlayerDTO playerDTO, String lobbyName) {
         if (playerDTO == null || !playerDTO.getId().matches(PLAYER_ID_REGEX) || isBlank(lobbyName)) {
             throw new BadRequestException("Lobby name or Host not supplied");
         }
@@ -47,7 +48,7 @@ public class GameService {
     }
 
     @Transactional
-    public void joinGame(Long gameId, PlayerDTO playerDTO) throws BadRequestException, NotFoundException {
+    public void joinGame(Long gameId, PlayerDTO playerDTO) {
         Player player = getPlayer(playerDTO.getId());
         if (isPlayerInGame(player)) {
             throw new BadRequestException(String.format("Player %s is already in a game", player.getUsername()));
@@ -63,21 +64,21 @@ public class GameService {
     }
 
     @Transactional
-    public void leaveGame(Long gameId, PlayerDTO playerDTO) throws BadRequestException, NotFoundException {
+    public void leaveGame(Long gameId, PlayerDTO playerDTO) {
         Game game = gameRepository.findByGameId(gameId);
         if (game == null) {
             throw new NotFoundException(String.format("Game with id %s does not exist", gameId));
         }
 
-        if (game.getPlayer1() != null && game.getPlayer1().equalId(playerDTO)) {
+        if (game.getPlayer1() != null && game.getPlayer1().equalDTO(playerDTO)) {
             gameRepository.updateStatus(gameId, DELETED);
             gameRepository.updatePlayerOne(gameId, null);
             gameRepository.updatePlayerTwo(gameId, null);
-        } else if (game.getPlayer2() != null && game.getPlayer2().equalId(playerDTO)) {
+        } else if (game.getPlayer2() != null && game.getPlayer2().equalDTO(playerDTO)) {
             gameRepository.updateStatus(gameId, OPEN);
             gameRepository.updatePlayerTwo(gameId, null);
         } else {
-            Player player = getPlayer(playerDTO.getId());
+            Player player = playerService.findPlayerById(playerDTO.getId());
             if (player != null) {
                 throw new BadRequestException(String.format("Player %s is not in game with id %s", player.getUsername(), gameId));
             }
