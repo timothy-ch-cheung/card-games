@@ -60,6 +60,10 @@ public class Move extends BaseEntity {
             return false;
         }
         Move otherMove = (Move) obj;
-        return Objects.equals(moveId, otherMove.moveId);
+        return Objects.equals(moveId, otherMove.moveId) &&
+                Objects.equals(colNum, otherMove.colNum) &&
+                Objects.equals(rowNum, otherMove.rowNum) &&
+                Objects.equals(game, otherMove.game) &&
+                Objects.equals(player, otherMove.player);
     }
 }
