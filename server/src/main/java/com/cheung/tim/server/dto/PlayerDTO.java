@@ -1,6 +1,5 @@
 package com.cheung.tim.server.dto;
 
-import com.cheung.tim.server.domain.Player;
 import lombok.Getter;
 import lombok.Setter;
 

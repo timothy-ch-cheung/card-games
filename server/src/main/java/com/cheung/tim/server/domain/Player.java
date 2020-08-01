@@ -7,17 +7,18 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "PLAYERS")
 @RequiredArgsConstructor
 public class Player extends BaseEntity {
 
-    public Player (String username){
+    public Player(String username) {
         this.username = username;
     }
 
-    public Player (String id, String username){
+    public Player(String id, String username) {
         this.userId = id;
         this.username = username;
     }
@@ -34,7 +35,24 @@ public class Player extends BaseEntity {
     @Setter
     private String username;
 
-    public boolean equalId(PlayerDTO playerDTO) {
+    public boolean equalDTO(PlayerDTO playerDTO) {
         return this.userId.equals(playerDTO.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, username);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Player otherPlayer = (Player) obj;
+        return Objects.equals(userId, otherPlayer.userId);
     }
 }

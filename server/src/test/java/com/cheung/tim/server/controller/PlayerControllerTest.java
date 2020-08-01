@@ -41,7 +41,7 @@ class PlayerControllerTest {
     ArgumentCaptor stringCapture = ArgumentCaptor.forClass(String.class);
 
     @Test
-    public void createPlayer_shouldReturn200() throws Exception {
+    void createPlayer_shouldReturn200() throws Exception {
         Player player = new Player("40283481721d879601721d87b6350000", "John Smith");
         when(playerService.createPlayer(any(PlayerDTO.class))).thenReturn(player);
         when(modelMapper.map(player, PlayerDTO.class)).thenReturn(new PlayerDTO("40283481721d879601721d87b6350000", "John Smith"));
@@ -63,7 +63,7 @@ class PlayerControllerTest {
     }
 
     @Test
-    public void getPlayer_shouldReturn200() throws Exception {
+    void getPlayer_shouldReturn200() throws Exception {
         Player player = new Player("40283481721d879601721d87b6350000", "John Smith");
         when(playerService.findPlayerById("40283481721d879601721d87b6350000")).thenReturn(player);
         when(modelMapper.map(player, PlayerDTO.class)).thenReturn(new PlayerDTO("40283481721d879601721d87b6350000", "John Smith"));
