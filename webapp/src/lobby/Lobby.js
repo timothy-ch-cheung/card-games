@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import API from "../API";
-import Button from "react-bootstrap/Button";
 import {useHistory} from "react-router-dom";
 import {resetGame} from "../actions";
+import PlayerList from "../components/player-list/PlayerList";
 
 function getGuest(game) {
     if (game.guest != null) {
@@ -60,40 +60,10 @@ function Lobby(props) {
     }
 
     return (
-        <div>
-            <style type="text/css">
-                {`
-                    .lobby-banner {
-                        margin: 10px;
-                        height: 30px;
-                    }
-                    
-                    .host {
-                        display: inline;
-                        float: left;
-                        min-width: 10%;
-                    }
-                    
-                    .guest {
-                        display: inline;
-                        float: right;
-                        min-width: 10%;
-                    }
-                    
-                    .leave-game {
-                        position: absolute;
-                        bottom: 0;
-                        left: 0;
-                        margin: 10px;
-                    }
-                `}
-            </style>
-            <div className="lobby-banner">
-                <h3 className="host">HOST: {getHost(game)}</h3>
-                <h3 className="guest">GUEST: {getGuest(game)}</h3>
-            </div>
-            <Button variant="info" className="leave-game" onClick={onLeaveGame}>{leaveText}</Button>
-        </div>
+        <>
+            <PlayerList players={[{name: getHost(game), isHost: true}, {name: getGuest(game), isHost: false}]}
+                        onLeave={onLeaveGame}/>
+        </>
     );
 
 }

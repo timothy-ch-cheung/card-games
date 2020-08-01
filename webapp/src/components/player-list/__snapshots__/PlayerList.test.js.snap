@@ -1,0 +1,162 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Matches PlayerList snapshot 1`] = `
+<PlayerList
+  players={
+    Array [
+      Object {
+        "isHost": true,
+        "name": "John",
+      },
+      Object {
+        "isHost": false,
+        "name": "Jane",
+      },
+    ]
+  }
+>
+  <Card
+    body={false}
+    style={
+      Object {
+        "margin": "10px",
+        "width": "35%",
+      }
+    }
+  >
+    <div
+      className="card"
+      style={
+        Object {
+          "margin": "10px",
+          "width": "35%",
+        }
+      }
+    >
+      <CardHeader>
+        <div
+          className="card-header"
+        >
+          Lobby
+        </div>
+      </CardHeader>
+      <CardBody
+        style={
+          Object {
+            "height": "400px",
+            "overflowY": "auto",
+            "padding": "5px 5px",
+          }
+        }
+      >
+        <div
+          className="card-body"
+          style={
+            Object {
+              "height": "400px",
+              "overflowY": "auto",
+              "padding": "5px 5px",
+            }
+          }
+        >
+          <ForwardRef
+            borderless={true}
+            variant="light"
+          >
+            <table
+              className="table table-light table-borderless"
+            >
+              <tbody>
+                <tr>
+                  <td
+                    style={
+                      Object {
+                        "padding": "5px",
+                      }
+                    }
+                  >
+                    <Player
+                      isHost={true}
+                      key="0"
+                      name="John"
+                    >
+                      <p
+                        style={
+                          Object {
+                            "marginBottom": "0",
+                          }
+                        }
+                      >
+                        John 👑
+                      </p>
+                    </Player>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={
+                      Object {
+                        "padding": "5px",
+                      }
+                    }
+                  >
+                    <Player
+                      isHost={false}
+                      key="1"
+                      name="Jane"
+                    >
+                      <p
+                        style={
+                          Object {
+                            "marginBottom": "0",
+                          }
+                        }
+                      >
+                        Jane
+                      </p>
+                    </Player>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </ForwardRef>
+        </div>
+      </CardBody>
+      <CardBody
+        style={
+          Object {
+            "borderTop": "1px solid #dfdfdf",
+            "padding": "10px",
+          }
+        }
+      >
+        <div
+          className="card-body"
+          style={
+            Object {
+              "borderTop": "1px solid #dfdfdf",
+              "padding": "10px",
+            }
+          }
+        >
+          <Button
+            active={false}
+            className="leave-game"
+            disabled={false}
+            type="button"
+            variant="info"
+          >
+            <button
+              className="leave-game btn btn-info"
+              disabled={false}
+              type="button"
+            >
+              Leave
+            </button>
+          </Button>
+        </div>
+      </CardBody>
+    </div>
+  </Card>
+</PlayerList>
+`;
