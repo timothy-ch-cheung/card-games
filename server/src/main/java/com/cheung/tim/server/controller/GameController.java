@@ -4,7 +4,6 @@ import com.cheung.tim.server.domain.Game;
 import com.cheung.tim.server.dto.CreateLobbyDTO;
 import com.cheung.tim.server.dto.GameDTO;
 import com.cheung.tim.server.dto.PlayerDTO;
-import com.cheung.tim.server.dto.PublicPlayerDTO;
 import com.cheung.tim.server.exception.BadRequestException;
 import com.cheung.tim.server.service.GameService;
 import com.cheung.tim.server.service.PlayerService;

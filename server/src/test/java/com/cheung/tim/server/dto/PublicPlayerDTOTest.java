@@ -11,20 +11,20 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class PublicPlayerDTOTest {
 
     @Test
-    public void shouldReturnNullIfNoUsername() {
+    void shouldReturnNullIfNoUsername() {
         Player player = new Player();
         PublicPlayerDTO dto = convertToPublicPlayerDTO(player);
         assertNull(dto);
     }
 
     @Test
-    public void shouldReturnNullIfPlayerNull() {
+    void shouldReturnNullIfPlayerNull() {
         PublicPlayerDTO dto = convertToPublicPlayerDTO(null);
         assertNull(dto);
     }
 
     @Test
-    public void shouldReturnDTOWhenUsernamePresent() {
+    void shouldReturnDTOWhenUsernamePresent() {
         Player player = new Player("40283481721d879601721d87b6350000", "John Smith");
         PublicPlayerDTO dto = convertToPublicPlayerDTO(player);
         assertThat(dto.getUsername(), is("John Smith"));
