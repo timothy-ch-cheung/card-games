@@ -23,16 +23,16 @@ class GameTest {
 
     @Test
     void getMoves_returnsCopy() {
-        List<Move> games = this.game.getMoves();
-        assertThat(games.size(), is(0));
-        games.add(new Move());
+        List<Move> moves = this.game.getMoves();
+        assertThat(moves.size(), is(0));
+        moves.add(new Move());
         assertThat(this.game.getMoves().size(), is(0));
     }
 
     @Test
     void addMove_putsMoveInList() throws Exception {
-        Move game = new Move();
-        this.game.addMove(game);
+        Move move = new Move();
+        this.game.addMove(move);
         assertThat(this.game.getMoves().size(), is(1));
         assertThat(((List<Move>) FieldUtils.readField(this.game, "moves", true)).get(0), sameInstance(game));
     }
