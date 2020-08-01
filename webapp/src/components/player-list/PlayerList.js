@@ -10,8 +10,6 @@ function Player(props) {
     return (
         <p style={{marginBottom: "0"}}>{text}</p>
     );
-
-    return null;
 }
 
 
@@ -20,8 +18,9 @@ function PlayerList(props) {
     const renderPlayer = (card, index) => {
         if (!isBlank(card.name)) {
             return (
-                <tr>
-                    <td style={{padding: "5px"}}><Player name={card.name} isHost={card.isHost} key={index}/></td>
+                <tr key={index}>
+                    <td style={{padding: "5px"}}><Player name={card.name} isHost={card.isHost} key={index}
+                                                         data-test={"player" + index + "-name"}/></td>
                 </tr>);
         }
         return null;

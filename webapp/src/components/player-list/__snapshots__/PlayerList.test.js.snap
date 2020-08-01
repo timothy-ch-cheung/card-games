@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Matches PlayerList snapshot 1`] = `
+exports[`TEST SUITE PlayerList:  Matches PlayerList snapshot 1`] = `
 <PlayerList
   players={
     Array [
@@ -67,7 +67,9 @@ exports[`Matches PlayerList snapshot 1`] = `
               className="table table-light table-borderless"
             >
               <tbody>
-                <tr>
+                <tr
+                  key="0"
+                >
                   <td
                     style={
                       Object {
@@ -76,6 +78,7 @@ exports[`Matches PlayerList snapshot 1`] = `
                     }
                   >
                     <Player
+                      data-test="player0-name"
                       isHost={true}
                       key="0"
                       name="John"
@@ -92,7 +95,9 @@ exports[`Matches PlayerList snapshot 1`] = `
                     </Player>
                   </td>
                 </tr>
-                <tr>
+                <tr
+                  key="1"
+                >
                   <td
                     style={
                       Object {
@@ -101,6 +106,7 @@ exports[`Matches PlayerList snapshot 1`] = `
                     }
                   >
                     <Player
+                      data-test="player1-name"
                       isHost={false}
                       key="1"
                       name="Jane"
