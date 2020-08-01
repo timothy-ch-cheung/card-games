@@ -34,7 +34,7 @@ class GameTest {
         Move move = new Move();
         this.game.addMove(move);
         assertThat(this.game.getMoves().size(), is(1));
-        assertThat(((List<Move>) FieldUtils.readField(this.game, "moves", true)).get(0), sameInstance(game));
+        assertThat(((List<Move>) FieldUtils.readField(this.game, "moves", true)).get(0), sameInstance(move));
     }
 
     @Test
