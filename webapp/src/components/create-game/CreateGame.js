@@ -24,7 +24,6 @@ function NicknameInput() {
 function CreateGame(props) {
 
     const [validated, setValidated] = useState(false);
-    const [gameMode, setGameMode] = useState("Game Mode");
     const dispatch = useDispatch();
     const userId = useSelector(state => state.user);
     const history = useHistory();
@@ -55,13 +54,14 @@ function CreateGame(props) {
         const form = e.currentTarget;
         const valid = form.checkValidity();
 
-        let validGameMode = Object.entries(GameModes).map(([key, val]) => val.name).includes(gameMode);
+        let validGameMode = Object.entries(GameModes).map(([key, val]) => val.name).includes(e.target.gameMode.value);
 
         if (valid === false || !validGameMode) {
             e.stopPropagation();
             setValidated(true);
             return;
         }
+
         let lobbyName = e.target.lobbyName.value;
 
         if (userId != null) {
@@ -82,14 +82,17 @@ function CreateGame(props) {
 
     const gamesList = Object.entries(GameModes).map(([key,val]) => val);
 
-    const onSelectGameMode = (eventKey) => {
-        setGameMode(eventKey);
-    }
-
     const renderGameMode = (game, index) => {
-        return (
-            <Dropdown.Item key={index} eventKey={game.name}>{game.name}</Dropdown.Item>
-        );
+        if(game.enabled) {
+            return (
+                <option key={index}>{game.name}</option>
+            );
+        }
+        else{
+            return (
+                <option disabled key={index}>{game.name} (not yet available)</option>
+            );
+        }
     }
 
     if (props.show) {
@@ -138,17 +141,12 @@ function CreateGame(props) {
                             <NicknameInput/>
                             <Form.Label>Lobby Name</Form.Label>
                             <Form.Control required type="text" placeholder="Lobby name" name="lobbyName"/>
-                            <Dropdown onSelect={onSelectGameMode}>
-                                <Dropdown.Toggle variant="info">
-                                    {gameMode}
-                                </Dropdown.Toggle>
-
-                                <Dropdown.Menu>
-                                    {gamesList.map(renderGameMode)}
-                                </Dropdown.Menu>
-                            </Dropdown>
+                            <Form.Label>Game Mode</Form.Label>
+                            <Form.Control required as="select"  name="gameMode" defaultValue="Select">
+                                <option key={'Select...'} value={''}>Select...</option>
+                                {gamesList.map(renderGameMode)}
+                            </Form.Control>
                         </Modal.Body>
-
                         <Modal.Footer>
                             <Button variant="secondary" onClick={onClose}>Close</Button>
                             <Button type="submit" variant="info">Create</Button>

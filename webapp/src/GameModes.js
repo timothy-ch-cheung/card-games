@@ -6,7 +6,8 @@ export default {
         rounds: {
             initial: "PLAYER_COUNT",
             increment: "PLAYER_COUNT"
-        }
+        },
+        enabled: true
     },
     choicePoker: {
         name: "Choice Poker",
@@ -15,6 +16,7 @@ export default {
         rounds: {
             initial: "ONE",
             increment: "ONE"
-        }
+        },
+        enabled: false
     }
 }
