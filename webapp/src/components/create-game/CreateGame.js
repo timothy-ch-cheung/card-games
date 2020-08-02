@@ -7,6 +7,9 @@ import {useDispatch, useSelector} from "react-redux";
 import API from "../../API";
 import {setGame, setPlayer} from "../../actions";
 import {useHistory} from "react-router-dom";
+import GameModes from "../../GameModes";
+import Dropdown from "react-bootstrap/Dropdown";
+import {isBlank} from "../../Util";
 
 function NicknameInput() {
 
@@ -21,6 +24,7 @@ function NicknameInput() {
 function CreateGame(props) {
 
     const [validated, setValidated] = useState(false);
+    const [gameMode, setGameMode] = useState("Game Mode");
     const dispatch = useDispatch();
     const userId = useSelector(state => state.user);
     const history = useHistory();
@@ -50,7 +54,10 @@ function CreateGame(props) {
         e.preventDefault();
         const form = e.currentTarget;
         const valid = form.checkValidity();
-        if (valid === false) {
+
+        let validGameMode = Object.entries(GameModes).map(([key, val]) => val.name).includes(gameMode);
+
+        if (valid === false || !validGameMode) {
             e.stopPropagation();
             setValidated(true);
             return;
@@ -72,6 +79,18 @@ function CreateGame(props) {
         setValidated(false);
         props.onClose();
     };
+
+    const gamesList = Object.entries(GameModes).map(([key,val]) => val);
+
+    const onSelectGameMode = (eventKey) => {
+        setGameMode(eventKey);
+    }
+
+    const renderGameMode = (game, index) => {
+        return (
+            <Dropdown.Item key={index} eventKey={game.name}>{game.name}</Dropdown.Item>
+        );
+    }
 
     if (props.show) {
 
@@ -119,6 +138,15 @@ function CreateGame(props) {
                             <NicknameInput/>
                             <Form.Label>Lobby Name</Form.Label>
                             <Form.Control required type="text" placeholder="Lobby name" name="lobbyName"/>
+                            <Dropdown onSelect={onSelectGameMode}>
+                                <Dropdown.Toggle variant="info">
+                                    {gameMode}
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                    {gamesList.map(renderGameMode)}
+                                </Dropdown.Menu>
+                            </Dropdown>
                         </Modal.Body>
 
                         <Modal.Footer>
