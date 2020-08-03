@@ -70,6 +70,13 @@ class GameTest {
     }
 
     @Test
+    void equals_returnsFalseForDifferentGameId() throws Exception {
+        Game otherGame = createGame();
+        FieldUtils.writeField(otherGame, "gameId", new Long(999), true);
+        assertThat(game.equals(otherGame), is(false));
+    }
+
+    @Test
     void equals_returnsFalseForDifferentPlayer1() {
         Game otherGame = createGame();
         otherGame.setPlayer1(mock(Player.class));

@@ -36,7 +36,7 @@ public class Player extends BaseEntity {
     private String username;
 
     public boolean equalDTO(PlayerDTO playerDTO) {
-        return this.userId.equals(playerDTO.getId());
+        return playerDTO != null && this.userId.equals(playerDTO.getId());
     }
 
     @Override

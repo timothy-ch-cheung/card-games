@@ -22,15 +22,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.util.NestedServletException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static uk.co.datumedge.hamcrest.json.SameJSONAs.sameJSONAs;
@@ -85,7 +82,7 @@ class GameControllerTest {
     }
 
     @Test
-    void getGame_shouldThrowNotFoundException()  throws Exception{
+    void getGame_shouldThrowNotFoundException() throws Exception {
         when(gameService.getGame(anyLong())).thenThrow(new NotFoundException("not found"));
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/game/1")).andReturn();
@@ -118,7 +115,7 @@ class GameControllerTest {
                 "      \"username\":\"John Smith\"\n" +
                 "   },\n" +
                 "   \"guest\": null,\n" +
-        "   \"gameStatus\":\"OPEN\"\n" +
+                "   \"gameStatus\":\"OPEN\"\n" +
                 "}";
 
         verify(gameService).createGame((PlayerDTO) playerDTOCapture.capture(), (String) lobbyNameCapture.capture());
@@ -188,7 +185,7 @@ class GameControllerTest {
     }
 
     @Test
-    void joinGame_shouldThrowBadRequestException() throws Exception{
+    void joinGame_shouldThrowBadRequestException() throws Exception {
         doThrow(new BadRequestException("")).when(gameService).joinGame(any(Long.class), any(PlayerDTO.class));
 
         MvcResult result = performPatch("/join/1");
@@ -198,7 +195,7 @@ class GameControllerTest {
     }
 
     @Test
-    void joinGame_shouldThrowNotFoundException() throws Exception{
+    void joinGame_shouldThrowNotFoundException() throws Exception {
         doThrow(new NotFoundException("not found")).when(gameService).joinGame(any(Long.class), any(PlayerDTO.class));
 
         MvcResult result = performPatch("/join/1");
@@ -218,7 +215,7 @@ class GameControllerTest {
     }
 
     @Test
-    void leaveGame_shouldThrowBadRequestException() throws Exception{
+    void leaveGame_shouldThrowBadRequestException() throws Exception {
         doThrow(new BadRequestException("bad request")).when(gameService).leaveGame(any(Long.class), any(PlayerDTO.class));
 
         MvcResult result = performPatch("/leave/1");
@@ -228,7 +225,7 @@ class GameControllerTest {
     }
 
     @Test
-    void leaveGame_shouldThrowNotFoundException() throws Exception{
+    void leaveGame_shouldThrowNotFoundException() throws Exception {
         doThrow(new NotFoundException("not found")).when(gameService).leaveGame(any(Long.class), any(PlayerDTO.class));
 
         MvcResult result = performPatch("/leave/1");
