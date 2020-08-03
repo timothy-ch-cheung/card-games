@@ -41,9 +41,6 @@ public class GameController {
 
     @PostMapping(path = "/create")
     public ResponseEntity<GameDTO> createGame(@RequestBody CreateLobbyDTO createLobbyDTO) {
-        if (createLobbyDTO == null) {
-            throw new BadRequestException("Lobby name or Host not supplied");
-        }
         Game game = gameService.createGame(createLobbyDTO.getHost(), createLobbyDTO.getLobbyName());
         return ResponseEntity.ok(convertToDto(game));
     }

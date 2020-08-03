@@ -235,6 +235,16 @@ class GameServiceTest {
     }
 
     @Test
+    void leaveGame_shouldThrowNotFoundExceptionWhenDTONull() {
+        when(gameRepository.findByGameId(1L)).thenReturn(null);
+
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            gameService.leaveGame(1L, null);
+        });
+        assertThat(exception.getMessage(), is("Game with id 1 does not exist"));
+    }
+
+    @Test
     void leaveGame_shouldThrowBadRequestPlayerNotInGame() {
         PlayerDTO playerDTO = new PlayerDTO("40283481721d87b63500001721d87960", "Janet Smith");
         Player player1 = new Player("40283481721d879601721d87b6350000", "John Smith");

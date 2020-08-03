@@ -47,6 +47,17 @@ class PlayerServiceTest {
         verify(playerRepository).save(any());
     }
 
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = {" ", "   ", "\t", "\n"})
+    void createPlayer_shouldThrowExceptionWhenEmptyUsername(String blankUsername) {
+        playerDTO.setUsername(blankUsername);
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            playerService.createPlayer(null);
+        });
+        assertThat(exception.getMessage(), is("Username must not be null or empty"));
+    }
+
     @Test
     void createPlayer_shouldThrowExceptionWhenNullDTO() {
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
