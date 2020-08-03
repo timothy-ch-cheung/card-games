@@ -4,7 +4,6 @@ import com.cheung.tim.server.domain.Game;
 import com.cheung.tim.server.dto.CreateLobbyDTO;
 import com.cheung.tim.server.dto.GameDTO;
 import com.cheung.tim.server.dto.PlayerDTO;
-import com.cheung.tim.server.exception.BadRequestException;
 import com.cheung.tim.server.service.GameService;
 import com.cheung.tim.server.service.PlayerService;
 import org.modelmapper.ModelMapper;
@@ -41,9 +40,6 @@ public class GameController {
 
     @PostMapping(path = "/create")
     public ResponseEntity<GameDTO> createGame(@RequestBody CreateLobbyDTO createLobbyDTO) {
-        if (createLobbyDTO == null) {
-            throw new BadRequestException("Lobby name or Host not supplied");
-        }
         Game game = gameService.createGame(createLobbyDTO.getHost(), createLobbyDTO.getLobbyName());
         return ResponseEntity.ok(convertToDto(game));
     }

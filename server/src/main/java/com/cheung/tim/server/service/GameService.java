@@ -55,7 +55,7 @@ public class GameService {
         }
         Game game = gameRepository.findByGameId(gameId);
         if (game == null) {
-            throw new NotFoundException(String.format("Game with id %s does not exist", gameId));
+            throw new NotFoundException(String.format(GAME_NOT_EXIST, gameId));
         } else if (game.getPlayer2() != null) {
             throw new BadRequestException(String.format("Game with id %s is already full", gameId));
         }
@@ -67,7 +67,7 @@ public class GameService {
     public void leaveGame(Long gameId, PlayerDTO playerDTO) {
         Game game = gameRepository.findByGameId(gameId);
         if (game == null) {
-            throw new NotFoundException(String.format("Game with id %s does not exist", gameId));
+            throw new NotFoundException(String.format(GAME_NOT_EXIST, gameId));
         }
 
         if (game.getPlayer1() != null && game.getPlayer1().equalDTO(playerDTO)) {

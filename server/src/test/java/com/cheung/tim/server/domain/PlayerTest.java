@@ -66,6 +66,11 @@ class PlayerTest {
         assertThat(player.equalDTO(dto), is(false));
     }
 
+    @Test
+    void equalDTO_returnsFalseForNullDTO() {
+        assertThat(player.equalDTO(null), is(false));
+    }
+
     private Player createPlayer() {
         return new Player("11111111111111111111111111111111", "John");
     }
