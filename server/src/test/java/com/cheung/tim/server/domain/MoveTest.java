@@ -66,7 +66,7 @@ class MoveTest {
     }
 
     @Test
-    void equals_returnsFalseForMoveWithMoveId() throws Exception {
+    void equals_returnsFalseForDifferentMoveId() throws Exception {
         Move otherMove = createMove();
         FieldUtils.writeField(otherMove, "moveId", new Long(999), true);
         assertThat(move.equals(otherMove), is(false));

@@ -236,8 +236,6 @@ class GameServiceTest {
 
     @Test
     void leaveGame_shouldThrowNotFoundExceptionWhenDTONull() {
-        when(gameRepository.findByGameId(1L)).thenReturn(null);
-
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
             gameService.leaveGame(1L, null);
         });

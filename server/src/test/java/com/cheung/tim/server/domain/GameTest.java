@@ -70,7 +70,7 @@ class GameTest {
     }
 
     @Test
-    void equals_returnsFalseForGameId() throws Exception {
+    void equals_returnsFalseForDifferentGameId() throws Exception {
         Game otherGame = createGame();
         FieldUtils.writeField(otherGame, "gameId", new Long(999), true);
         assertThat(game.equals(otherGame), is(false));
