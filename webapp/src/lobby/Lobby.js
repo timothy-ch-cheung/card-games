@@ -27,7 +27,6 @@ function Lobby(props) {
     const [game, setGame] = useState({});
     const history = useHistory();
     const dispatch = useDispatch();
-    const [leaveText, setLeaveText] = useState("Leave Lobby");
 
     useEffect(() => {
         const getGame = () => {
@@ -50,7 +49,6 @@ function Lobby(props) {
     }, [gameId, history, props]);
 
     const onLeaveGame = () => {
-        setLeaveText("Leave Lobby");
         API.patch(`/leave/${gameId}`, {
             id: userId
         }).then(function (response) {

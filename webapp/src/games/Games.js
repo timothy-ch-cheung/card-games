@@ -10,6 +10,7 @@ import {setGame} from "../actions";
 import {useHistory} from "react-router-dom";
 import '../App.css';
 import Spinner from "react-bootstrap/Spinner";
+import NumberPicker from "../components/number-picker/NumberPicker";
 
 const Divider = styled.div`
 border-bottom: 1px solid grey;
