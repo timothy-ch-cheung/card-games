@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import API from "../API";
 import {useHistory} from "react-router-dom";
-import {resetGame} from "../actions";
+import {resetGame, resetGameMode, resetPlayer} from "../actions";
 import PlayerList from "../components/player-list/PlayerList";
 import LobbySettings from "../components/lobby-settings/LobbySettings";
 
@@ -23,6 +23,7 @@ function getHost(game) {
 function Lobby(props) {
     const gameId = useSelector(state => state.game);
     const userId = useSelector(state => state.user);
+    const gameMode = useSelector(state => state.gameMode);
     const [game, setGame] = useState({});
     const history = useHistory();
     const dispatch = useDispatch();
@@ -54,6 +55,7 @@ function Lobby(props) {
             id: userId
         }).then(function (response) {
             dispatch(resetGame());
+            dispatch(resetGameMode());
             history.push('/games/public');
         }).catch(function (error) {
             console.log(error);
@@ -64,7 +66,7 @@ function Lobby(props) {
         <div style={{display:"flex"}}>
             <PlayerList players={[{name: getHost(game), isHost: true}, {name: getGuest(game), isHost: false}]}
                         onLeave={onLeaveGame}/>
-            <LobbySettings/>
+            <LobbySettings gameMode={gameMode}/>
         </div>
     );
 

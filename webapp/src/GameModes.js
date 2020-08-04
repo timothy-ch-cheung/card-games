@@ -1,6 +1,5 @@
 export default {
-    matchTwo: {
-        name: "Match Two",
+    "Match Two": {
         minPlayers: 2,
         maxPlayers: 4,
         rounds: {
@@ -9,7 +8,7 @@ export default {
         },
         enabled: true
     },
-    choicePoker: {
+    "Choice Poker": {
         name: "Choice Poker",
         minPlayers: 2,
         maxPlayers: 6,

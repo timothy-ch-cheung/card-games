@@ -23,3 +23,17 @@ export const resetGame = () => {
         type: 'RESET_GAME'
     }
 }
+
+export const setGameMode = value => {
+    return {
+        type: 'SET_GAME_MODE',
+        payload: value
+    }
+}
+
+export const resetGameMode = () => {
+    return {
+        type: 'RESET_GAME_MODE'
+    }
+}
+

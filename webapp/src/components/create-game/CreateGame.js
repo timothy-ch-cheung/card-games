@@ -5,11 +5,9 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {useDispatch, useSelector} from "react-redux";
 import API from "../../API";
-import {setGame, setPlayer} from "../../actions";
+import {setGame, setGameMode, setPlayer} from "../../actions";
 import {useHistory} from "react-router-dom";
 import GameModes from "../../GameModes";
-import Dropdown from "react-bootstrap/Dropdown";
-import {isBlank} from "../../Util";
 
 function NicknameInput() {
 
@@ -54,7 +52,8 @@ function CreateGame(props) {
         const form = e.currentTarget;
         const valid = form.checkValidity();
 
-        let validGameMode = Object.entries(GameModes).map(([key, val]) => val.name).includes(e.target.gameMode.value);
+        let gameMode = e.target.gameMode.value;
+        let validGameMode = Object.keys(GameModes).includes(gameMode);
 
         if (valid === false || !validGameMode) {
             e.stopPropagation();
@@ -71,6 +70,7 @@ function CreateGame(props) {
                 username: e.target.nickname.value
             }).then(function (response) {
                 dispatch(setPlayer(response.data.id));
+                dispatch(setGameMode(gameMode));
                 createGame(lobbyName, response.data.id)
             }).catch(function (error) {
                 console.log(error);
@@ -80,17 +80,16 @@ function CreateGame(props) {
         props.onClose();
     };
 
-    const gamesList = Object.entries(GameModes).map(([key,val]) => val);
+    const gamesList = Object.keys(GameModes);
 
     const renderGameMode = (game, index) => {
-        if(game.enabled) {
+        if (GameModes[game].enabled) {
             return (
-                <option key={index}>{game.name}</option>
+                <option key={index}>{game}</option>
             );
-        }
-        else{
+        } else {
             return (
-                <option disabled key={index}>{game.name} (not yet available)</option>
+                <option disabled key={index}>{game} (not yet available)</option>
             );
         }
     }
@@ -142,7 +141,7 @@ function CreateGame(props) {
                             <Form.Label>Lobby Name</Form.Label>
                             <Form.Control required type="text" placeholder="Lobby name" name="lobbyName"/>
                             <Form.Label>Game Mode</Form.Label>
-                            <Form.Control required as="select"  name="gameMode" defaultValue="Select">
+                            <Form.Control required as="select" name="gameMode" defaultValue="Select">
                                 <option key={'Select...'} value={''}>Select...</option>
                                 {gamesList.map(renderGameMode)}
                             </Form.Control>
