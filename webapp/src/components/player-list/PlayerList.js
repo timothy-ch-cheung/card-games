@@ -2,7 +2,7 @@ import React from 'react';
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
-import {isBlank} from "../../Util";
+import {isBlank} from "../../common/Util";
 
 function Player(props) {
     let text = props.isHost ? props.name + " 👑" : props.name;
