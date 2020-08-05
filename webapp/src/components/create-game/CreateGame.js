@@ -8,6 +8,7 @@ import API from "../../API";
 import {setGame, setGameMode, setPlayer} from "../../actions";
 import {useHistory} from "react-router-dom";
 import GameModes from "../../GameModes";
+import NumberPicker from "../number-picker/NumberPicker";
 
 function NicknameInput() {
 
@@ -20,10 +21,11 @@ function NicknameInput() {
 }
 
 function CreateGame(props) {
-
+    const [numPlayers, setNumPlayers] = useState(2);
     const [validated, setValidated] = useState(false);
     const dispatch = useDispatch();
     const userId = useSelector(state => state.user);
+    const gameMode = useSelector(state => state.gameMode);
     const history = useHistory();
 
     const onClose = e => {
@@ -52,8 +54,8 @@ function CreateGame(props) {
         const form = e.currentTarget;
         const valid = form.checkValidity();
 
-        let gameMode = e.target.gameMode.value;
-        let validGameMode = Object.keys(GameModes).includes(gameMode);
+        let submitGameMode = e.target.gameMode.value;
+        let validGameMode = Object.keys(GameModes).includes(submitGameMode);
 
         if (valid === false || !validGameMode) {
             e.stopPropagation();
@@ -70,7 +72,7 @@ function CreateGame(props) {
                 username: e.target.nickname.value
             }).then(function (response) {
                 dispatch(setPlayer(response.data.id));
-                dispatch(setGameMode(gameMode));
+                dispatch(setGameMode(submitGameMode));
                 createGame(lobbyName, response.data.id)
             }).catch(function (error) {
                 console.log(error);
@@ -79,6 +81,18 @@ function CreateGame(props) {
         setValidated(false);
         props.onClose();
     };
+
+    const decrease = () => {
+        if (GameModes[gameMode] && numPlayers > GameModes[gameMode].minPlayers) {
+            setNumPlayers(numPlayers - 1);
+        }
+    }
+
+    const increase = () => {
+        if (GameModes[gameMode] && numPlayers < GameModes[gameMode].maxPlayers) {
+            setNumPlayers(numPlayers + 1);
+        }
+    }
 
     const gamesList = Object.keys(GameModes);
 
@@ -92,6 +106,11 @@ function CreateGame(props) {
                 <option disabled key={index}>{game} (not yet available)</option>
             );
         }
+    }
+
+    const onGameModeChange = e => {
+        console.log(e)
+        dispatch(setGameMode(e.target.value));
     }
 
     if (props.show) {
@@ -141,10 +160,14 @@ function CreateGame(props) {
                             <Form.Label>Lobby Name</Form.Label>
                             <Form.Control required type="text" placeholder="Lobby name" name="lobbyName"/>
                             <Form.Label>Game Mode</Form.Label>
-                            <Form.Control required as="select" name="gameMode" defaultValue="Select">
+                            <Form.Control required as="select" name="gameMode" defaultValue="Select"
+                                          onChange={onGameModeChange}>
                                 <option key={'Select...'} value={''}>Select...</option>
                                 {gamesList.map(renderGameMode)}
                             </Form.Control>
+                            <Form.Label>Number of players</Form.Label>
+                            <NumberPicker value={numPlayers} onIncrease={increase} onDecrease={decrease}
+                                          name={"numPlayers"}/>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={onClose}>Close</Button>

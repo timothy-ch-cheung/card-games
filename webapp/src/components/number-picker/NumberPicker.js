@@ -5,26 +5,16 @@ import Button from "react-bootstrap/Button";
 
 function NumberPicker(props) {
     const largeFont = {fontSize: "1.5rem", padding: "0rem 0.75rem", width: "40px"}
-    props.setValue(props.minValue);
-
-
-    const decrease = () => {
-        //props.setValue(props.value - props.step)
-    }
-
-    const increase = () => {
-        //props.setValue(props.value + props.step)
-    }
 
     return (
         <InputGroup style={{width: "150px"}}>
             <InputGroup.Prepend>
-                <Button variant="info" style={largeFont} onClick={decrease}>-</Button>
+                <Button variant="info" style={largeFont} onClick={props.onDecrease}>-</Button>
             </InputGroup.Prepend>
-            <FormControl className="number-picker" disabled={true}
+            <FormControl className="number-picker" disabled={true} name={props.name}
                          style={{backgroundColor: "#fff", textAlign: "center"}} value={props.value}/>
             <InputGroup.Append>
-                <Button variant="info" style={largeFont} onClick={increase}>+</Button>
+                <Button variant="info" style={largeFont} onClick={props.onIncrease}>+</Button>
             </InputGroup.Append>
         </InputGroup>
     );
