@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TEST SUITE NumberPicker:  Matches LobbySettings snapshot 1`] = `
+<Card
+  body={false}
+  style={
+    Object {
+      "margin": "10px",
+      "width": "35%",
+    }
+  }
+>
+  <CardHeader>
+    Game: 
+    <Component />
+  </CardHeader>
+  <CardBody
+    style={
+      Object {
+        "height": "400px",
+        "overflowY": "auto",
+        "padding": "5px 5px",
+      }
+    }
+  >
+    <Form
+      inline={false}
+      noValidate={true}
+      onSubmit={[Function]}
+      validated={false}
+    >
+      <RoundPicker />
+    </Form>
+  </CardBody>
+  <CardBody
+    style={
+      Object {
+        "borderTop": "1px solid #dfdfdf",
+        "padding": "10px",
+      }
+    }
+  >
+    <Button
+      active={false}
+      disabled={false}
+      type="submit"
+      variant="info"
+    >
+      Start
+    </Button>
+  </CardBody>
+</Card>
+`;
+
+exports[`TEST SUITE NumberPicker:  Matches LobbySettings snapshot 2`] = `
+<Card
+  body={false}
+  style={
+    Object {
+      "margin": "10px",
+      "width": "35%",
+    }
+  }
+>
+  <CardHeader>
+    Game: 
+    <Component />
+  </CardHeader>
+  <CardBody
+    style={
+      Object {
+        "height": "400px",
+        "overflowY": "auto",
+        "padding": "5px 5px",
+      }
+    }
+  >
+    <Form
+      inline={false}
+      noValidate={true}
+      onSubmit={[Function]}
+      validated={false}
+    >
+      <RoundPicker />
+    </Form>
+  </CardBody>
+  <CardBody
+    style={
+      Object {
+        "borderTop": "1px solid #dfdfdf",
+        "padding": "10px",
+      }
+    }
+  >
+    <Button
+      active={false}
+      disabled={false}
+      type="submit"
+      variant="info"
+    >
+      Start
+    </Button>
+  </CardBody>
+</Card>
+`;

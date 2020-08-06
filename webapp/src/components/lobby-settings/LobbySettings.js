@@ -1,14 +1,20 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Card from "react-bootstrap/Card";
 import NumberPicker from "../number-picker/NumberPicker";
 import GameModes from "../../GameModes";
 import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 function LobbySettings(props) {
     const MAX_ROUNDS_MULTIPLIER = 4;
     const [validated, setValidated] = useState(false);
 
-    const getStep = (stepType) => {
+    const getStep = (game) => {
+        if (!game) {
+            return;
+        }
+
+        let stepType = game.roundIncrement
         switch (stepType) {
             case "ONE":
                 return 1;
@@ -35,19 +41,53 @@ function LobbySettings(props) {
         props.onClose();
     };
 
-    let step = getStep(GameModes[props.gameMode].rounds.increment)
-    const [rounds, setRounds] = useState(step);
+    let step = getStep(GameModes[props.gameMode])
+    const [rounds, setRounds] = useState(1);
+    const [totalRounds, setTotalRounds] = useState(step);
+
+    const calculateTotalRounds = (step, rounds) => {
+        return step * rounds;
+    }
 
     const decrease = () => {
-        if (GameModes[props.gameMode] && rounds > step) {
-            setRounds(rounds - step);
+        if (GameModes[props.gameMode] && totalRounds > step) {
+            setRounds(rounds - 1);
         }
     }
 
     const increase = () => {
-        if (GameModes[props.gameMode] && rounds < (step * MAX_ROUNDS_MULTIPLIER)) {
-            setRounds(rounds + step);
+        if (GameModes[props.gameMode] && totalRounds < (step * MAX_ROUNDS_MULTIPLIER)) {
+            setRounds(rounds + 1);
         }
+    }
+
+    useEffect(() => {
+        setTotalRounds(calculateTotalRounds(step, rounds))
+    }, [rounds])
+
+    const isSingleRoundIncrement = () => {
+        if (!GameModes[props.gameMode]) {
+            return 1;
+        } else {
+            return "ONE" === GameModes[props.gameMode].roundIncrement
+        }
+    }
+
+    const RoundPicker = () => {
+        return (
+            <div style={{display: "flex"}}>
+                <div style={{marginRight: "5px"}}>
+                    <Form.Label>{isSingleRoundIncrement() ? "Rounds" : "Stages"}</Form.Label>
+                    <NumberPicker value={rounds} onIncrease={increase} onDecrease={decrease}
+                                  name={"numRounds"}/>
+                </div>
+                <div style={isSingleRoundIncrement() ? {display: "none"} : {display: "visible"}}>
+                    <Form.Label>Rounds</Form.Label>
+                    <Form.Control required type="text" name="totalRounds" disabled value={totalRounds}
+                                  style={{backgroundColor: "#fff", textAlign: "center", width: "80px"}}/>
+                </div>
+            </div>
+        );
     }
 
     return (
@@ -55,10 +95,11 @@ function LobbySettings(props) {
             <Card.Header>Game: {props.gameMode}</Card.Header>
             <Card.Body style={{padding: "5px 5px", height: "400px", overflowY: "auto"}}>
                 <Form noValidate validated={validated} onSubmit={submitHandler}>
-                    <Form.Label>Rounds</Form.Label>
-                    <NumberPicker value={rounds} onIncrease={increase} onDecrease={decrease}
-                                  name={"numRounds"}/>
+                    <RoundPicker/>
                 </Form>
+            </Card.Body>
+            <Card.Body style={{borderTop: "1px solid #dfdfdf", padding: "10px"}}>
+                <Button variant="info" type="submit">Start</Button>
             </Card.Body>
         </Card>
     );
