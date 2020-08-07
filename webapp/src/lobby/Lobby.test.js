@@ -8,7 +8,7 @@ import {Provider} from "react-redux";
 configure({adapter: new Adapter()});
 
 const mockStore = configureStore([]);
-let store = mockStore({});
+let store = mockStore({gameMode: "Match Two"});
 
 test('Matches Lobby snapshot', () => {
     const tree = mount(<Provider store={store}><Lobby/></Provider>);

@@ -35,10 +35,9 @@ function LobbySettings(props) {
         }
 
         let numRounds = e.target.numRounds.value;
-        console.log("Rounds: " + numRounds);
 
         setValidated(false);
-        props.onClose();
+        props.onSubmit();
     };
 
     let step = getStep(GameModes[props.gameMode])
@@ -79,12 +78,13 @@ function LobbySettings(props) {
                 <div style={{marginRight: "5px"}}>
                     <Form.Label>{isSingleRoundIncrement() ? "Rounds" : "Stages"}</Form.Label>
                     <NumberPicker value={rounds} onIncrease={increase} onDecrease={decrease}
-                                  name={"numRounds"}/>
+                                  name={"numRounds"} data-test={'round-number-picker'}/>
                 </div>
                 <div style={isSingleRoundIncrement() ? {display: "none"} : {display: "visible"}}>
                     <Form.Label>Rounds</Form.Label>
                     <Form.Control required type="text" name="totalRounds" disabled value={totalRounds}
-                                  style={{backgroundColor: "#fff", textAlign: "center", width: "80px"}}/>
+                                  style={{backgroundColor: "#fff", textAlign: "center", width: "80px"}}
+                                  data-test="round-number-text"/>
                 </div>
             </div>
         );
@@ -94,12 +94,12 @@ function LobbySettings(props) {
         <Card style={{width: "35%", margin: "10px"}}>
             <Card.Header>Game: {props.gameMode}</Card.Header>
             <Card.Body style={{padding: "5px 5px", height: "400px", overflowY: "auto"}}>
-                <Form noValidate validated={validated} onSubmit={submitHandler}>
+                <Form noValidate validated={validated} onSubmit={submitHandler} data-test={'lobby-settings-form'}>
                     <RoundPicker/>
                 </Form>
             </Card.Body>
             <Card.Body style={{borderTop: "1px solid #dfdfdf", padding: "10px"}}>
-                <Button variant="info" type="submit">Start</Button>
+                <Button variant="info" type="submit" data-test={"start-game-btn"}>Start</Button>
             </Card.Body>
         </Card>
     );

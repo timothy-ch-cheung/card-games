@@ -132,6 +132,7 @@ exports[`Matches Lobby snapshot 1`] = `
         </Card>
       </PlayerList>
       <LobbySettings
+        gameMode="Match Two"
         numPlayers={2}
       >
         <Card
@@ -157,6 +158,7 @@ exports[`Matches Lobby snapshot 1`] = `
                 className="card-header"
               >
                 Game: 
+                Match Two
               </div>
             </CardHeader>
             <CardBody
@@ -179,6 +181,7 @@ exports[`Matches Lobby snapshot 1`] = `
                 }
               >
                 <Form
+                  data-test="lobby-settings-form"
                   inline={false}
                   noValidate={true}
                   onSubmit={[Function]}
@@ -186,6 +189,7 @@ exports[`Matches Lobby snapshot 1`] = `
                 >
                   <form
                     className=""
+                    data-test="lobby-settings-form"
                     noValidate={true}
                     onSubmit={[Function]}
                   >
@@ -211,10 +215,11 @@ exports[`Matches Lobby snapshot 1`] = `
                             <label
                               className="form-label"
                             >
-                              Rounds
+                              Stages
                             </label>
                           </FormLabel>
                           <NumberPicker
+                            data-test="round-number-picker"
                             name="numRounds"
                             onDecrease={[Function]}
                             onIncrease={[Function]}
@@ -343,7 +348,7 @@ exports[`Matches Lobby snapshot 1`] = `
                         <div
                           style={
                             Object {
-                              "display": "none",
+                              "display": "visible",
                             }
                           }
                         >
@@ -358,6 +363,7 @@ exports[`Matches Lobby snapshot 1`] = `
                             </label>
                           </FormLabel>
                           <FormControl
+                            data-test="round-number-text"
                             disabled={true}
                             name="totalRounds"
                             required={true}
@@ -369,10 +375,11 @@ exports[`Matches Lobby snapshot 1`] = `
                               }
                             }
                             type="text"
-                            value={NaN}
+                            value={2}
                           >
                             <input
                               className="form-control"
+                              data-test="round-number-text"
                               disabled={true}
                               name="totalRounds"
                               required={true}
@@ -384,7 +391,7 @@ exports[`Matches Lobby snapshot 1`] = `
                                 }
                               }
                               type="text"
-                              value={NaN}
+                              value={2}
                             />
                           </FormControl>
                         </div>
@@ -413,12 +420,14 @@ exports[`Matches Lobby snapshot 1`] = `
               >
                 <Button
                   active={false}
+                  data-test="start-game-btn"
                   disabled={false}
                   type="submit"
                   variant="info"
                 >
                   <button
                     className="btn btn-info"
+                    data-test="start-game-btn"
                     disabled={false}
                     type="submit"
                   >
