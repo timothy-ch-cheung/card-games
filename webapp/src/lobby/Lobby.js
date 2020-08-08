@@ -7,17 +7,11 @@ import PlayerList from "../components/player-list/PlayerList";
 import LobbySettings from "../components/lobby-settings/LobbySettings";
 
 function getGuest(game) {
-    if (game.guest != null) {
-        return game.guest.username;
-    }
-    return "";
+    return game.guest != null ? game.guest.username : "";
 }
 
 function getHost(game) {
-    if (game.host != null) {
-        return game.host.username;
-    }
-    return "";
+    return game.host != null ? game.host.username : "";
 }
 
 function Lobby(props) {

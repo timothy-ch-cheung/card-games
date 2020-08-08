@@ -8,8 +8,13 @@ configure({adapter: new Adapter()});
 describe("TEST SUITE LobbySettings: ", () => {
     let wrapper;
 
-    test('Matches LobbySettings snapshot', () => {
+    test('Matches LobbySettings snapshot [Match Two]', () => {
         wrapper = shallow(<LobbySettings numPlayers={2} gameModes="Match Two"/>);
+        expect(wrapper).toMatchSnapshot();
+    });
+
+    test('Matches LobbySettings snapshot [Choice Poker]', () => {
+        wrapper = shallow(<LobbySettings numPlayers={2} gameModes="Choice Poker"/>);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -32,10 +37,21 @@ describe("TEST SUITE LobbySettings: ", () => {
             expect(wrapper.find('input[data-test="round-number-text"]').props().value).toEqual(1);
         });
 
-        test('onSubmit function is set', () => {
+        test('onSubmit function is set and called on submit event', () => {
             let submit = jest.fn();
             wrapper = mount(<LobbySettings gameMode={"Match Two"} numPlayers={2} onSubmit={submit}/>);
+            const formEventMocked = {preventDefault: jest.fn(), target: {numRounds: {value: 4}}};
+            wrapper.find('form').simulate('submit', formEventMocked);
             expect(wrapper.props().onSubmit).toEqual(submit);
+            expect(submit).toHaveBeenCalledTimes(1);
+        });
+
+        test('onSubmit function is not called when rounds invalid', () => {
+            let submit = jest.fn();
+            wrapper = mount(<LobbySettings gameMode={"Match Two"} numPlayers={2} onSubmit={submit}/>);
+            const formEventMocked = {preventDefault: jest.fn(), target: {numRounds: {value: undefined}}};
+            wrapper.find('form').simulate('submit', formEventMocked);
+            expect(submit).toHaveBeenCalledTimes(0);
         });
     });
 });

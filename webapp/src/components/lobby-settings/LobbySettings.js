@@ -28,7 +28,7 @@ function LobbySettings(props) {
         const form = e.currentTarget;
         const valid = form.checkValidity();
 
-        if (valid === false) {
+        if (valid === false || !e.target.numRounds.value) {
             e.stopPropagation();
             setValidated(true);
             return;
@@ -65,11 +65,7 @@ function LobbySettings(props) {
     }, [rounds])
 
     const isSingleRoundIncrement = () => {
-        if (!GameModes[props.gameMode]) {
-            return 1;
-        } else {
             return "ONE" === GameModes[props.gameMode].roundIncrement
-        }
     }
 
     const RoundPicker = () => {

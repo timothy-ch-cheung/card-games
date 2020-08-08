@@ -54,7 +54,7 @@ function LobbyCard(props) {
                     <Card.Text>
                         Host: {props.host}
                     </Card.Text>
-                    <Button variant="info" onClick={onJoinGame}>Join Game</Button>
+                    <Button variant="info" onClick={onJoinGame} data-test="join-game-btn">Join Game</Button>
                 </Card.Body>
             </Card>
         </>
