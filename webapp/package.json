@@ -42,6 +42,7 @@
     ]
   },
   "devDependencies": {
+    "axios-mock-adapter": "^1.18.2",
     "enzyme-to-json": "^3.5.0",
     "jest-each": "^26.2.0",
     "react-test-renderer": "^16.13.1",

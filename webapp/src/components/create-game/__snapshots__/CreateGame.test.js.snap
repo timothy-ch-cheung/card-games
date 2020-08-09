@@ -1,3 +1,1290 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Matches CreateGame snapshot 1`] = `null`;
+exports[`TEST SUITE CreateGame:  Matches CreateGame snapshot (hidden) 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <CreateGame
+    show={false}
+  />
+</Provider>
+`;
+
+exports[`TEST SUITE CreateGame:  Matches CreateGame snapshot (visible) 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <CreateGame
+    show={true}
+  >
+    <div>
+      <style
+        type="text/css"
+      >
+        
+                        .modal-header button {
+                           display: none;
+                        }
+                        
+                        .btn-xxl {
+                            font-size: 1.6rem;
+                            border: grey solid 1px;
+                            width: 220px;
+                            margin: 20px 10px 30px;
+                        }
+                        
+                        .left-title {
+                            text-align: left;
+                        }
+                        
+                        @media screen and (max-width: 768px) {
+                            .btn-xxl {
+                                font-size: 1.3rem;
+                                width: 170px;
+                            }
+                        }
+                        
+                        .create-game-modal {
+                            margin-top: 50px;
+                        }
+                        
+                        input[type=text] {
+                            margin-bottom: 5px;
+                        }
+                    
+      </style>
+      <Bootstrap(Modal)
+        className="create-game-modal"
+        show={true}
+      >
+        <Modal
+          animation={true}
+          autoFocus={true}
+          backdrop={true}
+          bsPrefix="modal"
+          className="create-game-modal"
+          dialogAs={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "displayName": "ModalDialog",
+              "render": [Function],
+            }
+          }
+          enforceFocus={true}
+          keyboard={true}
+          restoreFocus={true}
+          show={true}
+        >
+          <Modal
+            autoFocus={true}
+            backdrop={true}
+            backdropTransition={[Function]}
+            className="create-game-modal modal"
+            containerClassName="modal-open"
+            enforceFocus={true}
+            keyboard={true}
+            manager={
+              BootstrapModalManager {
+                "adjustAndStore": [Function],
+                "containers": Array [
+                  <body
+                    class="modal-open"
+                    style="padding-right: 0px;"
+                  >
+                    <div
+                      class="fade modal-backdrop show"
+                    />
+                    <div
+                      aria-modal="true"
+                      class="fade create-game-modal modal show"
+                      role="dialog"
+                      style="display: block;"
+                      tabindex="-1"
+                    >
+                      <div
+                        class="modal-dialog"
+                        role="document"
+                      >
+                        <div
+                          class="modal-content"
+                        >
+                          <div
+                            class="modal-header"
+                          >
+                            <div
+                              class="modal-title h4"
+                            >
+                              Create Game
+                            </div>
+                            <button
+                              class="close"
+                              type="button"
+                            >
+                              <span
+                                aria-hidden="true"
+                              >
+                                ×
+                              </span>
+                              <span
+                                class="sr-only"
+                              >
+                                Close
+                              </span>
+                            </button>
+                          </div>
+                          <form
+                            class=""
+                            novalidate=""
+                          >
+                            <div
+                              class="modal-body"
+                            >
+                              <label
+                                class="form-label"
+                              >
+                                Nickname
+                              </label>
+                              <input
+                                class="form-control"
+                                data-test="nickname-input"
+                                name="nickname"
+                                placeholder="name"
+                                required=""
+                                type="text"
+                              />
+                              <label
+                                class="form-label"
+                              >
+                                Lobby Name
+                              </label>
+                              <input
+                                class="form-control"
+                                data-test="lobby-name-input"
+                                name="lobbyName"
+                                placeholder="Lobby name"
+                                required=""
+                                type="text"
+                              />
+                              <label
+                                class="form-label"
+                              >
+                                Game Mode
+                              </label>
+                              <select
+                                class="form-control"
+                                data-test="game-mode-select"
+                                name="gameMode"
+                                required=""
+                              >
+                                <option
+                                  value=""
+                                >
+                                  Select...
+                                </option>
+                                <option
+                                  value="Match Two"
+                                >
+                                  Match Two
+                                </option>
+                                <option
+                                  disabled=""
+                                  value="Choice Poker"
+                                >
+                                  Choice Poker (not yet available)
+                                </option>
+                              </select>
+                              <label
+                                class="form-label"
+                              >
+                                Number of players
+                              </label>
+                              <div
+                                class="input-group"
+                                style="width: 150px;"
+                              >
+                                <div
+                                  class="input-group-prepend"
+                                >
+                                  <button
+                                    class="btn btn-info"
+                                    data-test="numPlayers-minus-btn"
+                                    style="font-size: 1.5rem; padding: 0rem 0.75rem; width: 40px;"
+                                    type="button"
+                                  >
+                                    -
+                                  </button>
+                                </div>
+                                <input
+                                  class="number-picker form-control"
+                                  data-test="numPlayers-value"
+                                  disabled=""
+                                  name="numPlayers"
+                                  style="background-color: rgb(255, 255, 255); text-align: center;"
+                                  value="2"
+                                />
+                                <div
+                                  class="input-group-append"
+                                >
+                                  <button
+                                    class="btn btn-info"
+                                    data-test="numPlayers-plus-btn"
+                                    style="font-size: 1.5rem; padding: 0rem 0.75rem; width: 40px;"
+                                    type="button"
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="modal-footer"
+                            >
+                              <button
+                                class="btn btn-secondary"
+                                data-test="close-create-game-btn"
+                                type="button"
+                              >
+                                Close
+                              </button>
+                              <button
+                                class="btn btn-info"
+                                data-test="submit-create-game-btn"
+                                type="submit"
+                              >
+                                Create
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </body>,
+                ],
+                "data": Array [
+                  Object {
+                    "classes": Array [
+                      "modal-open",
+                    ],
+                    "modals": Array [
+                      Object {
+                        "add": [Function],
+                        "backdrop": <div
+                          class="fade modal-backdrop show"
+                        />,
+                        "dialog": <div
+                          aria-modal="true"
+                          class="fade create-game-modal modal show"
+                          role="dialog"
+                          style="display: block;"
+                          tabindex="-1"
+                        >
+                          <div
+                            class="modal-dialog"
+                            role="document"
+                          >
+                            <div
+                              class="modal-content"
+                            >
+                              <div
+                                class="modal-header"
+                              >
+                                <div
+                                  class="modal-title h4"
+                                >
+                                  Create Game
+                                </div>
+                                <button
+                                  class="close"
+                                  type="button"
+                                >
+                                  <span
+                                    aria-hidden="true"
+                                  >
+                                    ×
+                                  </span>
+                                  <span
+                                    class="sr-only"
+                                  >
+                                    Close
+                                  </span>
+                                </button>
+                              </div>
+                              <form
+                                class=""
+                                novalidate=""
+                              >
+                                <div
+                                  class="modal-body"
+                                >
+                                  <label
+                                    class="form-label"
+                                  >
+                                    Nickname
+                                  </label>
+                                  <input
+                                    class="form-control"
+                                    data-test="nickname-input"
+                                    name="nickname"
+                                    placeholder="name"
+                                    required=""
+                                    type="text"
+                                  />
+                                  <label
+                                    class="form-label"
+                                  >
+                                    Lobby Name
+                                  </label>
+                                  <input
+                                    class="form-control"
+                                    data-test="lobby-name-input"
+                                    name="lobbyName"
+                                    placeholder="Lobby name"
+                                    required=""
+                                    type="text"
+                                  />
+                                  <label
+                                    class="form-label"
+                                  >
+                                    Game Mode
+                                  </label>
+                                  <select
+                                    class="form-control"
+                                    data-test="game-mode-select"
+                                    name="gameMode"
+                                    required=""
+                                  >
+                                    <option
+                                      value=""
+                                    >
+                                      Select...
+                                    </option>
+                                    <option
+                                      value="Match Two"
+                                    >
+                                      Match Two
+                                    </option>
+                                    <option
+                                      disabled=""
+                                      value="Choice Poker"
+                                    >
+                                      Choice Poker (not yet available)
+                                    </option>
+                                  </select>
+                                  <label
+                                    class="form-label"
+                                  >
+                                    Number of players
+                                  </label>
+                                  <div
+                                    class="input-group"
+                                    style="width: 150px;"
+                                  >
+                                    <div
+                                      class="input-group-prepend"
+                                    >
+                                      <button
+                                        class="btn btn-info"
+                                        data-test="numPlayers-minus-btn"
+                                        style="font-size: 1.5rem; padding: 0rem 0.75rem; width: 40px;"
+                                        type="button"
+                                      >
+                                        -
+                                      </button>
+                                    </div>
+                                    <input
+                                      class="number-picker form-control"
+                                      data-test="numPlayers-value"
+                                      disabled=""
+                                      name="numPlayers"
+                                      style="background-color: rgb(255, 255, 255); text-align: center;"
+                                      value="2"
+                                    />
+                                    <div
+                                      class="input-group-append"
+                                    >
+                                      <button
+                                        class="btn btn-info"
+                                        data-test="numPlayers-plus-btn"
+                                        style="font-size: 1.5rem; padding: 0rem 0.75rem; width: 40px;"
+                                        type="button"
+                                      >
+                                        +
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div
+                                  class="modal-footer"
+                                >
+                                  <button
+                                    class="btn btn-secondary"
+                                    data-test="close-create-game-btn"
+                                    type="button"
+                                  >
+                                    Close
+                                  </button>
+                                  <button
+                                    class="btn btn-info"
+                                    data-test="submit-create-game-btn"
+                                    type="submit"
+                                  >
+                                    Create
+                                  </button>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>,
+                        "isTopModal": [Function],
+                        "remove": [Function],
+                        "setBackdropRef": [Function],
+                        "setDialogRef": [Function],
+                      },
+                    ],
+                    "overflowing": true,
+                    "style": Object {
+                      "overflow": "",
+                      "paddingRight": "",
+                    },
+                  },
+                ],
+                "handleContainerOverflow": true,
+                "hideSiblingNodes": true,
+                "modals": Array [
+                  Object {
+                    "add": [Function],
+                    "backdrop": <div
+                      class="fade modal-backdrop show"
+                    />,
+                    "dialog": <div
+                      aria-modal="true"
+                      class="fade create-game-modal modal show"
+                      role="dialog"
+                      style="display: block;"
+                      tabindex="-1"
+                    >
+                      <div
+                        class="modal-dialog"
+                        role="document"
+                      >
+                        <div
+                          class="modal-content"
+                        >
+                          <div
+                            class="modal-header"
+                          >
+                            <div
+                              class="modal-title h4"
+                            >
+                              Create Game
+                            </div>
+                            <button
+                              class="close"
+                              type="button"
+                            >
+                              <span
+                                aria-hidden="true"
+                              >
+                                ×
+                              </span>
+                              <span
+                                class="sr-only"
+                              >
+                                Close
+                              </span>
+                            </button>
+                          </div>
+                          <form
+                            class=""
+                            novalidate=""
+                          >
+                            <div
+                              class="modal-body"
+                            >
+                              <label
+                                class="form-label"
+                              >
+                                Nickname
+                              </label>
+                              <input
+                                class="form-control"
+                                data-test="nickname-input"
+                                name="nickname"
+                                placeholder="name"
+                                required=""
+                                type="text"
+                              />
+                              <label
+                                class="form-label"
+                              >
+                                Lobby Name
+                              </label>
+                              <input
+                                class="form-control"
+                                data-test="lobby-name-input"
+                                name="lobbyName"
+                                placeholder="Lobby name"
+                                required=""
+                                type="text"
+                              />
+                              <label
+                                class="form-label"
+                              >
+                                Game Mode
+                              </label>
+                              <select
+                                class="form-control"
+                                data-test="game-mode-select"
+                                name="gameMode"
+                                required=""
+                              >
+                                <option
+                                  value=""
+                                >
+                                  Select...
+                                </option>
+                                <option
+                                  value="Match Two"
+                                >
+                                  Match Two
+                                </option>
+                                <option
+                                  disabled=""
+                                  value="Choice Poker"
+                                >
+                                  Choice Poker (not yet available)
+                                </option>
+                              </select>
+                              <label
+                                class="form-label"
+                              >
+                                Number of players
+                              </label>
+                              <div
+                                class="input-group"
+                                style="width: 150px;"
+                              >
+                                <div
+                                  class="input-group-prepend"
+                                >
+                                  <button
+                                    class="btn btn-info"
+                                    data-test="numPlayers-minus-btn"
+                                    style="font-size: 1.5rem; padding: 0rem 0.75rem; width: 40px;"
+                                    type="button"
+                                  >
+                                    -
+                                  </button>
+                                </div>
+                                <input
+                                  class="number-picker form-control"
+                                  data-test="numPlayers-value"
+                                  disabled=""
+                                  name="numPlayers"
+                                  style="background-color: rgb(255, 255, 255); text-align: center;"
+                                  value="2"
+                                />
+                                <div
+                                  class="input-group-append"
+                                >
+                                  <button
+                                    class="btn btn-info"
+                                    data-test="numPlayers-plus-btn"
+                                    style="font-size: 1.5rem; padding: 0rem 0.75rem; width: 40px;"
+                                    type="button"
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="modal-footer"
+                            >
+                              <button
+                                class="btn btn-secondary"
+                                data-test="close-create-game-btn"
+                                type="button"
+                              >
+                                Close
+                              </button>
+                              <button
+                                class="btn btn-info"
+                                data-test="submit-create-game-btn"
+                                type="submit"
+                              >
+                                Create
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>,
+                    "isTopModal": [Function],
+                    "remove": [Function],
+                    "setBackdropRef": [Function],
+                    "setDialogRef": [Function],
+                  },
+                ],
+                "restore": [Function],
+                "scrollbarSize": 0,
+              }
+            }
+            onClick={[Function]}
+            onEnter={[Function]}
+            onEntering={[Function]}
+            onExited={[Function]}
+            onMouseUp={[Function]}
+            renderBackdrop={[Function]}
+            restoreFocus={true}
+            show={true}
+            style={
+              Object {
+                "paddingLeft": undefined,
+                "paddingRight": undefined,
+              }
+            }
+            transition={[Function]}
+          >
+            <Portal
+              containerInfo={
+                <body
+                  class="modal-open"
+                  style="padding-right: 0px;"
+                >
+                  <div
+                    class="fade modal-backdrop show"
+                  />
+                  <div
+                    aria-modal="true"
+                    class="fade create-game-modal modal show"
+                    role="dialog"
+                    style="display: block;"
+                    tabindex="-1"
+                  >
+                    <div
+                      class="modal-dialog"
+                      role="document"
+                    >
+                      <div
+                        class="modal-content"
+                      >
+                        <div
+                          class="modal-header"
+                        >
+                          <div
+                            class="modal-title h4"
+                          >
+                            Create Game
+                          </div>
+                          <button
+                            class="close"
+                            type="button"
+                          >
+                            <span
+                              aria-hidden="true"
+                            >
+                              ×
+                            </span>
+                            <span
+                              class="sr-only"
+                            >
+                              Close
+                            </span>
+                          </button>
+                        </div>
+                        <form
+                          class=""
+                          novalidate=""
+                        >
+                          <div
+                            class="modal-body"
+                          >
+                            <label
+                              class="form-label"
+                            >
+                              Nickname
+                            </label>
+                            <input
+                              class="form-control"
+                              data-test="nickname-input"
+                              name="nickname"
+                              placeholder="name"
+                              required=""
+                              type="text"
+                            />
+                            <label
+                              class="form-label"
+                            >
+                              Lobby Name
+                            </label>
+                            <input
+                              class="form-control"
+                              data-test="lobby-name-input"
+                              name="lobbyName"
+                              placeholder="Lobby name"
+                              required=""
+                              type="text"
+                            />
+                            <label
+                              class="form-label"
+                            >
+                              Game Mode
+                            </label>
+                            <select
+                              class="form-control"
+                              data-test="game-mode-select"
+                              name="gameMode"
+                              required=""
+                            >
+                              <option
+                                value=""
+                              >
+                                Select...
+                              </option>
+                              <option
+                                value="Match Two"
+                              >
+                                Match Two
+                              </option>
+                              <option
+                                disabled=""
+                                value="Choice Poker"
+                              >
+                                Choice Poker (not yet available)
+                              </option>
+                            </select>
+                            <label
+                              class="form-label"
+                            >
+                              Number of players
+                            </label>
+                            <div
+                              class="input-group"
+                              style="width: 150px;"
+                            >
+                              <div
+                                class="input-group-prepend"
+                              >
+                                <button
+                                  class="btn btn-info"
+                                  data-test="numPlayers-minus-btn"
+                                  style="font-size: 1.5rem; padding: 0rem 0.75rem; width: 40px;"
+                                  type="button"
+                                >
+                                  -
+                                </button>
+                              </div>
+                              <input
+                                class="number-picker form-control"
+                                data-test="numPlayers-value"
+                                disabled=""
+                                name="numPlayers"
+                                style="background-color: rgb(255, 255, 255); text-align: center;"
+                                value="2"
+                              />
+                              <div
+                                class="input-group-append"
+                              >
+                                <button
+                                  class="btn btn-info"
+                                  data-test="numPlayers-plus-btn"
+                                  style="font-size: 1.5rem; padding: 0rem 0.75rem; width: 40px;"
+                                  type="button"
+                                >
+                                  +
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="modal-footer"
+                          >
+                            <button
+                              class="btn btn-secondary"
+                              data-test="close-create-game-btn"
+                              type="button"
+                            >
+                              Close
+                            </button>
+                            <button
+                              class="btn btn-info"
+                              data-test="submit-create-game-btn"
+                              type="submit"
+                            >
+                              Create
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </body>
+              }
+            >
+              <BackdropTransition
+                appear={true}
+                in={true}
+              >
+                <Fade
+                  appear={true}
+                  in={true}
+                  mountOnEnter={false}
+                  timeout={300}
+                  unmountOnExit={false}
+                >
+                  <Transition
+                    addEndListener={[Function]}
+                    appear={true}
+                    enter={true}
+                    exit={true}
+                    in={true}
+                    mountOnEnter={false}
+                    onEnter={[Function]}
+                    onEntered={[Function]}
+                    onEntering={[Function]}
+                    onExit={[Function]}
+                    onExited={[Function]}
+                    onExiting={[Function]}
+                    timeout={300}
+                    unmountOnExit={false}
+                  >
+                    <div
+                      className="fade modal-backdrop show"
+                      onClick={[Function]}
+                    />
+                  </Transition>
+                </Fade>
+              </BackdropTransition>
+              <DialogTransition
+                appear={true}
+                in={true}
+                onEnter={[Function]}
+                onEntering={[Function]}
+                onExited={[Function]}
+                unmountOnExit={true}
+              >
+                <Fade
+                  appear={true}
+                  in={true}
+                  mountOnEnter={false}
+                  onEnter={[Function]}
+                  onEntering={[Function]}
+                  onExited={[Function]}
+                  timeout={300}
+                  unmountOnExit={true}
+                >
+                  <Transition
+                    addEndListener={[Function]}
+                    appear={true}
+                    enter={true}
+                    exit={true}
+                    in={true}
+                    mountOnEnter={false}
+                    onEnter={[Function]}
+                    onEntered={[Function]}
+                    onEntering={[Function]}
+                    onExit={[Function]}
+                    onExited={[Function]}
+                    onExiting={[Function]}
+                    timeout={300}
+                    unmountOnExit={true}
+                  >
+                    <div
+                      aria-modal={true}
+                      className="fade create-game-modal modal show"
+                      onClick={[Function]}
+                      onMouseUp={[Function]}
+                      role="dialog"
+                      style={
+                        Object {
+                          "paddingLeft": undefined,
+                          "paddingRight": undefined,
+                        }
+                      }
+                      tabIndex={-1}
+                    >
+                      <ModalDialog
+                        onMouseDown={[Function]}
+                        role="document"
+                      >
+                        <div
+                          className="modal-dialog"
+                          onMouseDown={[Function]}
+                          role="document"
+                        >
+                          <div
+                            className="modal-content"
+                          >
+                            <ModalHeader
+                              closeButton={true}
+                              closeLabel="Close"
+                            >
+                              <div
+                                className="modal-header"
+                              >
+                                <ModalTitle>
+                                  <ForwardRef
+                                    className="modal-title"
+                                  >
+                                    <div
+                                      className="modal-title h4"
+                                    >
+                                      Create Game
+                                    </div>
+                                  </ForwardRef>
+                                </ModalTitle>
+                                <CloseButton
+                                  label="Close"
+                                  onClick={[Function]}
+                                >
+                                  <button
+                                    className="close"
+                                    onClick={[Function]}
+                                    type="button"
+                                  >
+                                    <span
+                                      aria-hidden="true"
+                                    >
+                                      ×
+                                    </span>
+                                    <span
+                                      className="sr-only"
+                                    >
+                                      Close
+                                    </span>
+                                  </button>
+                                </CloseButton>
+                              </div>
+                            </ModalHeader>
+                            <Form
+                              inline={false}
+                              noValidate={true}
+                              onSubmit={[Function]}
+                              validated={false}
+                            >
+                              <form
+                                className=""
+                                noValidate={true}
+                                onSubmit={[Function]}
+                              >
+                                <ModalBody>
+                                  <div
+                                    className="modal-body"
+                                  >
+                                    <NicknameInput>
+                                      <FormLabel
+                                        column={false}
+                                        srOnly={false}
+                                      >
+                                        <label
+                                          className="form-label"
+                                        >
+                                          Nickname
+                                        </label>
+                                      </FormLabel>
+                                      <FormControl
+                                        data-test="nickname-input"
+                                        name="nickname"
+                                        placeholder="name"
+                                        required={true}
+                                        type="text"
+                                      >
+                                        <input
+                                          className="form-control"
+                                          data-test="nickname-input"
+                                          name="nickname"
+                                          placeholder="name"
+                                          required={true}
+                                          type="text"
+                                        />
+                                      </FormControl>
+                                    </NicknameInput>
+                                    <FormLabel
+                                      column={false}
+                                      srOnly={false}
+                                    >
+                                      <label
+                                        className="form-label"
+                                      >
+                                        Lobby Name
+                                      </label>
+                                    </FormLabel>
+                                    <FormControl
+                                      data-test="lobby-name-input"
+                                      name="lobbyName"
+                                      placeholder="Lobby name"
+                                      required={true}
+                                      type="text"
+                                    >
+                                      <input
+                                        className="form-control"
+                                        data-test="lobby-name-input"
+                                        name="lobbyName"
+                                        placeholder="Lobby name"
+                                        required={true}
+                                        type="text"
+                                      />
+                                    </FormControl>
+                                    <FormLabel
+                                      column={false}
+                                      srOnly={false}
+                                    >
+                                      <label
+                                        className="form-label"
+                                      >
+                                        Game Mode
+                                      </label>
+                                    </FormLabel>
+                                    <FormControl
+                                      as="select"
+                                      data-test="game-mode-select"
+                                      defaultValue="Select"
+                                      name="gameMode"
+                                      onChange={[Function]}
+                                      required={true}
+                                    >
+                                      <select
+                                        className="form-control"
+                                        data-test="game-mode-select"
+                                        defaultValue="Select"
+                                        name="gameMode"
+                                        onChange={[Function]}
+                                        required={true}
+                                      >
+                                        <option
+                                          key="Select..."
+                                          value=""
+                                        >
+                                          Select...
+                                        </option>
+                                        <option
+                                          key="0"
+                                          value="Match Two"
+                                        >
+                                          Match Two
+                                        </option>
+                                        <option
+                                          disabled={true}
+                                          key="1"
+                                          value="Choice Poker"
+                                        >
+                                          Choice Poker
+                                           (not yet available)
+                                        </option>
+                                      </select>
+                                    </FormControl>
+                                    <FormLabel
+                                      column={false}
+                                      srOnly={false}
+                                    >
+                                      <label
+                                        className="form-label"
+                                      >
+                                        Number of players
+                                      </label>
+                                    </FormLabel>
+                                    <NumberPicker
+                                      name="numPlayers"
+                                      onDecrease={[Function]}
+                                      onIncrease={[Function]}
+                                      value={2}
+                                    >
+                                      <InputGroup
+                                        style={
+                                          Object {
+                                            "width": "150px",
+                                          }
+                                        }
+                                      >
+                                        <div
+                                          className="input-group"
+                                          style={
+                                            Object {
+                                              "width": "150px",
+                                            }
+                                          }
+                                        >
+                                          <InputGroupPrepend>
+                                            <div
+                                              className="input-group-prepend"
+                                            >
+                                              <Button
+                                                active={false}
+                                                data-test="numPlayers-minus-btn"
+                                                disabled={false}
+                                                onClick={[Function]}
+                                                style={
+                                                  Object {
+                                                    "fontSize": "1.5rem",
+                                                    "padding": "0rem 0.75rem",
+                                                    "width": "40px",
+                                                  }
+                                                }
+                                                type="button"
+                                                variant="info"
+                                              >
+                                                <button
+                                                  className="btn btn-info"
+                                                  data-test="numPlayers-minus-btn"
+                                                  disabled={false}
+                                                  onClick={[Function]}
+                                                  style={
+                                                    Object {
+                                                      "fontSize": "1.5rem",
+                                                      "padding": "0rem 0.75rem",
+                                                      "width": "40px",
+                                                    }
+                                                  }
+                                                  type="button"
+                                                >
+                                                  -
+                                                </button>
+                                              </Button>
+                                            </div>
+                                          </InputGroupPrepend>
+                                          <FormControl
+                                            className="number-picker"
+                                            data-test="numPlayers-value"
+                                            disabled={true}
+                                            name="numPlayers"
+                                            style={
+                                              Object {
+                                                "backgroundColor": "#fff",
+                                                "textAlign": "center",
+                                              }
+                                            }
+                                            value={2}
+                                          >
+                                            <input
+                                              className="number-picker form-control"
+                                              data-test="numPlayers-value"
+                                              disabled={true}
+                                              name="numPlayers"
+                                              style={
+                                                Object {
+                                                  "backgroundColor": "#fff",
+                                                  "textAlign": "center",
+                                                }
+                                              }
+                                              value={2}
+                                            />
+                                          </FormControl>
+                                          <InputGroupAppend>
+                                            <div
+                                              className="input-group-append"
+                                            >
+                                              <Button
+                                                active={false}
+                                                data-test="numPlayers-plus-btn"
+                                                disabled={false}
+                                                onClick={[Function]}
+                                                style={
+                                                  Object {
+                                                    "fontSize": "1.5rem",
+                                                    "padding": "0rem 0.75rem",
+                                                    "width": "40px",
+                                                  }
+                                                }
+                                                type="button"
+                                                variant="info"
+                                              >
+                                                <button
+                                                  className="btn btn-info"
+                                                  data-test="numPlayers-plus-btn"
+                                                  disabled={false}
+                                                  onClick={[Function]}
+                                                  style={
+                                                    Object {
+                                                      "fontSize": "1.5rem",
+                                                      "padding": "0rem 0.75rem",
+                                                      "width": "40px",
+                                                    }
+                                                  }
+                                                  type="button"
+                                                >
+                                                  +
+                                                </button>
+                                              </Button>
+                                            </div>
+                                          </InputGroupAppend>
+                                        </div>
+                                      </InputGroup>
+                                    </NumberPicker>
+                                  </div>
+                                </ModalBody>
+                                <ModalFooter>
+                                  <div
+                                    className="modal-footer"
+                                  >
+                                    <Button
+                                      active={false}
+                                      data-test="close-create-game-btn"
+                                      disabled={false}
+                                      onClick={[Function]}
+                                      type="button"
+                                      variant="secondary"
+                                    >
+                                      <button
+                                        className="btn btn-secondary"
+                                        data-test="close-create-game-btn"
+                                        disabled={false}
+                                        onClick={[Function]}
+                                        type="button"
+                                      >
+                                        Close
+                                      </button>
+                                    </Button>
+                                    <Button
+                                      active={false}
+                                      data-test="submit-create-game-btn"
+                                      disabled={false}
+                                      type="submit"
+                                      variant="info"
+                                    >
+                                      <button
+                                        className="btn btn-info"
+                                        data-test="submit-create-game-btn"
+                                        disabled={false}
+                                        type="submit"
+                                      >
+                                        Create
+                                      </button>
+                                    </Button>
+                                  </div>
+                                </ModalFooter>
+                              </form>
+                            </Form>
+                          </div>
+                        </div>
+                      </ModalDialog>
+                    </div>
+                  </Transition>
+                </Fade>
+              </DialogTransition>
+            </Portal>
+          </Modal>
+        </Modal>
+      </Bootstrap(Modal)>
+    </div>
+  </CreateGame>
+</Provider>
+`;

@@ -280,6 +280,7 @@ exports[`Matches Lobby snapshot 1`] = `
                                 </InputGroupPrepend>
                                 <FormControl
                                   className="number-picker"
+                                  data-test="numRounds-value"
                                   disabled={true}
                                   name="numRounds"
                                   style={
@@ -292,6 +293,7 @@ exports[`Matches Lobby snapshot 1`] = `
                                 >
                                   <input
                                     className="number-picker form-control"
+                                    data-test="numRounds-value"
                                     disabled={true}
                                     name="numRounds"
                                     style={

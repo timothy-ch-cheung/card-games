@@ -11,21 +11,20 @@ import GameModes from "../../GameModes";
 import NumberPicker from "../number-picker/NumberPicker";
 
 function NicknameInput() {
-
     const userId = useSelector(state => state.user);
     if (userId != null) {
         return null;
     }
-    return <><Form.Label>Nickname</Form.Label><Form.Control required type="text" placeholder="name"
-                                                            name="nickname"/></>;
+    return <><Form.Label>Nickname</Form.Label><Form.Control required type="text" placeholder="name" name="nickname"
+                                                            data-test="nickname-input"/></>;
 }
 
 function CreateGame(props) {
-    const [numPlayers, setNumPlayers] = useState(2);
     const [validated, setValidated] = useState(false);
     const dispatch = useDispatch();
     const userId = useSelector(state => state.user);
     const gameMode = useSelector(state => state.gameMode);
+    const [numPlayers, setNumPlayers] = useState(GameModes[gameMode].minPlayers);
     const history = useHistory();
 
     const onClose = e => {
@@ -72,12 +71,12 @@ function CreateGame(props) {
                 username: e.target.nickname.value
             }).then(function (response) {
                 dispatch(setPlayer(response.data.id));
-                dispatch(setGameMode(submitGameMode));
                 createGame(lobbyName, response.data.id)
             }).catch(function (error) {
                 console.log(error);
             });
         }
+        dispatch(setGameMode(submitGameMode));
         setValidated(false);
         props.onClose();
     };
@@ -99,17 +98,16 @@ function CreateGame(props) {
     const renderGameMode = (game, index) => {
         if (GameModes[game].enabled) {
             return (
-                <option key={index}>{game}</option>
+                <option key={index} value={game}>{game}</option>
             );
         } else {
             return (
-                <option disabled key={index}>{game} (not yet available)</option>
+                <option disabled key={index} value={game}>{game} (not yet available)</option>
             );
         }
     }
 
     const onGameModeChange = e => {
-        console.log(e)
         dispatch(setGameMode(e.target.value));
     }
 
@@ -158,10 +156,11 @@ function CreateGame(props) {
                         <Modal.Body>
                             <NicknameInput/>
                             <Form.Label>Lobby Name</Form.Label>
-                            <Form.Control required type="text" placeholder="Lobby name" name="lobbyName"/>
+                            <Form.Control required type="text" placeholder="Lobby name" name="lobbyName"
+                                          data-test="lobby-name-input"/>
                             <Form.Label>Game Mode</Form.Label>
                             <Form.Control required as="select" name="gameMode" defaultValue="Select"
-                                          onChange={onGameModeChange}>
+                                          onChange={onGameModeChange} data-test="game-mode-select">
                                 <option key={'Select...'} value={''}>Select...</option>
                                 {gamesList.map(renderGameMode)}
                             </Form.Control>
@@ -170,8 +169,9 @@ function CreateGame(props) {
                                           name={"numPlayers"}/>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button variant="secondary" onClick={onClose}>Close</Button>
-                            <Button type="submit" variant="info">Create</Button>
+                            <Button variant="secondary" onClick={onClose}
+                                    data-test="close-create-game-btn">Close</Button>
+                            <Button type="submit" variant="info" data-test="submit-create-game-btn">Create</Button>
                         </Modal.Footer>
                     </Form>
                 </Modal>

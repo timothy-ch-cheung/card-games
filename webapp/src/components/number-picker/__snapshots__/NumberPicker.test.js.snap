@@ -29,6 +29,7 @@ exports[`TEST SUITE NumberPicker:  Matches PlayerList snapshot 1`] = `
   </InputGroupPrepend>
   <FormControl
     className="number-picker"
+    data-test="number-value"
     disabled={true}
     name="number"
     style={
