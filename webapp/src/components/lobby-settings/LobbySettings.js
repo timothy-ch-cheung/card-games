@@ -20,6 +20,8 @@ function LobbySettings(props) {
                 return 1;
             case "PLAYER_COUNT":
                 return props.numPlayers;
+            default:
+                return undefined;
         }
     };
 
@@ -33,8 +35,6 @@ function LobbySettings(props) {
             setValidated(true);
             return;
         }
-
-        let numRounds = e.target.numRounds.value;
 
         setValidated(false);
         props.onSubmit();
@@ -62,10 +62,10 @@ function LobbySettings(props) {
 
     useEffect(() => {
         setTotalRounds(calculateTotalRounds(step, rounds))
-    }, [rounds])
+    }, [step, rounds])
 
     const isSingleRoundIncrement = () => {
-            return "ONE" === GameModes[props.gameMode].roundIncrement
+        return "ONE" === GameModes[props.gameMode].roundIncrement
     }
 
     const RoundPicker = () => {
