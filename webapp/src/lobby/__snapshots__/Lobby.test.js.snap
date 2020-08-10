@@ -218,7 +218,7 @@ exports[`TEST SUITE Lobby:  Matches Lobby snapshot 1`] = `
                             <label
                               className="form-label"
                             >
-                              Stages
+                              Rounds
                             </label>
                           </FormLabel>
                           <NumberPicker
@@ -353,7 +353,7 @@ exports[`TEST SUITE Lobby:  Matches Lobby snapshot 1`] = `
                         <div
                           style={
                             Object {
-                              "display": "visible",
+                              "display": "none",
                             }
                           }
                         >
