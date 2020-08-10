@@ -8,7 +8,7 @@ function Player(props) {
     let text = props.isHost ? props.name + " 👑" : props.name;
 
     return (
-        <p style={{marginBottom: "0"}}>{text}</p>
+        <p data-test={props.dataTest} style={{marginBottom: "0"}}>{text}</p>
     );
 }
 
@@ -17,10 +17,11 @@ function PlayerList(props) {
 
     const renderPlayer = (card, index) => {
         if (!isBlank(card.name)) {
+            const testFlag = "player" + index + "-name"
             return (
                 <tr key={index}>
                     <td style={{padding: "5px"}}><Player name={card.name} isHost={card.isHost} key={index}
-                                                         data-test={"player" + index + "-name"}/></td>
+                                                         dataTest={"player" + index + "-name"}/></td>
                 </tr>);
         }
         return null;

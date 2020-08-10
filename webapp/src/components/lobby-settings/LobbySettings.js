@@ -8,6 +8,13 @@ import Button from "react-bootstrap/Button";
 function LobbySettings(props) {
     const MAX_ROUNDS_MULTIPLIER = 4;
     const [validated, setValidated] = useState(false);
+    let isSingleRoundIncrement;
+
+    useEffect(() => {
+        if (GameModes[props.gameMode]) {
+            isSingleRoundIncrement = GameModes[props.gameMode].roundIncrement;
+        }
+    }, [])
 
     const getStep = (game) => {
         if (!game) {
@@ -64,19 +71,15 @@ function LobbySettings(props) {
         setTotalRounds(calculateTotalRounds(step, rounds))
     }, [step, rounds])
 
-    const isSingleRoundIncrement = () => {
-        return "ONE" === GameModes[props.gameMode].roundIncrement
-    }
-
     const RoundPicker = () => {
         return (
             <div style={{display: "flex"}}>
                 <div style={{marginRight: "5px"}}>
-                    <Form.Label>{isSingleRoundIncrement() ? "Rounds" : "Stages"}</Form.Label>
+                    <Form.Label>{isSingleRoundIncrement ? "Rounds" : "Stages"}</Form.Label>
                     <NumberPicker value={rounds} onIncrease={increase} onDecrease={decrease}
                                   name={"numRounds"} data-test={'round-number-picker'}/>
                 </div>
-                <div style={isSingleRoundIncrement() ? {display: "none"} : {display: "visible"}}>
+                <div style={isSingleRoundIncrement ? {display: "none"} : {display: "visible"}}>
                     <Form.Label>Rounds</Form.Label>
                     <Form.Control required type="text" name="totalRounds" disabled value={totalRounds}
                                   style={{backgroundColor: "#fff", textAlign: "center", width: "80px"}}
