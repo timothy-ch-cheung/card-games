@@ -24,7 +24,8 @@ function Lobby(props) {
 
     useEffect(() => {
         const getGame = () => {
-            API.get(`/game/${gameId}`).then(function (response) {
+            API.get(`/game/${gameId}`
+            ).then(function (response) {
                 setGame(response.data);
             }).catch(function (error) {
                 props.onShowError(error.response.data.message);

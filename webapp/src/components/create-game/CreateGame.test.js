@@ -5,6 +5,7 @@ import configureStore from 'redux-mock-store';
 import {configure, mount} from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import API from "../../API";
+import {flushPromises} from "../../common/Util";
 
 configure({adapter: new Adapter()});
 
@@ -54,10 +55,10 @@ describe("TEST SUITE CreateGame: ", () => {
     });
 
     describe('Form submit tests - ', () => {
-        const flushPromises = () => new Promise(resolve => setTimeout(resolve))
         let wrapper;
 
         beforeEach(() => {
+            mockAPI.reset();
             wrapper = mount(
                 <Provider store={store}>
                     <CreateGame show={true}/>
@@ -68,6 +69,7 @@ describe("TEST SUITE CreateGame: ", () => {
         afterEach(() => {
             store.clearActions();
             mockAPI.resetHistory();
+            mockAPI.reset();
         });
 
         test('plus/minus buttons change rounds by player count within max/min limit of 2 and 4', () => {

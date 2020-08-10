@@ -37,7 +37,8 @@ function PlayerList(props) {
                 </Table>
             </Card.Body>
             <Card.Body style={{borderTop: "1px solid #dfdfdf", padding: "10px"}}>
-                <Button variant="info" className="leave-game" onClick={props.onLeave}>Leave</Button>
+                <Button variant="info" className="leave-game" onClick={props.onLeave}
+                        data-test="leave-game-btn">Leave</Button>
             </Card.Body>
 
         </Card>

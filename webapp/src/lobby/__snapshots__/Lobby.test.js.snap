@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Matches Lobby snapshot 1`] = `
+exports[`TEST SUITE Lobby:  Matches Lobby snapshot 1`] = `
 <Provider
+  onShowError={[MockFunction]}
   store={
     Object {
       "clearActions": [Function],
@@ -112,6 +113,7 @@ exports[`Matches Lobby snapshot 1`] = `
                 <Button
                   active={false}
                   className="leave-game"
+                  data-test="leave-game-btn"
                   disabled={false}
                   onClick={[Function]}
                   type="button"
@@ -119,6 +121,7 @@ exports[`Matches Lobby snapshot 1`] = `
                 >
                   <button
                     className="leave-game btn btn-info"
+                    data-test="leave-game-btn"
                     disabled={false}
                     onClick={[Function]}
                     type="button"

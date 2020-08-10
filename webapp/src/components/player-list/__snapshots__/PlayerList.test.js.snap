@@ -148,12 +148,14 @@ exports[`TEST SUITE PlayerList:  Matches PlayerList snapshot 1`] = `
           <Button
             active={false}
             className="leave-game"
+            data-test="leave-game-btn"
             disabled={false}
             type="button"
             variant="info"
           >
             <button
               className="leave-game btn btn-info"
+              data-test="leave-game-btn"
               disabled={false}
               type="button"
             >
