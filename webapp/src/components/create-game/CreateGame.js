@@ -24,7 +24,7 @@ function CreateGame(props) {
     const dispatch = useDispatch();
     const userId = useSelector(state => state.user);
     const gameMode = useSelector(state => state.gameMode);
-    const [numPlayers, setNumPlayers] = useState(GameModes[gameMode].minPlayers);
+    const [numPlayers, setNumPlayers] = useState(GameModes[gameMode] ? GameModes[gameMode].minPlayers : undefined);
     const history = useHistory();
 
     const onClose = e => {
@@ -109,6 +109,7 @@ function CreateGame(props) {
 
     const onGameModeChange = e => {
         dispatch(setGameMode(e.target.value));
+        setNumPlayers(GameModes[e.target.value].minPlayers);
     }
 
     if (props.show) {

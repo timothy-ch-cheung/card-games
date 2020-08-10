@@ -96,6 +96,7 @@ describe("TEST SUITE CreateGame: ", () => {
             let actions = store.getActions();
             expect(actions.length).toBe(1);
             expect(actions[0]).toEqual({"type": "SET_GAME_MODE", "payload": "Match Two"});
+            expect(wrapper.find('input[data-test="numPlayers-value"]').props().value).toEqual(2);
         });
 
         test('POST /player AND /create when userId is null', async () => {
