@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Matches Lobby snapshot 1`] = `
+exports[`TEST SUITE Lobby:  Matches Lobby snapshot 1`] = `
 <Provider
+  onShowError={[MockFunction]}
   store={
     Object {
       "clearActions": [Function],
@@ -14,67 +15,435 @@ exports[`Matches Lobby snapshot 1`] = `
   }
 >
   <Lobby>
-    <div>
-      <style
-        type="text/css"
+    <div
+      style={
+        Object {
+          "display": "flex",
+        }
+      }
+    >
+      <PlayerList
+        onLeave={[Function]}
+        players={
+          Array [
+            Object {
+              "isHost": true,
+              "name": "",
+            },
+            Object {
+              "isHost": false,
+              "name": "",
+            },
+          ]
+        }
       >
-        
-                    .lobby-banner {
-                        margin: 10px;
-                        height: 30px;
-                    }
-                    
-                    .host {
-                        display: inline;
-                        float: left;
-                        min-width: 10%;
-                    }
-                    
-                    .guest {
-                        display: inline;
-                        float: right;
-                        min-width: 10%;
-                    }
-                    
-                    .leave-game {
-                        position: absolute;
-                        bottom: 0;
-                        left: 0;
-                        margin: 10px;
-                    }
-                
-      </style>
-      <div
-        className="lobby-banner"
+        <Card
+          body={false}
+          style={
+            Object {
+              "margin": "10px",
+              "width": "35%",
+            }
+          }
+        >
+          <div
+            className="card"
+            style={
+              Object {
+                "margin": "10px",
+                "width": "35%",
+              }
+            }
+          >
+            <CardHeader>
+              <div
+                className="card-header"
+              >
+                Lobby
+              </div>
+            </CardHeader>
+            <CardBody
+              style={
+                Object {
+                  "height": "400px",
+                  "overflowY": "auto",
+                  "padding": "5px 5px",
+                }
+              }
+            >
+              <div
+                className="card-body"
+                style={
+                  Object {
+                    "height": "400px",
+                    "overflowY": "auto",
+                    "padding": "5px 5px",
+                  }
+                }
+              >
+                <ForwardRef
+                  borderless={true}
+                  variant="light"
+                >
+                  <table
+                    className="table table-light table-borderless"
+                  >
+                    <tbody />
+                  </table>
+                </ForwardRef>
+              </div>
+            </CardBody>
+            <CardBody
+              style={
+                Object {
+                  "borderTop": "1px solid #dfdfdf",
+                  "padding": "10px",
+                }
+              }
+            >
+              <div
+                className="card-body"
+                style={
+                  Object {
+                    "borderTop": "1px solid #dfdfdf",
+                    "padding": "10px",
+                  }
+                }
+              >
+                <Button
+                  active={false}
+                  className="leave-game"
+                  data-test="leave-game-btn"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                  variant="info"
+                >
+                  <button
+                    className="leave-game btn btn-info"
+                    data-test="leave-game-btn"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Leave
+                  </button>
+                </Button>
+              </div>
+            </CardBody>
+          </div>
+        </Card>
+      </PlayerList>
+      <LobbySettings
+        gameMode="Match Two"
+        numPlayers={2}
       >
-        <h3
-          className="host"
+        <Card
+          body={false}
+          style={
+            Object {
+              "margin": "10px",
+              "width": "35%",
+            }
+          }
         >
-          HOST: 
-        </h3>
-        <h3
-          className="guest"
-        >
-          GUEST: 
-        </h3>
-      </div>
-      <Button
-        active={false}
-        className="leave-game"
-        disabled={false}
-        onClick={[Function]}
-        type="button"
-        variant="info"
-      >
-        <button
-          className="leave-game btn btn-info"
-          disabled={false}
-          onClick={[Function]}
-          type="button"
-        >
-          Leave Lobby
-        </button>
-      </Button>
+          <div
+            className="card"
+            style={
+              Object {
+                "margin": "10px",
+                "width": "35%",
+              }
+            }
+          >
+            <CardHeader>
+              <div
+                className="card-header"
+              >
+                Game: 
+                Match Two
+              </div>
+            </CardHeader>
+            <CardBody
+              style={
+                Object {
+                  "height": "400px",
+                  "overflowY": "auto",
+                  "padding": "5px 5px",
+                }
+              }
+            >
+              <div
+                className="card-body"
+                style={
+                  Object {
+                    "height": "400px",
+                    "overflowY": "auto",
+                    "padding": "5px 5px",
+                  }
+                }
+              >
+                <Form
+                  data-test="lobby-settings-form"
+                  inline={false}
+                  noValidate={true}
+                  onSubmit={[Function]}
+                  validated={false}
+                >
+                  <form
+                    className=""
+                    data-test="lobby-settings-form"
+                    noValidate={true}
+                    onSubmit={[Function]}
+                  >
+                    <RoundPicker>
+                      <div
+                        style={
+                          Object {
+                            "display": "flex",
+                          }
+                        }
+                      >
+                        <div
+                          style={
+                            Object {
+                              "marginRight": "5px",
+                            }
+                          }
+                        >
+                          <FormLabel
+                            column={false}
+                            srOnly={false}
+                          >
+                            <label
+                              className="form-label"
+                            >
+                              Rounds
+                            </label>
+                          </FormLabel>
+                          <NumberPicker
+                            data-test="round-number-picker"
+                            name="numRounds"
+                            onDecrease={[Function]}
+                            onIncrease={[Function]}
+                            value={1}
+                          >
+                            <InputGroup
+                              style={
+                                Object {
+                                  "width": "150px",
+                                }
+                              }
+                            >
+                              <div
+                                className="input-group"
+                                style={
+                                  Object {
+                                    "width": "150px",
+                                  }
+                                }
+                              >
+                                <InputGroupPrepend>
+                                  <div
+                                    className="input-group-prepend"
+                                  >
+                                    <Button
+                                      active={false}
+                                      data-test="numRounds-minus-btn"
+                                      disabled={false}
+                                      onClick={[Function]}
+                                      style={
+                                        Object {
+                                          "fontSize": "1.5rem",
+                                          "padding": "0rem 0.75rem",
+                                          "width": "40px",
+                                        }
+                                      }
+                                      type="button"
+                                      variant="info"
+                                    >
+                                      <button
+                                        className="btn btn-info"
+                                        data-test="numRounds-minus-btn"
+                                        disabled={false}
+                                        onClick={[Function]}
+                                        style={
+                                          Object {
+                                            "fontSize": "1.5rem",
+                                            "padding": "0rem 0.75rem",
+                                            "width": "40px",
+                                          }
+                                        }
+                                        type="button"
+                                      >
+                                        -
+                                      </button>
+                                    </Button>
+                                  </div>
+                                </InputGroupPrepend>
+                                <FormControl
+                                  className="number-picker"
+                                  data-test="numRounds-value"
+                                  disabled={true}
+                                  name="numRounds"
+                                  style={
+                                    Object {
+                                      "backgroundColor": "#fff",
+                                      "textAlign": "center",
+                                    }
+                                  }
+                                  value={1}
+                                >
+                                  <input
+                                    className="number-picker form-control"
+                                    data-test="numRounds-value"
+                                    disabled={true}
+                                    name="numRounds"
+                                    style={
+                                      Object {
+                                        "backgroundColor": "#fff",
+                                        "textAlign": "center",
+                                      }
+                                    }
+                                    value={1}
+                                  />
+                                </FormControl>
+                                <InputGroupAppend>
+                                  <div
+                                    className="input-group-append"
+                                  >
+                                    <Button
+                                      active={false}
+                                      data-test="numRounds-plus-btn"
+                                      disabled={false}
+                                      onClick={[Function]}
+                                      style={
+                                        Object {
+                                          "fontSize": "1.5rem",
+                                          "padding": "0rem 0.75rem",
+                                          "width": "40px",
+                                        }
+                                      }
+                                      type="button"
+                                      variant="info"
+                                    >
+                                      <button
+                                        className="btn btn-info"
+                                        data-test="numRounds-plus-btn"
+                                        disabled={false}
+                                        onClick={[Function]}
+                                        style={
+                                          Object {
+                                            "fontSize": "1.5rem",
+                                            "padding": "0rem 0.75rem",
+                                            "width": "40px",
+                                          }
+                                        }
+                                        type="button"
+                                      >
+                                        +
+                                      </button>
+                                    </Button>
+                                  </div>
+                                </InputGroupAppend>
+                              </div>
+                            </InputGroup>
+                          </NumberPicker>
+                        </div>
+                        <div
+                          style={
+                            Object {
+                              "display": "none",
+                            }
+                          }
+                        >
+                          <FormLabel
+                            column={false}
+                            srOnly={false}
+                          >
+                            <label
+                              className="form-label"
+                            >
+                              Rounds
+                            </label>
+                          </FormLabel>
+                          <FormControl
+                            data-test="round-number-text"
+                            disabled={true}
+                            name="totalRounds"
+                            required={true}
+                            style={
+                              Object {
+                                "backgroundColor": "#fff",
+                                "textAlign": "center",
+                                "width": "80px",
+                              }
+                            }
+                            type="text"
+                            value={2}
+                          >
+                            <input
+                              className="form-control"
+                              data-test="round-number-text"
+                              disabled={true}
+                              name="totalRounds"
+                              required={true}
+                              style={
+                                Object {
+                                  "backgroundColor": "#fff",
+                                  "textAlign": "center",
+                                  "width": "80px",
+                                }
+                              }
+                              type="text"
+                              value={2}
+                            />
+                          </FormControl>
+                        </div>
+                      </div>
+                    </RoundPicker>
+                  </form>
+                </Form>
+              </div>
+            </CardBody>
+            <CardBody
+              style={
+                Object {
+                  "borderTop": "1px solid #dfdfdf",
+                  "padding": "10px",
+                }
+              }
+            >
+              <div
+                className="card-body"
+                style={
+                  Object {
+                    "borderTop": "1px solid #dfdfdf",
+                    "padding": "10px",
+                  }
+                }
+              >
+                <Button
+                  active={false}
+                  data-test="start-game-btn"
+                  disabled={false}
+                  type="submit"
+                  variant="info"
+                >
+                  <button
+                    className="btn btn-info"
+                    data-test="start-game-btn"
+                    disabled={false}
+                    type="submit"
+                  >
+                    Start
+                  </button>
+                </Button>
+              </div>
+            </CardBody>
+          </div>
+        </Card>
+      </LobbySettings>
     </div>
   </Lobby>
 </Provider>

@@ -77,11 +77,12 @@ function Games() {
         }).then(function () {
             let currentTime = new Date();
             let timeElapsed = currentTime - startTime;
-            if(timeElapsed > 500) {
+            if (timeElapsed > 500) {
                 setShowRefreshSpinner(false);
-            }
-            else {
-                setTimeout(function() {setShowRefreshSpinner(false);}, 500 - timeElapsed);
+            } else {
+                setTimeout(function () {
+                    setShowRefreshSpinner(false);
+                }, 500 - timeElapsed);
             }
         })
     }

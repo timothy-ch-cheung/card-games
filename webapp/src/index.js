@@ -34,9 +34,21 @@ const gameReducer = (state = null, action) => {
     }
 }
 
+const gameModeReducer = (state = null, action) => {
+    switch (action.type) {
+        case 'SET_GAME_MODE':
+            return action.payload;
+        case 'RESET_GAME_MODE':
+            return null;
+        default:
+            return state;
+    }
+}
+
 const allReducers = combineReducers({
     user: userReducer,
-    game: gameReducer
+    game: gameReducer,
+    gameMode: gameModeReducer
 })
 
 const store = createStore(allReducers);

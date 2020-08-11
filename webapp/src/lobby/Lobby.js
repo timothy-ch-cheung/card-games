@@ -1,35 +1,31 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import API from "../API";
-import Button from "react-bootstrap/Button";
 import {useHistory} from "react-router-dom";
-import {resetGame} from "../actions";
+import {resetGame, resetGameMode} from "../actions";
+import PlayerList from "../components/player-list/PlayerList";
+import LobbySettings from "../components/lobby-settings/LobbySettings";
 
 function getGuest(game) {
-    if (game.guest != null) {
-        return game.guest.username;
-    }
-    return "";
+    return game.guest != null ? game.guest.username : "";
 }
 
 function getHost(game) {
-    if (game.host != null) {
-        return game.host.username;
-    }
-    return "";
+    return game.host != null ? game.host.username : "";
 }
 
 function Lobby(props) {
     const gameId = useSelector(state => state.game);
     const userId = useSelector(state => state.user);
+    const gameMode = useSelector(state => state.gameMode);
     const [game, setGame] = useState({});
     const history = useHistory();
     const dispatch = useDispatch();
-    const [leaveText, setLeaveText] = useState("Leave Lobby");
 
     useEffect(() => {
         const getGame = () => {
-            API.get(`/game/${gameId}`).then(function (response) {
+            API.get(`/game/${gameId}`
+            ).then(function (response) {
                 setGame(response.data);
             }).catch(function (error) {
                 props.onShowError(error.response.data.message);
@@ -48,11 +44,11 @@ function Lobby(props) {
     }, [gameId, history, props]);
 
     const onLeaveGame = () => {
-        setLeaveText("Leave Lobby");
         API.patch(`/leave/${gameId}`, {
             id: userId
         }).then(function (response) {
             dispatch(resetGame());
+            dispatch(resetGameMode());
             history.push('/games/public');
         }).catch(function (error) {
             console.log(error);
@@ -60,39 +56,10 @@ function Lobby(props) {
     }
 
     return (
-        <div>
-            <style type="text/css">
-                {`
-                    .lobby-banner {
-                        margin: 10px;
-                        height: 30px;
-                    }
-                    
-                    .host {
-                        display: inline;
-                        float: left;
-                        min-width: 10%;
-                    }
-                    
-                    .guest {
-                        display: inline;
-                        float: right;
-                        min-width: 10%;
-                    }
-                    
-                    .leave-game {
-                        position: absolute;
-                        bottom: 0;
-                        left: 0;
-                        margin: 10px;
-                    }
-                `}
-            </style>
-            <div className="lobby-banner">
-                <h3 className="host">HOST: {getHost(game)}</h3>
-                <h3 className="guest">GUEST: {getGuest(game)}</h3>
-            </div>
-            <Button variant="info" className="leave-game" onClick={onLeaveGame}>{leaveText}</Button>
+        <div style={{display: "flex"}}>
+            <PlayerList players={[{name: getHost(game), isHost: true}, {name: getGuest(game), isHost: false}]}
+                        onLeave={onLeaveGame}/>
+            <LobbySettings gameMode={gameMode} numPlayers={2}/>
         </div>
     );
 

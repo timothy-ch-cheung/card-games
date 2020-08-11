@@ -5,24 +5,26 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {useDispatch, useSelector} from "react-redux";
 import API from "../../API";
-import {setGame, setPlayer} from "../../actions";
+import {setGame, setGameMode, setPlayer} from "../../actions";
 import {useHistory} from "react-router-dom";
+import GameModes from "../../GameModes";
+import NumberPicker from "../number-picker/NumberPicker";
 
 function NicknameInput() {
-
     const userId = useSelector(state => state.user);
     if (userId != null) {
         return null;
     }
-    return <><Form.Label>Nickname</Form.Label><Form.Control required type="text" placeholder="name"
-                                                            name="nickname"/></>;
+    return <><Form.Label>Nickname</Form.Label><Form.Control required type="text" placeholder="name" name="nickname"
+                                                            data-test="nickname-input"/></>;
 }
 
 function CreateGame(props) {
-
     const [validated, setValidated] = useState(false);
     const dispatch = useDispatch();
     const userId = useSelector(state => state.user);
+    const gameMode = useSelector(state => state.gameMode);
+    const [numPlayers, setNumPlayers] = useState(GameModes[gameMode] ? GameModes[gameMode].minPlayers : undefined);
     const history = useHistory();
 
     const onClose = e => {
@@ -50,11 +52,16 @@ function CreateGame(props) {
         e.preventDefault();
         const form = e.currentTarget;
         const valid = form.checkValidity();
-        if (valid === false) {
+
+        let submitGameMode = e.target.gameMode.value;
+        let validGameMode = Object.keys(GameModes).includes(submitGameMode);
+
+        if (valid === false || !validGameMode) {
             e.stopPropagation();
             setValidated(true);
             return;
         }
+
         let lobbyName = e.target.lobbyName.value;
 
         if (userId != null) {
@@ -69,9 +76,41 @@ function CreateGame(props) {
                 console.log(error);
             });
         }
+        dispatch(setGameMode(submitGameMode));
         setValidated(false);
         props.onClose();
     };
+
+    const decrease = () => {
+        if (GameModes[gameMode] && numPlayers > GameModes[gameMode].minPlayers) {
+            setNumPlayers(numPlayers - 1);
+        }
+    }
+
+    const increase = () => {
+        if (GameModes[gameMode] && numPlayers < GameModes[gameMode].maxPlayers) {
+            setNumPlayers(numPlayers + 1);
+        }
+    }
+
+    const gamesList = Object.keys(GameModes);
+
+    const renderGameMode = (game, index) => {
+        if (GameModes[game].enabled) {
+            return (
+                <option key={index} value={game}>{game}</option>
+            );
+        } else {
+            return (
+                <option disabled key={index} value={game}>{game} (not yet available)</option>
+            );
+        }
+    }
+
+    const onGameModeChange = e => {
+        dispatch(setGameMode(e.target.value));
+        setNumPlayers(GameModes[e.target.value].minPlayers);
+    }
 
     if (props.show) {
 
@@ -118,12 +157,22 @@ function CreateGame(props) {
                         <Modal.Body>
                             <NicknameInput/>
                             <Form.Label>Lobby Name</Form.Label>
-                            <Form.Control required type="text" placeholder="Lobby name" name="lobbyName"/>
+                            <Form.Control required type="text" placeholder="Lobby name" name="lobbyName"
+                                          data-test="lobby-name-input"/>
+                            <Form.Label>Game Mode</Form.Label>
+                            <Form.Control required as="select" name="gameMode" defaultValue="Select"
+                                          onChange={onGameModeChange} data-test="game-mode-select">
+                                <option key={'Select...'} value={''}>Select...</option>
+                                {gamesList.map(renderGameMode)}
+                            </Form.Control>
+                            <Form.Label>Number of players</Form.Label>
+                            <NumberPicker value={numPlayers} onIncrease={increase} onDecrease={decrease}
+                                          name={"numPlayers"}/>
                         </Modal.Body>
-
                         <Modal.Footer>
-                            <Button variant="secondary" onClick={onClose}>Close</Button>
-                            <Button type="submit" variant="info">Create</Button>
+                            <Button variant="secondary" onClick={onClose}
+                                    data-test="close-create-game-btn">Close</Button>
+                            <Button type="submit" variant="info" data-test="submit-create-game-btn">Create</Button>
                         </Modal.Footer>
                     </Form>
                 </Modal>

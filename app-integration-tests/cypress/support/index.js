@@ -23,8 +23,7 @@ before(() => {
     cy.writeFile('games_cleanup.txt', '');
     if (Cypress.env('TEST_ENV') === 'PRODUCTION') {
         Cypress.env('serverUrl', Cypress.config().baseUrl);
-    }
-    else {
+    } else {
         Cypress.env('serverUrl', 'http://localhost:8080');
     }
 });
@@ -32,7 +31,7 @@ before(() => {
 afterEach(() => {
     cy.url().then((url) => {
         if (url.endsWith('/current-game')) {
-            cy.contains('.btn', 'Leave Lobby').click();
+            cy.get('[data-test="leave-game-btn"]').click();
         }
     });
 });

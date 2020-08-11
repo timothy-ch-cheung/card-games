@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TEST SUITE NumberPicker:  Matches PlayerList snapshot 1`] = `
+<InputGroup
+  style={
+    Object {
+      "width": "150px",
+    }
+  }
+>
+  <InputGroupPrepend>
+    <Button
+      active={false}
+      data-test="number-minus-btn"
+      disabled={false}
+      onClick={[MockFunction]}
+      style={
+        Object {
+          "fontSize": "1.5rem",
+          "padding": "0rem 0.75rem",
+          "width": "40px",
+        }
+      }
+      type="button"
+      variant="info"
+    >
+      -
+    </Button>
+  </InputGroupPrepend>
+  <FormControl
+    className="number-picker"
+    data-test="number-value"
+    disabled={true}
+    name="number"
+    style={
+      Object {
+        "backgroundColor": "#fff",
+        "textAlign": "center",
+      }
+    }
+    value={123}
+  />
+  <InputGroupAppend>
+    <Button
+      active={false}
+      data-test="number-plus-btn"
+      disabled={false}
+      onClick={[MockFunction]}
+      style={
+        Object {
+          "fontSize": "1.5rem",
+          "padding": "0rem 0.75rem",
+          "width": "40px",
+        }
+      }
+      type="button"
+      variant="info"
+    >
+      +
+    </Button>
+  </InputGroupAppend>
+</InputGroup>
+`;

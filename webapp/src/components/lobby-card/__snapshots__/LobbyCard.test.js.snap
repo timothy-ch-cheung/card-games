@@ -1,37 +1,104 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Matches LobbyCard snapshot 1`] = `
-<ContextProvider
-  value={
+exports[`TEST SUITE LobbyCard:  Matches LobbyCard snapshot 1`] = `
+<Provider
+  store={
     Object {
-      "store": Object {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Subscription {
-        "handleChangeWrapper": [Function],
-        "listeners": Object {
-          "notify": [Function],
-        },
-        "onStateChange": [Function],
-        "parentSub": undefined,
-        "store": Object {
-          "clearActions": [Function],
-          "dispatch": [Function],
-          "getActions": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        },
-        "unsubscribe": null,
-      },
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
     }
   }
 >
-  <LobbyCard />
-</ContextProvider>
+  <LobbyCard>
+    <style
+      type="text/css"
+    >
+      
+                    .lobby-card {
+                        margin: 5px;
+                        width: 18rem;
+                        flex-basis: 24%;
+                    }
+                    
+                    @media(max-width: 1080px) {
+                        .lobby-card {
+                            flex-basis: 32%;
+                        }
+                    }
+                    
+                    @media(max-width: 800px) {
+                        .lobby-card {
+                            flex-basis: 48%;
+                        }
+                    }
+                    
+                    @media(max-width: 550px) {
+                        .lobby-card {
+                            flex-basis: 99%;
+                        }
+                    }
+                    
+                    .card-title {
+                        border-bottom: solid 1px #d6d6d6;
+                    }
+                    
+                
+    </style>
+    <Card
+      body={false}
+      className="lobby-card"
+    >
+      <div
+        className="lobby-card card"
+      >
+        <CardBody>
+          <div
+            className="card-body"
+          >
+            <CardTitle
+              className="card-title"
+            >
+              <ForwardRef
+                className="card-title card-title"
+              >
+                <div
+                  className="card-title card-title h5"
+                />
+              </ForwardRef>
+            </CardTitle>
+            <CardText>
+              <p
+                className="card-text"
+              >
+                Host: 
+              </p>
+            </CardText>
+            <Button
+              active={false}
+              data-test="join-game-btn"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+              variant="info"
+            >
+              <button
+                className="btn btn-info"
+                data-test="join-game-btn"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
+              >
+                Join Game
+              </button>
+            </Button>
+          </div>
+        </CardBody>
+      </div>
+    </Card>
+  </LobbyCard>
+</Provider>
 `;

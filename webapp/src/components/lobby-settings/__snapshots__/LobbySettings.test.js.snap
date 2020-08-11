@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TEST SUITE LobbySettings:  Matches LobbySettings snapshot [Choice Poker] 1`] = `
+<Card
+  body={false}
+  style={
+    Object {
+      "margin": "10px",
+      "width": "35%",
+    }
+  }
+>
+  <CardHeader>
+    Game: 
+  </CardHeader>
+  <CardBody
+    style={
+      Object {
+        "height": "400px",
+        "overflowY": "auto",
+        "padding": "5px 5px",
+      }
+    }
+  >
+    <Form
+      data-test="lobby-settings-form"
+      inline={false}
+      noValidate={true}
+      onSubmit={[Function]}
+      validated={false}
+    >
+      <RoundPicker />
+    </Form>
+  </CardBody>
+  <CardBody
+    style={
+      Object {
+        "borderTop": "1px solid #dfdfdf",
+        "padding": "10px",
+      }
+    }
+  >
+    <Button
+      active={false}
+      data-test="start-game-btn"
+      disabled={false}
+      type="submit"
+      variant="info"
+    >
+      Start
+    </Button>
+  </CardBody>
+</Card>
+`;
+
+exports[`TEST SUITE LobbySettings:  Matches LobbySettings snapshot [Match Two] 1`] = `
+<Card
+  body={false}
+  style={
+    Object {
+      "margin": "10px",
+      "width": "35%",
+    }
+  }
+>
+  <CardHeader>
+    Game: 
+  </CardHeader>
+  <CardBody
+    style={
+      Object {
+        "height": "400px",
+        "overflowY": "auto",
+        "padding": "5px 5px",
+      }
+    }
+  >
+    <Form
+      data-test="lobby-settings-form"
+      inline={false}
+      noValidate={true}
+      onSubmit={[Function]}
+      validated={false}
+    >
+      <RoundPicker />
+    </Form>
+  </CardBody>
+  <CardBody
+    style={
+      Object {
+        "borderTop": "1px solid #dfdfdf",
+        "padding": "10px",
+      }
+    }
+  >
+    <Button
+      active={false}
+      data-test="start-game-btn"
+      disabled={false}
+      type="submit"
+      variant="info"
+    >
+      Start
+    </Button>
+  </CardBody>
+</Card>
+`;
