@@ -58,7 +58,6 @@ describe("TEST SUITE CreateGame: ", () => {
         let wrapper;
 
         beforeEach(() => {
-            mockAPI.reset();
             wrapper = mount(
                 <Provider store={store}>
                     <CreateGame show={true}/>

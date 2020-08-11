@@ -28,7 +28,7 @@ describe("TEST SUITE LobbySettings: ", () => {
             expect(wrapper.find('input[data-test="round-number-text"]').props().value).toEqual(2);
         });
 
-        test('plus/minus buttons change rounds by player count', () => {
+        test('plus/minus buttons change rounds by one', () => {
             wrapper = mount(<LobbySettings gameMode={"Choice Poker"} numPlayers={2}/>);
             expect(wrapper.find('input[data-test="round-number-text"]').props().value).toEqual(1);
             wrapper.find('button[data-test="numRounds-plus-btn"]').simulate('click');
