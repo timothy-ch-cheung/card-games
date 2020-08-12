@@ -11,6 +11,13 @@ export const resetPlayer = () => {
     }
 }
 
+export const setKey = value => {
+    return {
+        type: 'SET_KEY',
+        payload: value
+    }
+}
+
 export const setGame = value => {
     return {
         type: 'SET_GAME',

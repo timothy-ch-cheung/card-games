@@ -5,10 +5,11 @@ import {useSelector} from "react-redux";
 
 function LobbyCard(props) {
     const userId = useSelector(state => state.user);
+    const userKey = useSelector(state => state.key);
 
     const onJoinGame = () => {
         if (userId != null) {
-            props.onSubmit(props.gameId, userId);
+            props.onSubmit(props.gameId, userId, userKey);
         } else {
             props.showModal(props.gameId);
         }

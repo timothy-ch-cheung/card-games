@@ -17,6 +17,7 @@ function getHost(game) {
 function Lobby(props) {
     const gameId = useSelector(state => state.game);
     const userId = useSelector(state => state.user);
+    const userKey = useSelector(state => state.key);
     const gameMode = useSelector(state => state.gameMode);
     const [game, setGame] = useState({});
     const history = useHistory();
@@ -45,7 +46,8 @@ function Lobby(props) {
 
     const onLeaveGame = () => {
         API.patch(`/leave/${gameId}`, {
-            id: userId
+            id: userId,
+            key: userKey
         }).then(function (response) {
             dispatch(resetGame());
             dispatch(resetGameMode());

@@ -23,8 +23,8 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
-const queueCleanup = (gameId, playerId) => {
-    cy.writeFile('games_cleanup.txt', `${gameId} ${playerId}\n`, { flag: 'a+' })
+const queueCleanup = (gameId, playerId, playerKey) => {
+    cy.writeFile('games_cleanup.txt', `${gameId} ${playerId} ${playerKey}\n`, { flag: 'a+' })
 };
 
 Cypress.Commands.add("createGame", (lobbyName, nickname) => {
@@ -46,7 +46,9 @@ Cypress.Commands.add("createGame", (lobbyName, nickname) => {
                             createGame.lobbyName = lobbyName;
                         }
                         let playerId = body.id;
+                        let playerKey = body.key;
                         createGame.host.id = playerId;
+                        createGame.host.key = playerKey;
 
                         cy.request({
                             url: `${Cypress.env('serverUrl')}/create`,
@@ -57,7 +59,7 @@ Cypress.Commands.add("createGame", (lobbyName, nickname) => {
                             .then(
                             (body) => {
                                 let gameId = body.id;
-                                queueCleanup(gameId, playerId)
+                                queueCleanup(gameId, playerId, playerKey)
                             }
                         );
                     }

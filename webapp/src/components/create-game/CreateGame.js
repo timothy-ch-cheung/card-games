@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {useDispatch, useSelector} from "react-redux";
 import API from "../../API";
-import {setGame, setGameMode, setPlayer} from "../../actions";
+import {setGame, setGameMode, setKey, setPlayer} from "../../actions";
 import {useHistory} from "react-router-dom";
 import GameModes from "../../GameModes";
 import NumberPicker from "../number-picker/NumberPicker";
@@ -23,6 +23,7 @@ function CreateGame(props) {
     const [validated, setValidated] = useState(false);
     const dispatch = useDispatch();
     const userId = useSelector(state => state.user);
+    const userKey = useSelector(state => state.key);
     const gameMode = useSelector(state => state.gameMode);
     const [numPlayers, setNumPlayers] = useState(GameModes[gameMode] ? GameModes[gameMode].minPlayers : undefined);
     const history = useHistory();
@@ -32,12 +33,14 @@ function CreateGame(props) {
         setValidated(false);
     };
 
-    const createGame = (lobbyName, playerId) => {
+    const createGame = (lobbyName, playerId, playerKey) => {
         let id = (playerId != null) ? playerId : userId;
+        let key = (playerKey != null) ? playerKey : userKey;
         API.post('/create', {
             lobbyName: lobbyName,
             host: {
-                id: id
+                id: id,
+                key: key
             }
         }).then(function (response) {
             dispatch(setGame(response.data.id));
@@ -71,7 +74,8 @@ function CreateGame(props) {
                 username: e.target.nickname.value
             }).then(function (response) {
                 dispatch(setPlayer(response.data.id));
-                createGame(lobbyName, response.data.id)
+                dispatch(setKey(response.data.key));
+                createGame(lobbyName, response.data.id, response.data.key)
             }).catch(function (error) {
                 console.log(error);
             });

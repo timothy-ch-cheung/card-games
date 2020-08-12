@@ -23,6 +23,17 @@ const userReducer = (state = null, action) => {
     }
 }
 
+const keyReducer = (state = null, action) => {
+    switch (action.type) {
+        case 'SET_KEY':
+            return action.payload;
+        case 'RESET_KEY':
+            return null;
+        default:
+            return state;
+    }
+}
+
 const gameReducer = (state = null, action) => {
     switch (action.type) {
         case 'SET_GAME':
@@ -47,6 +58,7 @@ const gameModeReducer = (state = null, action) => {
 
 const allReducers = combineReducers({
     user: userReducer,
+    key: keyReducer,
     game: gameReducer,
     gameMode: gameModeReducer
 })

@@ -5,7 +5,7 @@ import * as React from "react";
 import {useState} from "react";
 import {useDispatch} from "react-redux";
 import API from "../../API";
-import {setPlayer} from "../../actions";
+import {setKey, setPlayer} from "../../actions";
 
 function CreatePlayer(props) {
 
@@ -33,7 +33,8 @@ function CreatePlayer(props) {
         }).then(function (response) {
             console.log(response)
             dispatch(setPlayer(response.data.id));
-            props.onSubmit(props.gameId, response.data.id);
+            dispatch(setKey(response.data.key));
+            props.onSubmit(props.gameId, response.data.id, response.data.key);
         }).catch(function (error) {
             console.log(error);
         });

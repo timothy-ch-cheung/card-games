@@ -41,9 +41,10 @@ function Games() {
         }
     }, []);
 
-    const joinGame = (gameId, userId) => {
+    const joinGame = (gameId, userId, userKey) => {
         API.patch(`/join/${gameId}`, {
-            id: userId
+            id: userId,
+            key: userKey
         }).then(function (response) {
             dispatch(setGame(gameId));
             history.push('/current-game')
