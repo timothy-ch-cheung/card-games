@@ -9,7 +9,7 @@ import static com.cheung.tim.Config.ENDPOINT;
 import static com.cheung.tim.Json.JsonRequest;
 import static com.cheung.tim.Json.JsonResponse;
 import static com.cheung.tim.Resource.*;
-import static com.cheung.tim.game.Game.Lobby;
+import static com.cheung.tim.game.Game.game;
 import static com.cheung.tim.game.GetGameTest.createGame;
 import static com.cheung.tim.game.GetGameTest.createPlayer;
 import static io.restassured.RestAssured.get;
@@ -21,21 +21,21 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class LeaveGameTest extends BaseGameTest {
 
     private Integer gameId;
-    private String playerOne;
-    private String playerTwo;
+    private Player playerOne;
+    private Player playerTwo;
 
     @BeforeEach
     public void setup() {
         this.playerOne = createPlayer();
-        this.gameId = createGame(this.playerOne);
+        this.gameId = createGame(playerOne.getId(), playerOne.getKey());
 
         this.playerTwo = createPlayer();
         given().contentType(ContentType.JSON)
-                .body(JsonRequest("joinGame").replacePlayerId(this.playerTwo).toString())
+                .body(JsonRequest("joinGame").replacePlayerId(playerTwo.getId()).replaceKey(playerTwo.getKey()).toString())
                 .when()
                 .patch(ENDPOINT + JOIN + "/" + gameId.toString());
 
-        queueCleanup(Lobby(playerOne, gameId));
+        queueCleanup(game(playerOne, gameId));
     }
 
     @Test
@@ -46,7 +46,8 @@ public class LeaveGameTest extends BaseGameTest {
                 .toString();
 
         Response response = given().contentType(ContentType.JSON)
-                .body(JsonRequest("leaveGame").replacePlayerId(this.playerTwo).toString())
+                .body(JsonRequest("leaveGame").replacePlayerId(this.playerTwo.getId())
+                        .replaceKey(this.playerTwo.getKey()).toString())
                 .when()
                 .patch(ENDPOINT + LEAVE + "/" + gameId.toString());
 
@@ -65,7 +66,8 @@ public class LeaveGameTest extends BaseGameTest {
                 .toString();
 
         Response response = given().contentType(ContentType.JSON)
-                .body(JsonRequest("leaveGame").replacePlayerId(this.playerOne).toString())
+                .body(JsonRequest("leaveGame").replacePlayerId(this.playerOne.getId())
+                        .replaceKey(this.playerOne.getKey()).toString())
                 .when()
                 .patch(ENDPOINT + LEAVE + "/" + gameId.toString());
 
@@ -84,11 +86,13 @@ public class LeaveGameTest extends BaseGameTest {
                 .toString();
 
         given().contentType(ContentType.JSON)
-                .body(JsonRequest("joinGame").replacePlayerId(this.playerTwo).toString())
+                .body(JsonRequest("joinGame").replacePlayerId(this.playerTwo.getId())
+                        .replaceKey(this.playerTwo.getKey()).toString())
                 .when()
                 .patch(ENDPOINT + JOIN + "/" + this.gameId.toString());
         Response response = given().contentType(ContentType.JSON)
-                .body(JsonRequest("leaveGame").replacePlayerId(this.playerOne).toString())
+                .body(JsonRequest("leaveGame").replacePlayerId(this.playerOne.getId())
+                        .replaceKey(this.playerOne.getKey()).toString())
                 .when()
                 .patch(ENDPOINT + LEAVE + "/" + this.gameId.toString());
 
@@ -103,7 +107,8 @@ public class LeaveGameTest extends BaseGameTest {
     @Test
     public void leaveGameThatDoesNotExist() {
         Response response = given().contentType(ContentType.JSON)
-                .body(JsonRequest("leaveGame").replacePlayerId(this.playerOne).toString())
+                .body(JsonRequest("leaveGame").replacePlayerId(this.playerOne.getId())
+                        .replaceKey(this.playerOne.getKey()).toString())
                 .when()
                 .patch(ENDPOINT + LEAVE + "/0");
 
@@ -118,18 +123,18 @@ public class LeaveGameTest extends BaseGameTest {
                 .replacePlayerName("John")
                 .toString();
 
-        String otherPlayer = createPlayer();
-        Integer otherGame = createGame(otherPlayer);
+        Player otherPlayer = createPlayer();
+        Integer otherGame = createGame(otherPlayer.getId(), otherPlayer.getKey());
 
         Response response = given().contentType(ContentType.JSON)
-                .body(JsonRequest("leaveGame").replacePlayerId(otherPlayer).toString())
+                .body(JsonRequest("leaveGame").replacePlayerId(otherPlayer.getId()).replaceKey(otherPlayer.getKey()).toString())
                 .when()
                 .patch(ENDPOINT + LEAVE + "/" + this.gameId);
 
         assertThat(response.statusCode(), is(400));
         assertThat(response.getBody().asString(), jsonEquals(expectedResponse));
 
-        queueCleanup(Lobby(otherPlayer, otherGame));
+        queueCleanup(game(otherPlayer, otherGame));
     }
 
     @Test
@@ -139,23 +144,25 @@ public class LeaveGameTest extends BaseGameTest {
                 .replacePlayerName("John")
                 .toString();
 
-        String secondPlayer = createPlayer();
+        Player secondPlayer = createPlayer();
         given().contentType(ContentType.JSON)
-                .body(JsonRequest("joinGame").replacePlayerId(secondPlayer).toString())
+                .body(JsonRequest("joinGame").replacePlayerId(secondPlayer.getId())
+                        .replaceKey(secondPlayer.getKey()).toString())
                 .when()
                 .patch(ENDPOINT + JOIN + "/" + gameId.toString());
 
-        String otherPlayer = createPlayer();
-        Integer otherGame = createGame(otherPlayer);
+        Player otherPlayer = createPlayer();
+        Integer otherGame = createGame(otherPlayer.getId(), otherPlayer.getKey());
 
         Response response = given().contentType(ContentType.JSON)
-                .body(JsonRequest("leaveGame").replacePlayerId(otherPlayer).toString())
+                .body(JsonRequest("leaveGame").replacePlayerId(otherPlayer.getId())
+                        .replaceKey(otherPlayer.getKey()).toString())
                 .when()
                 .patch(ENDPOINT + LEAVE + "/" + this.gameId);
 
         assertThat(response.statusCode(), is(400));
         assertThat(response.getBody().asString(), jsonEquals(expectedResponse));
 
-        queueCleanup(Lobby(otherPlayer, otherGame));
+        queueCleanup(game(otherPlayer, otherGame));
     }
 }

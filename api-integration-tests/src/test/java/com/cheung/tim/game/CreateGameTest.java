@@ -13,7 +13,8 @@ import static com.cheung.tim.Json.JsonRequest;
 import static com.cheung.tim.Json.JsonResponse;
 import static com.cheung.tim.Resource.CREATE;
 import static com.cheung.tim.Resource.PLAYER;
-import static com.cheung.tim.game.Game.Lobby;
+import static com.cheung.tim.game.Game.game;
+import static com.cheung.tim.game.Player.player;
 import static io.restassured.RestAssured.given;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.CoreMatchers.is;
@@ -21,7 +22,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CreateGameTest extends BaseGameTest {
 
-    private String playerId;
+    private Player player;
 
     @BeforeEach
     public void setup() {
@@ -29,14 +30,15 @@ public class CreateGameTest extends BaseGameTest {
                 .body("{\"username\": \"John\"}")
                 .when()
                 .post(ENDPOINT + PLAYER);
-        this.playerId = response.path("id");
+        this.player = player(response.path("id"),response.path("key"));
     }
 
     @Test
     public void createGameExistingPlayer() {
         String request = JsonRequest("createGame")
                 .replaceLobbyName("test lobby")
-                .replacePlayerId(playerId)
+                .replacePlayerId(player.getId())
+                .replaceKey(player.getKey())
                 .toString();
 
         Response response = given().contentType(ContentType.JSON)
@@ -45,13 +47,14 @@ public class CreateGameTest extends BaseGameTest {
                 .post(ENDPOINT + CREATE);
 
         String expectedResponse = JsonResponse("createGameSuccess")
-                .replacePlayerId(playerId)
+                .replacePlayerId(player.getId())
+                .replaceKey(player.getKey())
                 .toString();
 
         assertThat(response.statusCode(), is(200));
         assertThat(response.getBody().asString(), jsonEquals(expectedResponse));
 
-        queueCleanup(Lobby(playerId, response.path("id")));
+        queueCleanup(game(player, response.path("id")));
     }
 
     @Test
@@ -95,7 +98,8 @@ public class CreateGameTest extends BaseGameTest {
     public void createGameEmptyLobbyName(String lobbyName) {
         String request = JsonRequest("createGame")
                 .replaceLobbyName(lobbyName)
-                .replacePlayerId(playerId)
+                .replacePlayerId(player.getId())
+                .replaceKey(player.getKey())
                 .toString();
 
         Response response = given().contentType(ContentType.JSON)
@@ -104,7 +108,8 @@ public class CreateGameTest extends BaseGameTest {
                 .post(ENDPOINT + CREATE);
 
         String expectedResponse = JsonResponse("createGameIncorrectFormat")
-                .replacePlayerId(playerId)
+                .replacePlayerId(player.getId())
+                .replaceKey(player.getKey())
                 .toString();
 
         assertThat(response.statusCode(), is(400));

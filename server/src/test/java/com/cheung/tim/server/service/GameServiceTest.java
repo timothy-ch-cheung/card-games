@@ -143,7 +143,9 @@ class GameServiceTest {
 
     @Test
     void createGame_shouldCreateGameSuccessfully() {
-        when(playerService.findPlayerById(any())).thenReturn(new Player());
+        Player player = new Player();
+        player.setKey("keykeykeykeykeykeykeykeykeykeyke");
+        when(playerService.findPlayerById(any())).thenReturn(player);
         when(gameRepository.countByPlayerOneInGame(any())).thenReturn(new Long(0));
         when(gameRepository.countByPlayerTwoInGame(any())).thenReturn(new Long(0));
         when(gameRepository.save(any())).thenReturn(new Game("test lobby", new Player(), OPEN));
@@ -210,11 +212,12 @@ class GameServiceTest {
     @Test
     void joinGame_shouldJoinGameSuccessfully() {
         PrivatePlayerDTO privatePlayerDTO = getPlayerDTO();
-        Player player = new Player("40283481721d879601721d87b6350000", "John Smith");
+        Player player = new Player("40283481721d879601721d87b6350000", "John Smith", "keykeykeykeykeykeykeykeykeykeyke");
         when(playerService.findPlayerById(any())).thenReturn(player);
         when(gameRepository.countByPlayerOneInGame(any())).thenReturn(new Long(0));
         when(gameRepository.countByPlayerTwoInGame(any())).thenReturn(new Long(0));
-        when(gameRepository.findByGameId(1L)).thenReturn(new Game("test_lobby", new Player("Jane Smith"), OPEN));
+        Player otherPlayer = new Player("40283481721d879601721d87b6350000", "Jane Smith", "keykeykeykeykeykeykeykeykeykeyke");
+        when(gameRepository.findByGameId(1L)).thenReturn(new Game("test_lobby", otherPlayer, OPEN));
 
         assertDoesNotThrow(() -> {
             gameService.joinGame(1L, privatePlayerDTO);
@@ -277,7 +280,7 @@ class GameServiceTest {
     @Test
     void leaveGame_shouldDeleteLobbyWhenPlayer1() {
         PrivatePlayerDTO privatePlayerDTO = getPlayerDTO();
-        Player player1 = new Player("40283481721d879601721d87b6350000", "John Smith");
+        Player player1 = new Player("40283481721d879601721d87b6350000", "John Smith", "keykeykeykeykeykeykeykeykeykeyke");
         when(gameRepository.findByGameId(1L)).thenReturn(new Game("test_lobby", player1, OPEN));
 
         assertDoesNotThrow(() -> {
@@ -290,9 +293,9 @@ class GameServiceTest {
 
     @Test
     void leaveGame_shouldLeaveGameWhenPlayer2() {
-        PrivatePlayerDTO privatePlayerDTO = new PrivatePlayerDTO("1721d87b635000040283481721d87960", "Jane Smith");
+        PrivatePlayerDTO privatePlayerDTO = new PrivatePlayerDTO("1721d87b635000040283481721d87960", "Jane Smith", "keykeykeykeykeykeykeykeykeykeyke");
         Player player1 = new Player("40283481721d879601721d87b6350000", "John Smith");
-        Player player2 = new Player("1721d87b635000040283481721d87960", "Jane Smith");
+        Player player2 = new Player("1721d87b635000040283481721d87960", "Jane Smith", "keykeykeykeykeykeykeykeykeykeyke");
         Game game = new Game("test_lobby", player1, OPEN);
         game.setPlayer2(player2);
         when(gameRepository.findByGameId(1L)).thenReturn(game);
@@ -316,6 +319,7 @@ class GameServiceTest {
         PrivatePlayerDTO privatePlayerDTO = new PrivatePlayerDTO();
         privatePlayerDTO.setId("40283481721d879601721d87b6350000");
         privatePlayerDTO.setUsername("John Smith");
+        privatePlayerDTO.setKey("keykeykeykeykeykeykeykeykeykeyke");
         return privatePlayerDTO;
     }
 }

@@ -19,6 +19,7 @@ import static org.apache.commons.lang.StringUtils.isBlank;
 public class GameService {
 
     public static final String GAME_NOT_EXIST = "Game with id %s does not exist";
+    public static final String INVALID_AUTH = "Player id or key invalid";
     private GameRepository gameRepository;
     private PlayerService playerService;
 
@@ -42,6 +43,8 @@ public class GameService {
         Player player = getPlayer(privatePlayerDTO.getId());
         if (isPlayerInGame(player)) {
             throw new BadRequestException(String.format("Player %s is already in a game", player.getUsername()));
+        } else if (!player.getKey().equals(privatePlayerDTO.getKey())) {
+            throw new BadRequestException(INVALID_AUTH);
         }
         Game game = new Game(lobbyName, player, OPEN);
         return gameRepository.save(game);
@@ -58,7 +61,10 @@ public class GameService {
             throw new NotFoundException(String.format(GAME_NOT_EXIST, gameId));
         } else if (game.getPlayer2() != null) {
             throw new BadRequestException(String.format("Game with id %s is already full", gameId));
+        } else if (!player.getKey().equals(privatePlayerDTO.getKey())) {
+            throw new BadRequestException(INVALID_AUTH);
         }
+
         gameRepository.updatePlayerTwo(gameId, player);
         gameRepository.updateStatus(gameId, READY);
     }
@@ -71,10 +77,16 @@ public class GameService {
         }
 
         if (game.getPlayer1() != null && game.getPlayer1().equalDTO(privatePlayerDTO)) {
+            if (!game.getPlayer1().getKey().equals(privatePlayerDTO.getKey())) {
+                throw new BadRequestException(INVALID_AUTH);
+            }
             gameRepository.updateStatus(gameId, DELETED);
             gameRepository.updatePlayerOne(gameId, null);
             gameRepository.updatePlayerTwo(gameId, null);
         } else if (game.getPlayer2() != null && game.getPlayer2().equalDTO(privatePlayerDTO)) {
+            if (!game.getPlayer2().getKey().equals(privatePlayerDTO.getKey())) {
+                throw new BadRequestException(INVALID_AUTH);
+            }
             gameRepository.updateStatus(gameId, OPEN);
             gameRepository.updatePlayerTwo(gameId, null);
         } else {

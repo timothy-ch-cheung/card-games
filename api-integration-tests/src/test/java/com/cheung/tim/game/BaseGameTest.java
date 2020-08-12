@@ -21,7 +21,7 @@ public abstract class BaseGameTest {
     public void cleanup() {
         for (Game game : gamesToCleanup) {
             given().contentType(ContentType.JSON)
-                    .body(JsonRequest("joinGame").replacePlayerId(game.getPlayerId()).toString())
+                    .body(JsonRequest("joinGame").replacePlayerId(game.getPlayerOneId()).toString())
                     .when()
                     .patch(ENDPOINT + LEAVE + "/" + game.getGameId());
         }
@@ -29,23 +29,49 @@ public abstract class BaseGameTest {
 }
 
 class Game {
-    private String playerId;
+    private Player player;
     private Integer gameId;
 
-    private Game(String playerId, Integer gameId) {
-        this.playerId = playerId;
+    private Game(Player player, Integer gameId) {
+        this.player = player;
         this.gameId = gameId;
     }
 
-    public static Game Lobby(String playerId, Integer gameId) {
-        return new Game(playerId, gameId);
+    public static Game game(Player player, Integer gameId) {
+        return new Game(player, gameId);
     }
 
     public Integer getGameId() {
         return gameId;
     }
 
-    public String getPlayerId() {
-        return playerId;
+    public String getPlayerOneId() {
+        return player.getId();
+    }
+
+    public String getPlayerOneKey() {
+        return player.getKey();
+    }
+}
+
+class Player {
+    String userId;
+    String key;
+
+    private Player(String userId, String key) {
+        this.userId = userId;
+        this.key = key;
+    }
+
+    public static Player player(String userId, String key) {
+        return new Player(userId, key);
+    }
+
+    public String getId() {
+        return this.userId;
+    }
+
+    public String getKey() {
+        return this.key;
     }
 }

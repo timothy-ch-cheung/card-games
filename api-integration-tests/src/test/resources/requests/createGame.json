@@ -1,4 +1,7 @@
 {
   "lobbyName": "${lobby_name}",
-  "host":{"id":"${player_id}"}
+  "host": {
+    "id": "${player_id}",
+    "key": "${key}"
+  }
 }

@@ -1,3 +1,4 @@
 {
-  "id": "${player_id}"
+  "id": "${player_id}",
+  "key": "${key}"
 }

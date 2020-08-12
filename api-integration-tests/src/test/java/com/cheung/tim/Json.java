@@ -16,6 +16,7 @@ public class Json {
     private static final String PLAYER_NAME_TOKEN = "${player_name}";
     private static final String LOBBY_NAME_TOKEN = "${lobby_name}";
     private static final String GAME_STATUS_TOKEN = "${game_status}";
+    private static final String KEY_TOKEN = "${key}";
 
     private String json;
 
@@ -53,6 +54,11 @@ public class Json {
 
     public Json replaceGameStatus(String name) {
         this.json = this.json.replace(GAME_STATUS_TOKEN, name);
+        return this;
+    }
+
+    public Json replaceKey(String key) {
+        this.json = this.json.replace(KEY_TOKEN, key);
         return this;
     }
 

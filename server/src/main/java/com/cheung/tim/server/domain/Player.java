@@ -39,6 +39,7 @@ public class Player extends BaseEntity {
 
     @Column(name = "key")
     @Getter
+    @Setter
     private String key;
 
     @Column(name = "username", nullable = false)
