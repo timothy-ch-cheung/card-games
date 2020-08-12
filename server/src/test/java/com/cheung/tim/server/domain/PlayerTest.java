@@ -1,6 +1,6 @@
 package com.cheung.tim.server.domain;
 
-import com.cheung.tim.server.dto.PlayerDTO;
+import com.cheung.tim.server.dto.PrivatePlayerDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -56,13 +56,13 @@ class PlayerTest {
 
     @Test
     void equalDTO_returnsTrueForSameId() {
-        PlayerDTO dto = new PlayerDTO("11111111111111111111111111111111", "John");
+        PrivatePlayerDTO dto = new PrivatePlayerDTO("11111111111111111111111111111111", "John");
         assertThat(player.equalDTO(dto), is(true));
     }
 
     @Test
     void equalDTO_returnsFalseForDifferentId() {
-        PlayerDTO dto = new PlayerDTO("11111111111111111111111122222222", "John");
+        PrivatePlayerDTO dto = new PrivatePlayerDTO("11111111111111111111111122222222", "John");
         assertThat(player.equalDTO(dto), is(false));
     }
 

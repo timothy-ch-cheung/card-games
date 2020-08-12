@@ -1,7 +1,8 @@
 package com.cheung.tim.server.controller;
 
 import com.cheung.tim.server.domain.Player;
-import com.cheung.tim.server.dto.PlayerDTO;
+import com.cheung.tim.server.dto.PrivatePlayerDTO;
+import com.cheung.tim.server.dto.PublicPlayerDTO;
 import com.cheung.tim.server.service.PlayerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,14 +38,14 @@ class PlayerControllerTest {
     @MockBean
     ModelMapper modelMapper;
 
-    ArgumentCaptor playerDTOCapture = ArgumentCaptor.forClass(PlayerDTO.class);
+    ArgumentCaptor playerDTOCapture = ArgumentCaptor.forClass(PrivatePlayerDTO.class);
     ArgumentCaptor stringCapture = ArgumentCaptor.forClass(String.class);
 
     @Test
     void createPlayer_shouldReturn200() throws Exception {
-        Player player = new Player("40283481721d879601721d87b6350000", "John Smith");
-        when(playerService.createPlayer(any(PlayerDTO.class))).thenReturn(player);
-        when(modelMapper.map(player, PlayerDTO.class)).thenReturn(new PlayerDTO("40283481721d879601721d87b6350000", "John Smith"));
+        Player player = new Player("40283481721d879601721d87b6350000", "John Smith", "1dpwq1441pgj670g0wzx7vfluomyy5iq");
+        when(playerService.createPlayer(any(PrivatePlayerDTO.class))).thenReturn(player);
+        when(modelMapper.map(player, PrivatePlayerDTO.class)).thenReturn(new PrivatePlayerDTO("40283481721d879601721d87b6350000", "John Smith", "1dpwq1441pgj670g0wzx7vfluomyy5iq"));
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                 .post("/player")
@@ -54,19 +55,19 @@ class PlayerControllerTest {
 
         MockHttpServletResponse response = result.getResponse();
 
-        verify(playerService).createPlayer((PlayerDTO) playerDTOCapture.capture());
+        verify(playerService).createPlayer((PrivatePlayerDTO) playerDTOCapture.capture());
         assertThat(playerDTOCapture.getAllValues().size(), is(1));
-        assertThat(((PlayerDTO) playerDTOCapture.getAllValues().get(0)).getUsername(), is("John Smith"));
+        assertThat(((PrivatePlayerDTO) playerDTOCapture.getAllValues().get(0)).getUsername(), is("John Smith"));
 
         assertThat(response.getStatus(), is(200));
-        assertThat(response.getContentAsString(), sameJSONAs("{\"id\":\"40283481721d879601721d87b6350000\",\"username\":\"John Smith\"}"));
+        assertThat(response.getContentAsString(), sameJSONAs("{\"username\":\"John Smith\",\"id\":\"40283481721d879601721d87b6350000\",\"key\":\"1dpwq1441pgj670g0wzx7vfluomyy5iq\"}"));
     }
 
     @Test
     void getPlayer_shouldReturn200() throws Exception {
         Player player = new Player("40283481721d879601721d87b6350000", "John Smith");
         when(playerService.findPlayerById("40283481721d879601721d87b6350000")).thenReturn(player);
-        when(modelMapper.map(player, PlayerDTO.class)).thenReturn(new PlayerDTO("40283481721d879601721d87b6350000", "John Smith"));
+        when(modelMapper.map(player, PublicPlayerDTO.class)).thenReturn(new PublicPlayerDTO("40283481721d879601721d87b6350000", "John Smith"));
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                 .get("/player/40283481721d879601721d87b6350000")

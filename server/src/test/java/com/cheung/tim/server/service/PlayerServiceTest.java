@@ -1,7 +1,7 @@
 package com.cheung.tim.server.service;
 
 import com.cheung.tim.server.domain.Player;
-import com.cheung.tim.server.dto.PlayerDTO;
+import com.cheung.tim.server.dto.PrivatePlayerDTO;
 import com.cheung.tim.server.exception.BadRequestException;
 import com.cheung.tim.server.exception.NotFoundException;
 import com.cheung.tim.server.repository.PlayerRepository;
@@ -29,21 +29,21 @@ class PlayerServiceTest {
     PlayerRepository playerRepository;
 
     PlayerService playerService;
-    PlayerDTO playerDTO;
+    PrivatePlayerDTO privatePlayerDTO;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
         this.playerService = new PlayerService(playerRepository);
-        this.playerDTO = new PlayerDTO();
-        this.playerDTO.setUsername("John Smith");
-        this.playerDTO.setId("40283481721d879601721d87b6350000");
+        this.privatePlayerDTO = new PrivatePlayerDTO();
+        this.privatePlayerDTO.setUsername("John Smith");
+        this.privatePlayerDTO.setId("40283481721d879601721d87b6350000");
     }
 
     @Test
     void createPlayer_shouldCreatePlayerSuccessfully() {
         when(playerRepository.save(any())).thenReturn(new Player());
-        playerService.createPlayer(playerDTO);
+        playerService.createPlayer(privatePlayerDTO);
         verify(playerRepository).save(any());
     }
 
@@ -51,7 +51,7 @@ class PlayerServiceTest {
     @NullSource
     @ValueSource(strings = {" ", "   ", "\t", "\n"})
     void createPlayer_shouldThrowExceptionWhenEmptyUsername(String blankUsername) {
-        playerDTO.setUsername(blankUsername);
+        privatePlayerDTO.setUsername(blankUsername);
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
             playerService.createPlayer(null);
         });
@@ -69,14 +69,14 @@ class PlayerServiceTest {
     @Test
     void findPlayerById_shouldFindPlayer() {
         when(playerRepository.findById(anyString())).thenReturn(Optional.of(new Player()));
-        playerService.findPlayerById(playerDTO.getId());
+        playerService.findPlayerById(privatePlayerDTO.getId());
         verify(playerRepository, times(1)).findById("40283481721d879601721d87b6350000");
     }
 
     @Test
     void findPlayerById_shouldThrowExceptionWhenPlayerNotFound() {
         when(playerRepository.findById(anyString())).thenReturn(Optional.empty());
-        String playerId = playerDTO.getId();
+        String playerId = privatePlayerDTO.getId();
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
             playerService.findPlayerById(playerId);
         });

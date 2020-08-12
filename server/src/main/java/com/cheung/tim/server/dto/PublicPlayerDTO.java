@@ -9,7 +9,8 @@ public class PublicPlayerDTO {
     public PublicPlayerDTO() {
     }
 
-    public PublicPlayerDTO(String username) {
+    public PublicPlayerDTO(String id, String username) {
+        this.id = id;
         this.username = username;
     }
 
@@ -17,12 +18,16 @@ public class PublicPlayerDTO {
     @Setter
     private String username;
 
+    @Getter
+    @Setter
+    private String id;
+
     public static PublicPlayerDTO convertToPublicPlayerDTO(Player player) {
         PublicPlayerDTO publicPlayerDTO = new PublicPlayerDTO();
         if (player != null && player.getUsername() != null) {
+            publicPlayerDTO.setId(player.getUserId());
             publicPlayerDTO.setUsername(player.getUsername());
-        }
-        else {
+        } else {
             return null;
         }
         return publicPlayerDTO;

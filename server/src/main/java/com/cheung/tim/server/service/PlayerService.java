@@ -1,7 +1,7 @@
 package com.cheung.tim.server.service;
 
 import com.cheung.tim.server.domain.Player;
-import com.cheung.tim.server.dto.PlayerDTO;
+import com.cheung.tim.server.dto.PrivatePlayerDTO;
 import com.cheung.tim.server.exception.BadRequestException;
 import com.cheung.tim.server.exception.NotFoundException;
 import com.cheung.tim.server.repository.PlayerRepository;
@@ -21,11 +21,11 @@ public class PlayerService {
         this.playerRepository = playerRepository;
     }
 
-    public Player createPlayer(PlayerDTO playerDTO) {
-        if (playerDTO == null || StringUtils.isBlank(playerDTO.getUsername())){
+    public Player createPlayer(PrivatePlayerDTO privatePlayerDTO) {
+        if (privatePlayerDTO == null || StringUtils.isBlank(privatePlayerDTO.getUsername())){
             throw new BadRequestException("Username must not be null or empty");
         }
-        Player player = new Player(playerDTO.getUsername());
+        Player player = new Player(privatePlayerDTO.getUsername());
         return playerRepository.save(player);
     }
 

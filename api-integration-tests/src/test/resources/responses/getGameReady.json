@@ -3,9 +3,11 @@
   "createdAt": "${json-unit.ignore-element}",
   "lobbyName": "test lobby",
   "host": {
+    "id": "${json-unit.ignore-element}",
     "username": "John"
   },
   "guest": {
+    "id": "${json-unit.ignore-element}",
     "username": "Jane"
   },
   "gameStatus": "${game_status}"

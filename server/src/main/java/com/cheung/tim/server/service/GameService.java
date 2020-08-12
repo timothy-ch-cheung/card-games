@@ -2,7 +2,7 @@ package com.cheung.tim.server.service;
 
 import com.cheung.tim.server.domain.Game;
 import com.cheung.tim.server.domain.Player;
-import com.cheung.tim.server.dto.PlayerDTO;
+import com.cheung.tim.server.dto.PrivatePlayerDTO;
 import com.cheung.tim.server.exception.BadRequestException;
 import com.cheung.tim.server.exception.NotFoundException;
 import com.cheung.tim.server.repository.GameRepository;
@@ -35,11 +35,11 @@ public class GameService {
         return game;
     }
 
-    public Game createGame(PlayerDTO playerDTO, String lobbyName) {
-        if (playerDTO == null || !playerDTO.getId().matches(PLAYER_ID_REGEX) || isBlank(lobbyName)) {
+    public Game createGame(PrivatePlayerDTO privatePlayerDTO, String lobbyName) {
+        if (privatePlayerDTO == null || !privatePlayerDTO.getId().matches(PLAYER_ID_REGEX) || isBlank(lobbyName)) {
             throw new BadRequestException("Lobby name or Host not supplied");
         }
-        Player player = getPlayer(playerDTO.getId());
+        Player player = getPlayer(privatePlayerDTO.getId());
         if (isPlayerInGame(player)) {
             throw new BadRequestException(String.format("Player %s is already in a game", player.getUsername()));
         }
@@ -48,8 +48,8 @@ public class GameService {
     }
 
     @Transactional
-    public void joinGame(Long gameId, PlayerDTO playerDTO) {
-        Player player = getPlayer(playerDTO.getId());
+    public void joinGame(Long gameId, PrivatePlayerDTO privatePlayerDTO) {
+        Player player = getPlayer(privatePlayerDTO.getId());
         if (isPlayerInGame(player)) {
             throw new BadRequestException(String.format("Player %s is already in a game", player.getUsername()));
         }
@@ -64,25 +64,25 @@ public class GameService {
     }
 
     @Transactional
-    public void leaveGame(Long gameId, PlayerDTO playerDTO) {
+    public void leaveGame(Long gameId, PrivatePlayerDTO privatePlayerDTO) {
         Game game = gameRepository.findByGameId(gameId);
         if (game == null) {
             throw new NotFoundException(String.format(GAME_NOT_EXIST, gameId));
         }
 
-        if (game.getPlayer1() != null && game.getPlayer1().equalDTO(playerDTO)) {
+        if (game.getPlayer1() != null && game.getPlayer1().equalDTO(privatePlayerDTO)) {
             gameRepository.updateStatus(gameId, DELETED);
             gameRepository.updatePlayerOne(gameId, null);
             gameRepository.updatePlayerTwo(gameId, null);
-        } else if (game.getPlayer2() != null && game.getPlayer2().equalDTO(playerDTO)) {
+        } else if (game.getPlayer2() != null && game.getPlayer2().equalDTO(privatePlayerDTO)) {
             gameRepository.updateStatus(gameId, OPEN);
             gameRepository.updatePlayerTwo(gameId, null);
         } else {
-            Player player = playerService.findPlayerById(playerDTO.getId());
+            Player player = playerService.findPlayerById(privatePlayerDTO.getId());
             if (player != null) {
                 throw new BadRequestException(String.format("Player %s is not in game with id %s", player.getUsername(), gameId));
             }
-            throw new NotFoundException(String.format("Player with id %s not found", playerDTO.getId()));
+            throw new NotFoundException(String.format("Player with id %s not found", privatePlayerDTO.getId()));
         }
     }
 

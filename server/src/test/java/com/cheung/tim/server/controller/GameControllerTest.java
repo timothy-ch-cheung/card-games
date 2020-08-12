@@ -3,7 +3,7 @@ package com.cheung.tim.server.controller;
 import com.cheung.tim.server.domain.Game;
 import com.cheung.tim.server.domain.Player;
 import com.cheung.tim.server.dto.GameDTO;
-import com.cheung.tim.server.dto.PlayerDTO;
+import com.cheung.tim.server.dto.PrivatePlayerDTO;
 import com.cheung.tim.server.enums.GameStatus;
 import com.cheung.tim.server.exception.BadRequestException;
 import com.cheung.tim.server.exception.NotFoundException;
@@ -48,12 +48,12 @@ class GameControllerTest {
     @MockBean
     ModelMapper modelMapper;
 
-    ArgumentCaptor playerDTOCapture = ArgumentCaptor.forClass(PlayerDTO.class);
+    ArgumentCaptor playerDTOCapture = ArgumentCaptor.forClass(PrivatePlayerDTO.class);
     ArgumentCaptor lobbyNameCapture = ArgumentCaptor.forClass(String.class);
 
     @Test
     void getGame_shouldReturn200() throws Exception {
-        Player player = new Player("John Smith");
+        Player player = new Player("opjps1w7o66ckmthc18zo32r29wic9fo","John Smith");
         Game game = new Game("test_lobby", player, GameStatus.OPEN);
         GameDTO gameDTO = getGameDTO();
 
@@ -65,7 +65,8 @@ class GameControllerTest {
                 "   \"createdAt\":null,\n" +
                 "   \"lobbyName\":\"test_lobby\",\n" +
                 "   \"host\":{\n" +
-                "      \"username\":\"John Smith\"\n" +
+                "      \"username\":\"John Smith\",\n" +
+                "      \"id\":\"opjps1w7o66ckmthc18zo32r29wic9fo\"\n" +
                 "   },\n" +
                 "   \"guest\": null,\n" +
                 "   \"gameStatus\":\"OPEN\"\n" +
@@ -93,11 +94,11 @@ class GameControllerTest {
 
     @Test
     void createGame_shouldReturn200() throws Exception {
-        Player player = new Player("John Smith");
+        Player player = new Player("opjps1w7o66ckmthc18zo32r29wic9fo", "John Smith");
         Game game = new Game("test_lobby", player, GameStatus.OPEN);
         GameDTO gameDTO = getGameDTO();
 
-        when(gameService.createGame(any(PlayerDTO.class), anyString())).thenReturn(game);
+        when(gameService.createGame(any(PrivatePlayerDTO.class), anyString())).thenReturn(game);
         when(modelMapper.map(game, GameDTO.class)).thenReturn(gameDTO);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                 .post("/create")
@@ -112,13 +113,14 @@ class GameControllerTest {
                 "   \"createdAt\":null,\n" +
                 "   \"lobbyName\":\"test_lobby\",\n" +
                 "   \"host\":{\n" +
-                "      \"username\":\"John Smith\"\n" +
+                "      \"username\":\"John Smith\",\n" +
+                "      \"id\":\"opjps1w7o66ckmthc18zo32r29wic9fo\"\n" +
                 "   },\n" +
                 "   \"guest\": null,\n" +
                 "   \"gameStatus\":\"OPEN\"\n" +
                 "}";
 
-        verify(gameService).createGame((PlayerDTO) playerDTOCapture.capture(), (String) lobbyNameCapture.capture());
+        verify(gameService).createGame((PrivatePlayerDTO) playerDTOCapture.capture(), (String) lobbyNameCapture.capture());
         assertThat(lobbyNameCapture.getAllValues().size(), is(1));
 
         assertThat(response.getStatus(), is(200));
@@ -127,7 +129,7 @@ class GameControllerTest {
 
     @Test
     void createGame_shouldThrowBadRequestException() throws Exception {
-        when(gameService.createGame(any(PlayerDTO.class), anyString())).thenThrow(new BadRequestException(""));
+        when(gameService.createGame(any(PrivatePlayerDTO.class), anyString())).thenThrow(new BadRequestException(""));
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                 .post("/create")
@@ -142,7 +144,7 @@ class GameControllerTest {
     @Test
     void getGames_shouldReturn200() throws Exception {
         List<Game> games = new ArrayList();
-        Player player = new Player("John Smith");
+        Player player = new Player("opjps1w7o66ckmthc18zo32r29wic9fo","John Smith");
         Game game = new Game("test_lobby", player, GameStatus.OPEN);
         games.add(game);
         when(gameService.findOpenGames()).thenReturn(games);
@@ -162,7 +164,8 @@ class GameControllerTest {
                 "         \"createdAt\": null,\n" +
                 "         \"lobbyName\": \"test_lobby\",\n" +
                 "         \"host\": {\n" +
-                "            \"username\": \"John Smith\"\n" +
+                "            \"username\": \"John Smith\",\n" +
+            "                \"id\":\"opjps1w7o66ckmthc18zo32r29wic9fo\"\n" +
                 "         },\n" +
                 "         \"guest\": null,\n" +
                 "         \"gameStatus\": \"OPEN\"\n" +
@@ -186,7 +189,7 @@ class GameControllerTest {
 
     @Test
     void joinGame_shouldThrowBadRequestException() throws Exception {
-        doThrow(new BadRequestException("")).when(gameService).joinGame(any(Long.class), any(PlayerDTO.class));
+        doThrow(new BadRequestException("")).when(gameService).joinGame(any(Long.class), any(PrivatePlayerDTO.class));
 
         MvcResult result = performPatch("/join/1");
         MockHttpServletResponse response = result.getResponse();
@@ -196,7 +199,7 @@ class GameControllerTest {
 
     @Test
     void joinGame_shouldThrowNotFoundException() throws Exception {
-        doThrow(new NotFoundException("not found")).when(gameService).joinGame(any(Long.class), any(PlayerDTO.class));
+        doThrow(new NotFoundException("not found")).when(gameService).joinGame(any(Long.class), any(PrivatePlayerDTO.class));
 
         MvcResult result = performPatch("/join/1");
         MockHttpServletResponse response = result.getResponse();
@@ -216,7 +219,7 @@ class GameControllerTest {
 
     @Test
     void leaveGame_shouldThrowBadRequestException() throws Exception {
-        doThrow(new BadRequestException("bad request")).when(gameService).leaveGame(any(Long.class), any(PlayerDTO.class));
+        doThrow(new BadRequestException("bad request")).when(gameService).leaveGame(any(Long.class), any(PrivatePlayerDTO.class));
 
         MvcResult result = performPatch("/leave/1");
         MockHttpServletResponse response = result.getResponse();
@@ -226,7 +229,7 @@ class GameControllerTest {
 
     @Test
     void leaveGame_shouldThrowNotFoundException() throws Exception {
-        doThrow(new NotFoundException("not found")).when(gameService).leaveGame(any(Long.class), any(PlayerDTO.class));
+        doThrow(new NotFoundException("not found")).when(gameService).leaveGame(any(Long.class), any(PrivatePlayerDTO.class));
 
         MvcResult result = performPatch("/leave/1");
         MockHttpServletResponse response = result.getResponse();

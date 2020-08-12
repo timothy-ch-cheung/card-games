@@ -1,6 +1,6 @@
 package com.cheung.tim.server.domain;
 
-import com.cheung.tim.server.dto.PlayerDTO;
+import com.cheung.tim.server.dto.PrivatePlayerDTO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -8,6 +8,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Objects;
+
+import static org.apache.commons.lang.RandomStringUtils.randomAlphanumeric;
 
 @Entity
 @Table(name = "PLAYERS")
@@ -23,6 +25,11 @@ public class Player extends BaseEntity {
         this.username = username;
     }
 
+    public Player(String id, String username, String key) {
+        this(id, username);
+        this.key = key;
+    }
+
     @Getter
     @Column(name = "user_id", columnDefinition = "CHAR(32)", nullable = false)
     @GeneratedValue(generator = "uuid")
@@ -30,13 +37,22 @@ public class Player extends BaseEntity {
     @Id
     private String userId;
 
+    @Column(name = "key")
+    @Getter
+    private String key;
+
     @Column(name = "username", nullable = false)
     @Getter
     @Setter
     private String username;
 
-    public boolean equalDTO(PlayerDTO playerDTO) {
-        return playerDTO != null && this.userId.equals(playerDTO.getId());
+    @PrePersist
+    protected void onCreate() {
+        this.key = randomAlphanumeric(32);
+    }
+
+    public boolean equalDTO(PrivatePlayerDTO privatePlayerDTO) {
+        return privatePlayerDTO != null && this.userId.equals(privatePlayerDTO.getId());
     }
 
     @Override

@@ -11,5 +11,5 @@ public class CreateLobbyDTO {
 
     @Getter
     @Setter
-    private PlayerDTO host;
+    private PrivatePlayerDTO host;
 }

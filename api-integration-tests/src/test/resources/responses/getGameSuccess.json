@@ -3,6 +3,7 @@
   "createdAt": "${json-unit.ignore-element}",
   "lobbyName": "test lobby",
   "host": {
+    "id": "${json-unit.ignore-element}",
     "username": "John"
   },
   "guest": null,

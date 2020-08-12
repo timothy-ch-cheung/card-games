@@ -3,7 +3,7 @@ package com.cheung.tim.server.controller;
 import com.cheung.tim.server.domain.Game;
 import com.cheung.tim.server.dto.CreateLobbyDTO;
 import com.cheung.tim.server.dto.GameDTO;
-import com.cheung.tim.server.dto.PlayerDTO;
+import com.cheung.tim.server.dto.PrivatePlayerDTO;
 import com.cheung.tim.server.service.GameService;
 import com.cheung.tim.server.service.PlayerService;
 import org.modelmapper.ModelMapper;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.cheung.tim.server.dto.PlayerDTO.convertToPublicPlayerDTO;
+import static com.cheung.tim.server.dto.PrivatePlayerDTO.convertToPublicPlayerDTO;
 
 @RestController
 public class GameController {
@@ -45,14 +45,14 @@ public class GameController {
     }
 
     @PatchMapping(path = "/join/{gameId}")
-    public ResponseEntity<Void> joinGame(@PathVariable Long gameId, @RequestBody PlayerDTO playerDTO) {
-        gameService.joinGame(gameId, playerDTO);
+    public ResponseEntity<Void> joinGame(@PathVariable Long gameId, @RequestBody PrivatePlayerDTO privatePlayerDTO) {
+        gameService.joinGame(gameId, privatePlayerDTO);
         return ResponseEntity.noContent().header("Content-Length", "0").build();
     }
 
     @PatchMapping(path = "/leave/{gameId}")
-    public ResponseEntity<Void> leaveGame(@PathVariable Long gameId, @RequestBody PlayerDTO playerDTO) {
-        gameService.leaveGame(gameId, playerDTO);
+    public ResponseEntity<Void> leaveGame(@PathVariable Long gameId, @RequestBody PrivatePlayerDTO privatePlayerDTO) {
+        gameService.leaveGame(gameId, privatePlayerDTO);
         return ResponseEntity.noContent().header("Content-Length", "0").build();
     }
 

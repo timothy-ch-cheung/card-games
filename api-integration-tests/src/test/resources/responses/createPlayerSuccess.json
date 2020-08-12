@@ -1,4 +1,5 @@
 {
   "id": "${json-unit.ignore-element}",
-  "username": "John"
+  "username": "John",
+  "key": "${json-unit.ignore-element}"
 }
