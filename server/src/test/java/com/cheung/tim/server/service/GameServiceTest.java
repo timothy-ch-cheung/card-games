@@ -142,6 +142,18 @@ class GameServiceTest {
     }
 
     @Test
+    void createGame_shouldThrowExceptionIfPlayerKeyIsInvalid() {
+        when(playerService.findPlayerById(any()))
+                .thenReturn(new Player("40283481721d879601721d87b6350000", "John Smith", "keykeykeykeykeykeykeykeykeykeyke"));
+        PrivatePlayerDTO privatePlayerDTO = getPlayerDTO();
+        privatePlayerDTO.setKey("invalidinvalidinvalidinvalidinva");
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            gameService.createGame(privatePlayerDTO, "test lobby");
+        });
+        assertThat(exception.getMessage(), is("Player id or key invalid"));
+    }
+
+    @Test
     void createGame_shouldCreateGameSuccessfully() {
         Player player = new Player();
         player.setKey("keykeykeykeykeykeykeykeykeykeyke");
@@ -210,6 +222,21 @@ class GameServiceTest {
     }
 
     @Test
+    void joinGame_shouldThrowExceptionIfPlayerKeyInvalid() {
+        Player player = new Player("40283481721d879601721d87b6350000", "John Smith", "authauthauthauthauthauthauthauth");
+        when(playerService.findPlayerById(any())).thenReturn(player);
+        when(gameRepository.countByPlayerOneInGame(any())).thenReturn(new Long(0));
+        Player otherPlayer = new Player("40283481721d879601721d87b6350000", "Jane Smith", "keykeykeykeykeykeykeykeykeykeyke");
+        when(gameRepository.findByGameId(1L)).thenReturn(new Game("test_lobby", otherPlayer, OPEN));
+        PrivatePlayerDTO privatePlayerDTO = getPlayerDTO();
+        privatePlayerDTO.setKey("invalidinvalidinvalidinvalidinva");
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            gameService.joinGame(1L, privatePlayerDTO);
+        });
+        assertThat(exception.getMessage(), is("Player id or key invalid"));
+    }
+
+    @Test
     void joinGame_shouldJoinGameSuccessfully() {
         PrivatePlayerDTO privatePlayerDTO = getPlayerDTO();
         Player player = new Player("40283481721d879601721d87b6350000", "John Smith", "keykeykeykeykeykeykeykeykeykeyke");
@@ -275,6 +302,35 @@ class GameServiceTest {
             gameService.leaveGame(1L, privatePlayerDTO);
         });
         assertThat(exception.getMessage(), is("Player with id 00000000000000000000000000000000 not found"));
+    }
+
+    @Test
+    void leaveGame_shouldThrowBadRequestExceptionWhenKeyInvalidPlayer1() {
+        PrivatePlayerDTO privatePlayerDTO = getPlayerDTO();
+        Player player1 = new Player("40283481721d879601721d87b6350000", "John Smith", "keykeykeykeykeykeykeykeykeykeyke");
+        when(gameRepository.findByGameId(1L)).thenReturn(new Game("test_lobby", player1, OPEN));
+
+        privatePlayerDTO.setKey("invalidinvalidinvalidinvalidinva");
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            gameService.leaveGame(1L, privatePlayerDTO);
+        });
+        assertThat(exception.getMessage(), is("Player id or key invalid"));
+    }
+
+    @Test
+    void leaveGame_shouldThrowBadRequestExceptionWhenKeyInvalidPlayer2() {
+        PrivatePlayerDTO privatePlayerDTO = new PrivatePlayerDTO("1721d87b635000040283481721d87960", "Jane Smith", "keykeykeykeykeykeykeykeykeykeyke");
+        Player player1 = new Player("40283481721d879601721d87b6350000", "John Smith");
+        Player player2 = new Player("1721d87b635000040283481721d87960", "Jane Smith", "keykeykeykeykeykeykeykeykeykeyke");
+        Game game = new Game("test_lobby", player1, OPEN);
+        game.setPlayer2(player2);
+        when(gameRepository.findByGameId(1L)).thenReturn(game);
+
+        privatePlayerDTO.setKey("invalidinvalidinvalidinvalidinva");
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            gameService.leaveGame(1L, privatePlayerDTO);
+        });
+        assertThat(exception.getMessage(), is("Player id or key invalid"));
     }
 
     @Test

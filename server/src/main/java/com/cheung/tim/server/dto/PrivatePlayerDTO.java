@@ -24,7 +24,7 @@ public class PrivatePlayerDTO extends PublicPlayerDTO {
 
     public static PrivatePlayerDTO convertToPrivatePlayerDTO(Player player) {
         PrivatePlayerDTO privatePlayerDTO = new PrivatePlayerDTO();
-        if (player != null && player.getUsername() != null) {
+        if (player != null && player.getUserId() != null) {
             privatePlayerDTO.setId(player.getUserId());
             privatePlayerDTO.setUsername(player.getUsername());
             privatePlayerDTO.setKey(player.getKey());

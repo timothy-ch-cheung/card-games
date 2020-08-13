@@ -78,6 +78,28 @@ public class CreateGameTest extends BaseGameTest {
     }
 
     @Test
+    public void createGamePlayerWithInvalidKey() {
+        String request = JsonRequest("createGame")
+                .replaceLobbyName("test lobby")
+                .replacePlayerId(player.getId())
+                .replaceKey("invalidinvalidinvalidinvalidinva")
+                .toString();
+
+        Response response = given().contentType(ContentType.JSON)
+                .body(request)
+                .when()
+                .post(ENDPOINT + CREATE);
+
+        String expectedResponse = JsonResponse("createGameIncorrectFormat")
+                .replacePlayerId("abababababababababababababababab")
+                .replaceMessage("Player id or key invalid")
+                .toString();
+
+        assertThat(response.statusCode(), is(400));
+        assertThat(response.getBody().asString(), jsonEquals(expectedResponse));
+    }
+
+    @Test
     public void createGameEmptyBody() {
         Response response = given().contentType(ContentType.JSON)
                 .body("{}")
@@ -86,6 +108,7 @@ public class CreateGameTest extends BaseGameTest {
 
         String expectedResponse = JsonResponse("createGameIncorrectFormat")
                 .replacePlayerId("abababababababababababababababab")
+                .replaceMessage("Lobby name or Host not supplied")
                 .toString();
 
         assertThat(response.statusCode(), is(400));
@@ -110,6 +133,7 @@ public class CreateGameTest extends BaseGameTest {
         String expectedResponse = JsonResponse("createGameIncorrectFormat")
                 .replacePlayerId(player.getId())
                 .replaceKey(player.getKey())
+                .replaceMessage("Lobby name or Host not supplied")
                 .toString();
 
         assertThat(response.statusCode(), is(400));

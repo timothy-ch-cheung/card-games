@@ -165,4 +165,38 @@ public class LeaveGameTest extends BaseGameTest {
 
         queueCleanup(game(otherPlayer, otherGame));
     }
+
+    @Test
+    public void leaveGameAsGuestInvalidKey() {
+        String expectedResponse = JsonResponse("leaveGameBadRequest")
+                .replaceGameId(this.gameId.toString())
+                .replaceMessage("Player id or key invalid")
+                .toString();
+
+        Response response = given().contentType(ContentType.JSON)
+                .body(JsonRequest("leaveGame").replacePlayerId(this.playerTwo.getId())
+                        .replaceKey("invalidinvalidinvalidinvalidinva").toString())
+                .when()
+                .patch(ENDPOINT + LEAVE + "/" + gameId.toString());
+
+        assertThat(response.statusCode(), is(400));
+        assertThat(response.getBody().asString(), jsonEquals(expectedResponse));
+    }
+
+    @Test
+    public void leaveGameAsHostInvalidKey() {
+        String expectedResponse = JsonResponse("leaveGameBadRequest")
+                .replaceGameId(this.gameId.toString())
+                .replaceMessage("Player id or key invalid")
+                .toString();
+
+        Response response = given().contentType(ContentType.JSON)
+                .body(JsonRequest("leaveGame").replacePlayerId(this.playerOne.getId())
+                        .replaceKey("invalidinvalidinvalidinvalidinva").toString())
+                .when()
+                .patch(ENDPOINT + LEAVE + "/" + gameId.toString());
+
+        assertThat(response.statusCode(), is(400));
+        assertThat(response.getBody().asString(), jsonEquals(expectedResponse));
+    }
 }

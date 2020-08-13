@@ -83,7 +83,8 @@ public class JoinGameTest extends BaseGameTest {
                 .patch(ENDPOINT + JOIN + "/" + secondGameId);
 
         assertThat(response.statusCode(), is(400));
-        assertThat(response.getBody().asString(), jsonEquals(JsonResponse("joinGameAlreadyInGame").replaceGameId(secondGameId).toString()));
+        assertThat(response.getBody().asString(), jsonEquals(JsonResponse("joinGameBadRequest")
+                .replaceMessage("Player John is already in a game").replaceGameId(secondGameId).toString()));
 
         queueCleanup(game(secondPlayer, parseInt(secondGameId)));
     }
@@ -102,6 +103,21 @@ public class JoinGameTest extends BaseGameTest {
         Response response = given().contentType(ContentType.JSON)
                 .body(JsonRequest("joinGame").replacePlayerId(playerTwo.getId())
                         .replaceKey(playerTwo.getKey()).toString())
+                .when()
+                .patch(ENDPOINT + JOIN + "/" + this.gameId.toString());
+
+        assertThat(response.statusCode(), is(400));
+        assertThat(response.getBody().asString(), jsonEquals(expectedResponse));
+    }
+
+    @Test
+    public void joinGameInvalidPlayerKey() {
+        String expectedResponse = JsonResponse("joinGameBadRequest").replaceGameId(this.gameId.toString())
+                .replaceMessage("Player id or key invalid").toString();
+        Player playerOne = createPlayer();
+        Response response = given().contentType(ContentType.JSON)
+                .body(JsonRequest("joinGame").replacePlayerId(playerOne.getId())
+                        .replaceKey("invalidinvalidinvalidinvalidinva").toString())
                 .when()
                 .patch(ENDPOINT + JOIN + "/" + this.gameId.toString());
 

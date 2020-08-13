@@ -3,5 +3,5 @@
   "status": 400,
   "error": "Bad Request",
   "message": "${message}",
-  "path": "/create"
+  "path": "/join/${game_id}"
 }
