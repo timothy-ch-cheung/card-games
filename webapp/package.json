@@ -52,6 +52,8 @@
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
     ],
-    "coverageReporters": ["lcov"]
+    "coverageReporters": [
+      "lcov"
+    ]
   }
 }
