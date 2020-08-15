@@ -63,7 +63,7 @@ jobs:
 
       - run: npm install
 
-      - run: npm test a
+      - run: npm test a -- --coverage
 
       - sonarcloud/scan
 
