@@ -47,6 +47,12 @@ public class Player extends BaseEntity {
     @Setter
     private String username;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "game_id")
+    @Getter
+    @Setter
+    Game currentGame;
+
     @PrePersist
     protected void onCreate() {
         this.key = randomAlphanumeric(32);

@@ -75,8 +75,8 @@ class MoveTest {
     @Test
     void equals_returnsFalseForDifferentGame() {
         Move otherMove = createMove();
-        move.setGame(new Game("Lobby 1", new Player(), GameStatus.OPEN));
-        otherMove.setGame(new Game("Lobby 2", new Player(), GameStatus.OPEN));
+        move.setGame(new Game("Lobby 1", new Player(), GameStatus.OPEN, 2));
+        otherMove.setGame(new Game("Lobby 2", new Player(), GameStatus.OPEN, 2));
         assertThat(move.equals(otherMove), is(false));
     }
 

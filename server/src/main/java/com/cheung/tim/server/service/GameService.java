@@ -36,7 +36,7 @@ public class GameService {
         return game;
     }
 
-    public Game createGame(PrivatePlayerDTO privatePlayerDTO, String lobbyName) {
+    public Game createGame(PrivatePlayerDTO privatePlayerDTO, String lobbyName, Integer maxPlayers) {
         if (privatePlayerDTO == null || !privatePlayerDTO.getId().matches(PLAYER_ID_REGEX) || isBlank(lobbyName)) {
             throw new BadRequestException("Lobby name or Host not supplied");
         }
@@ -46,7 +46,7 @@ public class GameService {
         } else if (!player.getKey().equals(privatePlayerDTO.getKey())) {
             throw new BadRequestException(INVALID_AUTH);
         }
-        Game game = new Game(lobbyName, player, OPEN);
+        Game game = new Game(lobbyName, player, OPEN, maxPlayers);
         return gameRepository.save(game);
     }
 
@@ -59,13 +59,13 @@ public class GameService {
         Game game = gameRepository.findByGameId(gameId);
         if (game == null) {
             throw new NotFoundException(String.format(GAME_NOT_EXIST, gameId));
-        } else if (game.getPlayer2() != null) {
+        } else if (isGameFull(game)) {
             throw new BadRequestException(String.format("Game with id %s is already full", gameId));
         } else if (!player.getKey().equals(privatePlayerDTO.getKey())) {
             throw new BadRequestException(INVALID_AUTH);
         }
 
-        gameRepository.updatePlayerTwo(gameId, player);
+        gameRepository.updatePlayersCurrentGame(game, player.getUserId());
         gameRepository.updateStatus(gameId, READY);
     }
 
@@ -76,19 +76,20 @@ public class GameService {
             throw new NotFoundException(String.format(GAME_NOT_EXIST, gameId));
         }
 
-        if (game.getPlayer1() != null && game.getPlayer1().equalDTO(privatePlayerDTO)) {
-            if (!game.getPlayer1().getKey().equals(privatePlayerDTO.getKey())) {
+        if (game.getHost() != null && game.getHost().equalDTO(privatePlayerDTO)) {
+            if (!game.getHost().getKey().equals(privatePlayerDTO.getKey())) {
                 throw new BadRequestException(INVALID_AUTH);
             }
             gameRepository.updateStatus(gameId, DELETED);
-            gameRepository.updatePlayerOne(gameId, null);
-            gameRepository.updatePlayerTwo(gameId, null);
-        } else if (game.getPlayer2() != null && game.getPlayer2().equalDTO(privatePlayerDTO)) {
-            if (!game.getPlayer2().getKey().equals(privatePlayerDTO.getKey())) {
+            gameRepository.updateHost(gameId, null);
+            gameRepository.updatePlayersCurrentGame(null, privatePlayerDTO.getId());
+        } else if (game.getGuests() != null && game.getGuests().contains(new Player(privatePlayerDTO.getId(), privatePlayerDTO.getUsername()))) {
+            Player guest = playerService.findPlayerById(privatePlayerDTO.getId());
+            if (!guest.getKey().equals(privatePlayerDTO.getKey())) {
                 throw new BadRequestException(INVALID_AUTH);
             }
             gameRepository.updateStatus(gameId, OPEN);
-            gameRepository.updatePlayerTwo(gameId, null);
+            gameRepository.updatePlayersCurrentGame(null, guest.getUserId());
         } else {
             Player player = playerService.findPlayerById(privatePlayerDTO.getId());
             if (player != null) {
@@ -111,6 +112,10 @@ public class GameService {
     }
 
     private boolean isPlayerInGame(Player player) {
-        return gameRepository.countByPlayerOneInGame(player) > 0 || gameRepository.countByPlayerTwoInGame(player) > 0;
+        return gameRepository.getPlayerInGame(player.getUserId()) != null;
+    }
+
+    private boolean isGameFull(Game game) {
+        return game.getMaxPlayers() <= game.getGuests().size() + 1;
     }
 }

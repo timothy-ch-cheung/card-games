@@ -5,9 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import javax.validation.constraints.NotNull;
+import java.util.*;
 
 @Entity
 @Table(name = "GAME")
@@ -16,11 +15,13 @@ public class Game extends BaseEntity {
     public Game() {
     }
 
-    public Game(String lobbyName, Player host, GameStatus status) {
+    public Game(String lobbyName, Player host, GameStatus status, Integer maxPlayers) {
         this.lobbyName = lobbyName;
-        this.player1 = host;
+        this.host = host;
         this.gameStatus = status;
+        this.maxPlayers = maxPlayers;
     }
+
 
     @Id
     @Getter
@@ -35,18 +36,22 @@ public class Game extends BaseEntity {
     @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", unique = true)
-    private Player player1;
+    private Player host;
 
-    @OneToOne
-    @Getter
-    @Setter
-    @JoinColumn(name = "second_player_id", unique = true)
-    private Player player2;
-
+    @OneToMany(
+            mappedBy = "currentGame",
+            cascade = CascadeType.PERSIST,
+            fetch = FetchType.LAZY)
+    private Set<Player> guests = new HashSet<>();
     @Getter
     @Setter
     @Enumerated(EnumType.STRING)
     private GameStatus gameStatus;
+
+    @Getter
+    @Setter
+    @NotNull
+    private Integer maxPlayers;
 
     @OneToMany
     private List<Move> moves = new ArrayList<>();
@@ -63,9 +68,17 @@ public class Game extends BaseEntity {
         this.moves.add(move);
     }
 
+    public Set<Player> getGuests() {
+        return Collections.unmodifiableSet(this.guests);
+    }
+
+    public void addGuest(Player player) {
+        this.guests.add(player);
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hash(gameId, lobbyName, player1, player2, gameStatus, moves);
+        return Objects.hash(gameId, lobbyName, host, guests, gameStatus, moves);
     }
 
     @Override
@@ -79,8 +92,8 @@ public class Game extends BaseEntity {
         Game otherPlayer = (Game) obj;
         return Objects.equals(gameId, otherPlayer.gameId) &&
                 Objects.equals(lobbyName, otherPlayer.lobbyName) &&
-                Objects.equals(player1, otherPlayer.player1) &&
-                Objects.equals(player2, otherPlayer.player2) &&
+                Objects.equals(host, otherPlayer.host) &&
+                Objects.equals(guests, otherPlayer.guests) &&
                 Objects.equals(gameStatus, otherPlayer.gameStatus) &&
                 Objects.equals(moves, otherPlayer.moves);
     }

@@ -3,6 +3,8 @@ package com.cheung.tim.server.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 public class GameDTO {
 
     @Getter
@@ -23,9 +25,13 @@ public class GameDTO {
 
     @Getter
     @Setter
-    private PublicPlayerDTO guest;
+    private Set<PublicPlayerDTO> guests;
 
     @Getter
     @Setter
     private String gameStatus;
+
+    @Getter
+    @Setter
+    private Integer maxPlayers;
 }

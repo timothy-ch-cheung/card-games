@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.cheung.tim.server.dto.PrivatePlayerDTO.convertToPublicPlayerDTO;
+import static com.cheung.tim.server.dto.PublicPlayerDTO.convertToPublicPlayerDTOSet;
 
 @RestController
 public class GameController {
@@ -40,7 +41,7 @@ public class GameController {
 
     @PostMapping(path = "/create")
     public ResponseEntity<GameDTO> createGame(@RequestBody CreateLobbyDTO createLobbyDTO) {
-        Game game = gameService.createGame(createLobbyDTO.getHost(), createLobbyDTO.getLobbyName());
+        Game game = gameService.createGame(createLobbyDTO.getHost(), createLobbyDTO.getLobbyName(), createLobbyDTO.getMaxPlayers());
         return ResponseEntity.ok(convertToDto(game));
     }
 
@@ -64,8 +65,8 @@ public class GameController {
 
     private GameDTO convertToDto(Game game) {
         GameDTO gameDto = modelMapper.map(game, GameDTO.class);
-        gameDto.setHost(convertToPublicPlayerDTO(game.getPlayer1()));
-        gameDto.setGuest(convertToPublicPlayerDTO(game.getPlayer2()));
+        gameDto.setHost(convertToPublicPlayerDTO(game.getHost()));
+        gameDto.setGuests(convertToPublicPlayerDTOSet(game.getGuests()));
         gameDto.setGameStatus(game.getGameStatus().toString());
         return gameDto;
     }
