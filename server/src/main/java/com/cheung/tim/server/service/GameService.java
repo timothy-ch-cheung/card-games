@@ -6,7 +6,6 @@ import com.cheung.tim.server.dto.PrivatePlayerDTO;
 import com.cheung.tim.server.exception.BadRequestException;
 import com.cheung.tim.server.exception.NotFoundException;
 import com.cheung.tim.server.repository.GameRepository;
-import com.cheung.tim.server.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -83,9 +82,9 @@ public class GameService {
             if (!game.getHost().getKey().equals(privatePlayerDTO.getKey())) {
                 throw new BadRequestException(INVALID_AUTH);
             }
-            game.setGameStatus(DELETED);
-            game.setHost(null);
-            gameRepository.save(game);
+            gameRepository.updateStatus(gameId, DELETED);
+            gameRepository.updateHost(gameId, null);
+            gameRepository.updatePlayersCurrentGame(null, privatePlayerDTO.getId());
             game.getGuests().forEach(p -> gameRepository.updatePlayersCurrentGame(null, p.getUserId()));
         } else if (game.getGuests() != null && game.getGuests().contains(new Player(privatePlayerDTO.getId(), privatePlayerDTO.getUsername()))) {
             Player guest = playerService.findPlayerById(privatePlayerDTO.getId());
