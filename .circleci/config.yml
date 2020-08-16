@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   maven: circleci/maven@0.0.12
   cypress: cypress-io/cypress@1.25.1
+  sonarcloud: sonarsource/sonarcloud@1.0.1
 
 executors:
   cypress-chrome:
@@ -62,7 +63,9 @@ jobs:
 
       - run: npm install
 
-      - run: npm test a
+      - run: npm test a -- --coverage
+
+      - sonarcloud/scan
 
   package:
     working_directory: ~/card-games/server
@@ -138,7 +141,8 @@ workflows:
     jobs:
       - server:
           context: SONAR_CLOUD_SERVER
-      - webapp
+      - webapp:
+          context: SONAR_CLOUD_WEBAPP
       - package:
           requires:
             - server
