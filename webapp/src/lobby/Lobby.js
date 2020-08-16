@@ -6,14 +6,6 @@ import {resetGame, resetGameMode} from "../actions";
 import PlayerList from "../components/player-list/PlayerList";
 import LobbySettings from "../components/lobby-settings/LobbySettings";
 
-function getGuest(game) {
-    return game.guest != null ? game.guest.username : "";
-}
-
-function getHost(game) {
-    return game.host != null ? game.host.username : "";
-}
-
 function Lobby(props) {
     const gameId = useSelector(state => state.game);
     const userId = useSelector(state => state.user);
@@ -23,10 +15,18 @@ function Lobby(props) {
     const history = useHistory();
     const dispatch = useDispatch();
 
+    const getPlayersList = (game) => {
+        let host = game.host || {};
+        host.isHost = true;
+        return game.guests ? [host].concat(game.guests) : [host];
+    }
+
+
     useEffect(() => {
         const getGame = () => {
             API.get(`/game/${gameId}`
             ).then(function (response) {
+                getPlayersList(response.data);
                 setGame(response.data);
             }).catch(function (error) {
                 props.onShowError(error.response.data.message);
@@ -59,7 +59,7 @@ function Lobby(props) {
 
     return (
         <div style={{display: "flex"}}>
-            <PlayerList players={[{name: getHost(game), isHost: true}, {name: getGuest(game), isHost: false}]}
+            <PlayerList players={getPlayersList(game)}
                         onLeave={onLeaveGame}/>
             <LobbySettings gameMode={gameMode} numPlayers={2}/>
         </div>

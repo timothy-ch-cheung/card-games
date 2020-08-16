@@ -16,11 +16,11 @@ function Player(props) {
 function PlayerList(props) {
 
     const renderPlayer = (card, index) => {
-        if (!isBlank(card.name)) {
+        if (!isBlank(card.username)) {
             return (
                 <tr key={index}>
                     <td style={{padding: "5px"}}>
-                        <Player name={card.name} isHost={card.isHost} key={index}
+                        <Player name={card.username} isHost={card.isHost} key={index}
                                 dataTest={"player" + index + "-name"} data-test={"player" + index + "-row"}/>
                     </td>
                 </tr>);

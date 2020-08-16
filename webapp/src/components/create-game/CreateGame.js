@@ -33,7 +33,7 @@ function CreateGame(props) {
         setValidated(false);
     };
 
-    const createGame = (lobbyName, playerId, playerKey) => {
+    const createGame = (lobbyName, maxPlayers, playerId, playerKey) => {
         let id = (playerId != null) ? playerId : userId;
         let key = (playerKey != null) ? playerKey : userKey;
         API.post('/create', {
@@ -41,7 +41,8 @@ function CreateGame(props) {
             host: {
                 id: id,
                 key: key
-            }
+            },
+            maxPlayers: maxPlayers
         }).then(function (response) {
             dispatch(setGame(response.data.id));
             history.push('/current-game')
@@ -57,6 +58,7 @@ function CreateGame(props) {
         const valid = form.checkValidity();
 
         let submitGameMode = e.target.gameMode.value;
+        let submitMaxPlayer = e.target.numPlayers.value;
         let validGameMode = Object.keys(GameModes).includes(submitGameMode);
 
         if (valid === false || !validGameMode) {
@@ -68,14 +70,14 @@ function CreateGame(props) {
         let lobbyName = e.target.lobbyName.value;
 
         if (userId != null) {
-            createGame(lobbyName);
+            createGame(lobbyName, submitMaxPlayer);
         } else {
             API.post('/player', {
                 username: e.target.nickname.value
             }).then(function (response) {
                 dispatch(setPlayer(response.data.id));
                 dispatch(setKey(response.data.key));
-                createGame(lobbyName, response.data.id, response.data.key)
+                createGame(lobbyName, submitMaxPlayer, response.data.id, response.data.key)
             }).catch(function (error) {
                 console.log(error);
             });
