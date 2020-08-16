@@ -115,6 +115,7 @@ describe("TEST SUITE CreateGame: ", () => {
                 target: {
                     gameMode: {value: 'Match Two'},
                     lobbyName: {value: 'test lobby'},
+                    numPlayers: {value: 2},
                     nickname: {value: 'John'}
                 }
             };
@@ -141,6 +142,7 @@ describe("TEST SUITE CreateGame: ", () => {
             const eventObj = {
                 target: {
                     gameMode: {value: 'Match Two'},
+                    numPlayers: {value: 2},
                     lobbyName: {value: 'test lobby'}
                 }
             };
@@ -164,7 +166,8 @@ describe("TEST SUITE CreateGame: ", () => {
             const eventObj = {
                 stopPropagation: jest.fn(),
                 target: {
-                    gameMode: {value: 'Match Two'}
+                    gameMode: {value: 'Match Two'},
+                    numPlayers: {value: 2},
                 }
             };
             let form = wrapper.find('form');

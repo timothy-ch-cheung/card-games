@@ -28,11 +28,6 @@ exports[`TEST SUITE Lobby:  Matches Lobby snapshot 1`] = `
           Array [
             Object {
               "isHost": true,
-              "name": "",
-            },
-            Object {
-              "isHost": false,
-              "name": "",
             },
           ]
         }
