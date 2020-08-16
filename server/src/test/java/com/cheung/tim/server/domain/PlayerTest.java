@@ -4,6 +4,10 @@ import com.cheung.tim.server.dto.PrivatePlayerDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -69,6 +73,12 @@ class PlayerTest {
     @Test
     void equalDTO_returnsFalseForNullDTO() {
         assertThat(player.equalDTO(null), is(false));
+    }
+
+    @Test
+    void setContains_returnsTrueWhenNewlyCreatedObject() {
+        Set<Player> players  = new HashSet<>(Arrays.asList(new Player("123", "John"),new Player("321", "Jane")));
+        assertThat(players.contains(new Player("123", "John")), is(true));
     }
 
     private Player createPlayer() {

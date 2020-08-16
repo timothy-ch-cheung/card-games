@@ -6,6 +6,7 @@
     "id": "${json-unit.ignore-element}",
     "username": "John"
   },
-  "guest": null,
-  "gameStatus": "OPEN"
+  "guests": [],
+  "gameStatus": "OPEN",
+  "maxPlayers": 2
 }

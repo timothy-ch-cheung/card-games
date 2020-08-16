@@ -6,6 +6,7 @@ import com.cheung.tim.server.dto.PrivatePlayerDTO;
 import com.cheung.tim.server.exception.BadRequestException;
 import com.cheung.tim.server.exception.NotFoundException;
 import com.cheung.tim.server.repository.GameRepository;
+import com.cheung.tim.server.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,8 +66,10 @@ public class GameService {
             throw new BadRequestException(INVALID_AUTH);
         }
 
+        if (isGuestsOneFromFull(game)) {
+            gameRepository.updateStatus(gameId, READY);
+        }
         gameRepository.updatePlayersCurrentGame(game, player.getUserId());
-        gameRepository.updateStatus(gameId, READY);
     }
 
     @Transactional
@@ -80,15 +83,18 @@ public class GameService {
             if (!game.getHost().getKey().equals(privatePlayerDTO.getKey())) {
                 throw new BadRequestException(INVALID_AUTH);
             }
-            gameRepository.updateStatus(gameId, DELETED);
-            gameRepository.updateHost(gameId, null);
-            gameRepository.updatePlayersCurrentGame(null, privatePlayerDTO.getId());
+            game.setGameStatus(DELETED);
+            game.setHost(null);
+            gameRepository.save(game);
+            game.getGuests().forEach(p -> gameRepository.updatePlayersCurrentGame(null, p.getUserId()));
         } else if (game.getGuests() != null && game.getGuests().contains(new Player(privatePlayerDTO.getId(), privatePlayerDTO.getUsername()))) {
             Player guest = playerService.findPlayerById(privatePlayerDTO.getId());
             if (!guest.getKey().equals(privatePlayerDTO.getKey())) {
                 throw new BadRequestException(INVALID_AUTH);
             }
-            gameRepository.updateStatus(gameId, OPEN);
+            if (isGameFull(game)) {
+                gameRepository.updateStatus(gameId, OPEN);
+            }
             gameRepository.updatePlayersCurrentGame(null, guest.getUserId());
         } else {
             Player player = playerService.findPlayerById(privatePlayerDTO.getId());
@@ -116,6 +122,14 @@ public class GameService {
     }
 
     private boolean isGameFull(Game game) {
-        return game.getMaxPlayers() <= game.getGuests().size() + 1;
+        return game.getMaxPlayers() <= getPlayersInGame(game);
+    }
+
+    private boolean isGuestsOneFromFull(Game game) {
+        return game.getMaxPlayers() - 1 == getPlayersInGame(game);
+    }
+
+    private int getPlayersInGame(Game game) {
+        return 1 + game.getGuests().size();
     }
 }

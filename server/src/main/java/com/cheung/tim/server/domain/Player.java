@@ -64,7 +64,7 @@ public class Player extends BaseEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, username);
+        return Objects.hash(userId);
     }
 
     @Override

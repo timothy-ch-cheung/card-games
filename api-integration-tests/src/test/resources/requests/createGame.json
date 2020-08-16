@@ -3,5 +3,6 @@
   "host": {
     "id": "${player_id}",
     "key": "${key}"
-  }
+  },
+  "maxPlayers": 2
 }

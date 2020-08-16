@@ -33,12 +33,13 @@ public class JoinGameTest extends BaseGameTest {
 
     @Test
     public void joinGameExisting() {
+        Player player = createPlayer("Jane");
         String expectedGameState = JsonResponse("getGameReady")
                 .replaceGameId(this.gameId.toString())
                 .replaceGameStatus("READY")
+                .replaceGuests(String.format("[{\"username\":\"Jane\",\"id\":\"%s\"}]", player.getId()))
                 .toString();
 
-        Player player = createPlayer("Jane");
         Response response = given().contentType(ContentType.JSON)
                 .body(JsonRequest("joinGame").replacePlayerId(player.getId())
                         .replaceKey(player.getKey()).toString())
