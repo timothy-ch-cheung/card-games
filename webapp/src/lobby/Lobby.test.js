@@ -28,8 +28,12 @@ describe("TEST SUITE Lobby: ", () => {
     });
 
     beforeEach(() => {
+        mockAPI.onGet("/game/1").reply(200, {
+            id: 1,
+            host: {id: "123", username: "John"},
+            guests: [{id: "321", username: "Jane"}]
+        });
         wrapper = mount(<Provider store={store} onShowError={showError}><Lobby/></Provider>);
-        mockAPI.onGet("/game/1").reply(200, {data: {id: 1}});
     });
 
     afterEach(() => {
@@ -38,7 +42,7 @@ describe("TEST SUITE Lobby: ", () => {
         mockAPI.reset();
     });
 
-    test('Matches Lobby snapshot', () => {
+    test('Matches Initial Lobby snapshot', () => {
         expect(wrapper).toMatchSnapshot()
     });
 

@@ -5,7 +5,7 @@ import * as React from "react";
 import {useState} from "react";
 import {useDispatch} from "react-redux";
 import API from "../../API";
-import {setKey, setPlayer} from "../../actions";
+import {setKey, setPlayer} from "../../redux/actions";
 
 function CreatePlayer(props) {
 
@@ -86,8 +86,8 @@ function CreatePlayer(props) {
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={onClose}>Close</Button>
-                        <Button type="submit" variant="info">Join Game</Button>
+                        <Button variant="secondary" onClick={onClose} data-test="close-create-player-modal">Close</Button>
+                        <Button type="submit" variant="info" data-test="submit-create-player-modal">Join Game</Button>
                     </Modal.Footer>
                 </Form>
             </Modal>

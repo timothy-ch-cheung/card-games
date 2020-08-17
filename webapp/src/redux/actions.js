@@ -18,6 +18,12 @@ export const setKey = value => {
     }
 }
 
+export const resetKey = () => {
+    return {
+        type: 'RESET_KEY'
+    }
+}
+
 export const setGame = value => {
     return {
         type: 'SET_GAME',

@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {useDispatch, useSelector} from "react-redux";
 import API from "../../API";
-import {setGame, setGameMode, setKey, setPlayer} from "../../actions";
+import {setGame, setGameMode, setKey, setPlayer} from "../../redux/actions";
 import {useHistory} from "react-router-dom";
 import GameModes from "../../GameModes";
 import NumberPicker from "../number-picker/NumberPicker";

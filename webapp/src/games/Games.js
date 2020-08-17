@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 import API from "../API";
 import CreatePlayer from "../components/create-player/CreatePlayer";
 import {useDispatch} from "react-redux";
-import {setGame} from "../actions";
+import {setGame} from "../redux/actions";
 import {useHistory} from "react-router-dom";
 import '../App.css';
 import Spinner from "react-bootstrap/Spinner";

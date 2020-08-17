@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import API from "../API";
 import {useHistory} from "react-router-dom";
-import {resetGame, resetGameMode} from "../actions";
+import {resetGame, resetGameMode} from "../redux/actions";
 import PlayerList from "../components/player-list/PlayerList";
 import LobbySettings from "../components/lobby-settings/LobbySettings";
 

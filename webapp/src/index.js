@@ -7,66 +7,11 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import {combineReducers, createStore} from 'redux';
 import {Provider} from 'react-redux';
 import axios from "axios";
+import {gameModeReducer, gameReducer, keyReducer, userReducer} from "./redux/reducers";
 
 delete axios.defaults.headers.common["Authorization"];
 axios.defaults.headers.common = {};
 axios.defaults.headers.common.accept = 'application/json';
-
-const userReducer = (state, action) => {
-    if (typeof state === 'undefined') {
-        return null
-    }
-    switch (action.type) {
-        case 'SET_PLAYER':
-            return action.payload;
-        case 'RESET_PLAYER':
-            return null;
-        default:
-            return state;
-    }
-}
-
-const keyReducer = (state, action) => {
-    if (typeof state === 'undefined') {
-        return null
-    }
-    switch (action.type) {
-        case 'SET_KEY':
-            return action.payload;
-        case 'RESET_KEY':
-            return null;
-        default:
-            return state;
-    }
-}
-
-const gameReducer = (state, action) => {
-    if (typeof state === 'undefined') {
-        return null
-    }
-    switch (action.type) {
-        case 'SET_GAME':
-            return action.payload;
-        case 'RESET_GAME':
-            return null;
-        default:
-            return state;
-    }
-}
-
-const gameModeReducer = (state, action) => {
-    if (typeof state === 'undefined') {
-        return null
-    }
-    switch (action.type) {
-        case 'SET_GAME_MODE':
-            return action.payload;
-        case 'RESET_GAME_MODE':
-            return null;
-        default:
-            return state;
-    }
-}
 
 const allReducers = combineReducers({
     user: userReducer,
