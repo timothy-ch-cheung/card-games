@@ -7,7 +7,7 @@ import each from "jest-each";
 configure({adapter: new Adapter()});
 
 describe("TEST SUITE PlayerList: ", () => {
-    const players = [{name: "John", isHost: true}, {name: "Jane", isHost: false}];
+    const players = [{username: "John", isHost: true}, {username: "Jane", isHost: false}];
 
     test('Matches PlayerList snapshot', () => {
         const wrapper = mount(<PlayerList players={players}/>);
@@ -31,5 +31,11 @@ describe("TEST SUITE PlayerList: ", () => {
             players={[{username: "Jack", isHost: true}, {username: blankValue, isHost: false}]}/>);
         expect(wrapper.find('[data-test="player0-row"]').length).toEqual(1);
         expect(wrapper.find('[data-test="player1-row"]').length).toEqual(0);
+    });
+
+    test('number of players in lobby is shown', () => {
+        const wrapper = shallow(<PlayerList maxPlayers={6}
+            players={[{username: "Jack", isHost: true}, {username: "Jane", isHost: false}]}/>);
+        expect(wrapper.find('p[data-test="player-count"]').text()).toEqual("2/6")
     });
 });

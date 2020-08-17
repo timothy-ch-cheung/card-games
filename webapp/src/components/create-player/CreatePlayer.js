@@ -75,7 +75,7 @@ function CreatePlayer(props) {
                         }
                     `}
             </style>
-            <Modal className="create-player-modal" show={props.show} onHide={props.onClose}>
+            <Modal className="create-player-modal" show={props.show} onHide={props.onClose} data-test="create-player-modal">
                 <Modal.Header closeButton>
                     <Modal.Title>Set Nickname</Modal.Title>
                 </Modal.Header>

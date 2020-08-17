@@ -6,11 +6,11 @@ exports[`TEST SUITE PlayerList:  Matches PlayerList snapshot 1`] = `
     Array [
       Object {
         "isHost": true,
-        "name": "John",
+        "username": "John",
       },
       Object {
         "isHost": false,
-        "name": "Jane",
+        "username": "Jane",
       },
     ]
   }
@@ -33,11 +33,45 @@ exports[`TEST SUITE PlayerList:  Matches PlayerList snapshot 1`] = `
         }
       }
     >
-      <CardHeader>
+      <CardHeader
+        style={
+          Object {
+            "display": "flex",
+            "justifyContent": "space-between",
+            "paddingLeft": "10px",
+          }
+        }
+      >
         <div
           className="card-header"
+          style={
+            Object {
+              "display": "flex",
+              "justifyContent": "space-between",
+              "paddingLeft": "10px",
+            }
+          }
         >
-          Lobby
+          <p
+            style={
+              Object {
+                "marginBottom": "0",
+              }
+            }
+          >
+            Lobby
+          </p>
+          <p
+            data-test="player-count"
+            style={
+              Object {
+                "marginBottom": "0",
+              }
+            }
+          >
+            2
+            /
+          </p>
         </div>
       </CardHeader>
       <CardBody
@@ -66,7 +100,68 @@ exports[`TEST SUITE PlayerList:  Matches PlayerList snapshot 1`] = `
             <table
               className="table table-light table-borderless"
             >
-              <tbody />
+              <tbody>
+                <tr
+                  key="0"
+                >
+                  <td
+                    style={
+                      Object {
+                        "padding": "5px",
+                      }
+                    }
+                  >
+                    <Player
+                      data-test="player0-row"
+                      dataTest="player0-name"
+                      isHost={true}
+                      key="0"
+                      name="John"
+                    >
+                      <p
+                        data-test="player0-name"
+                        style={
+                          Object {
+                            "marginBottom": "0",
+                          }
+                        }
+                      >
+                        John 👑
+                      </p>
+                    </Player>
+                  </td>
+                </tr>
+                <tr
+                  key="1"
+                >
+                  <td
+                    style={
+                      Object {
+                        "padding": "5px",
+                      }
+                    }
+                  >
+                    <Player
+                      data-test="player1-row"
+                      dataTest="player1-name"
+                      isHost={false}
+                      key="1"
+                      name="Jane"
+                    >
+                      <p
+                        data-test="player1-name"
+                        style={
+                          Object {
+                            "marginBottom": "0",
+                          }
+                        }
+                      >
+                        Jane
+                      </p>
+                    </Player>
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </ForwardRef>
         </div>

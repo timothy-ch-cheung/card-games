@@ -15,7 +15,7 @@ function Lobby(props) {
     const history = useHistory();
     const dispatch = useDispatch();
 
-    const getPlayersList = (game) => {
+    const getPlayersList = () => {
         let host = game.host || {};
         host.isHost = true;
         return game.guests ? [host].concat(game.guests) : [host];
@@ -26,7 +26,6 @@ function Lobby(props) {
         const getGame = () => {
             API.get(`/game/${gameId}`
             ).then(function (response) {
-                getPlayersList(response.data);
                 setGame(response.data);
             }).catch(function (error) {
                 props.onShowError(error.response.data.message);
@@ -59,8 +58,7 @@ function Lobby(props) {
 
     return (
         <div style={{display: "flex"}}>
-            <PlayerList players={getPlayersList(game)}
-                        onLeave={onLeaveGame}/>
+            <PlayerList players={getPlayersList()} onLeave={onLeaveGame} numPlayers={2} maxPlayers={game.maxPlayers}/>
             <LobbySettings gameMode={gameMode} numPlayers={2}/>
         </div>
     );

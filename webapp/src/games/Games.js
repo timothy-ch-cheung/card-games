@@ -27,9 +27,10 @@ function Games() {
 
     useEffect(() => {
         const getGames = () => {
-            API.get("/games").then(function (response) {
-                setGames(response.data.games)
-            })
+            API.get("/games")
+                .then(function (response) {
+                    setGames(response.data.games)
+                })
         };
         getGames();
         const interval = setInterval(function () {
@@ -88,9 +89,15 @@ function Games() {
         })
     }
 
-    const renderCard = (card, index) => {
-        return <LobbyCard gameId={card.id} lobbyName={card.lobbyName} host={card.host.username} key={index}
-                          onSubmit={joinGame} showModal={handleShowCreatePlayerModal}/>
+    const renderCard = (card) => {
+        return <LobbyCard gameId={card.id}
+                          lobbyName={card.lobbyName}
+                          host={card.host.username}
+                          key={card.id}
+                          onSubmit={joinGame}
+                          showModal={handleShowCreatePlayerModal}
+                          maxPlayers={card.maxPlayers}
+                          numPlayers={(card.guests ? card.guests.length : 0) + 1}/>
     }
 
     return (
@@ -122,7 +129,7 @@ function Games() {
             </style>
             <Button size="xl" variant="info" onClick={e => {
                 handleShowCreateGameModal();
-            }}>Create Game</Button>
+            }} data-test="create-game-btn">Create Game</Button>
             <CreateGame show={showCreateGameModal} onClose={handleHideCreateGameModal}/>
             <CreatePlayer show={showCreatePlayerModal} onClose={handleHideCreatePlayerModal}
                           onSubmit={joinGame} gameId={currentGameId}/>

@@ -12,7 +12,10 @@ delete axios.defaults.headers.common["Authorization"];
 axios.defaults.headers.common = {};
 axios.defaults.headers.common.accept = 'application/json';
 
-const userReducer = (state = null, action) => {
+const userReducer = (state, action) => {
+    if (typeof state === 'undefined') {
+        return null
+    }
     switch (action.type) {
         case 'SET_PLAYER':
             return action.payload;
@@ -23,7 +26,10 @@ const userReducer = (state = null, action) => {
     }
 }
 
-const keyReducer = (state = null, action) => {
+const keyReducer = (state, action) => {
+    if (typeof state === 'undefined') {
+        return null
+    }
     switch (action.type) {
         case 'SET_KEY':
             return action.payload;
@@ -34,7 +40,10 @@ const keyReducer = (state = null, action) => {
     }
 }
 
-const gameReducer = (state = null, action) => {
+const gameReducer = (state, action) => {
+    if (typeof state === 'undefined') {
+        return null
+    }
     switch (action.type) {
         case 'SET_GAME':
             return action.payload;
@@ -45,7 +54,10 @@ const gameReducer = (state = null, action) => {
     }
 }
 
-const gameModeReducer = (state = null, action) => {
+const gameModeReducer = (state, action) => {
+    if (typeof state === 'undefined') {
+        return null
+    }
     switch (action.type) {
         case 'SET_GAME_MODE':
             return action.payload;

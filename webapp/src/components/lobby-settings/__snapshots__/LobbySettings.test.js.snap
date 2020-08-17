@@ -10,7 +10,13 @@ exports[`TEST SUITE LobbySettings:  Matches LobbySettings snapshot [Choice Poker
     }
   }
 >
-  <CardHeader>
+  <CardHeader
+    style={
+      Object {
+        "paddingLeft": "10px",
+      }
+    }
+  >
     Game: 
   </CardHeader>
   <CardBody
@@ -18,7 +24,7 @@ exports[`TEST SUITE LobbySettings:  Matches LobbySettings snapshot [Choice Poker
       Object {
         "height": "400px",
         "overflowY": "auto",
-        "padding": "5px 5px",
+        "padding": "5px 10px",
       }
     }
   >
@@ -63,7 +69,13 @@ exports[`TEST SUITE LobbySettings:  Matches LobbySettings snapshot [Match Two] 1
     }
   }
 >
-  <CardHeader>
+  <CardHeader
+    style={
+      Object {
+        "paddingLeft": "10px",
+      }
+    }
+  >
     Game: 
   </CardHeader>
   <CardBody
@@ -71,7 +83,7 @@ exports[`TEST SUITE LobbySettings:  Matches LobbySettings snapshot [Match Two] 1
       Object {
         "height": "400px",
         "overflowY": "auto",
-        "padding": "5px 5px",
+        "padding": "5px 10px",
       }
     }
   >

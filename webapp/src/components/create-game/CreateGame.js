@@ -155,7 +155,7 @@ function CreateGame(props) {
                         }
                     `}
                 </style>
-                <Modal className="create-game-modal" show={props.show} onHide={props.onClose}>
+                <Modal className="create-game-modal" show={props.show} onHide={props.onClose} data-test="create-game-modal">
                     <Modal.Header closeButton>
                         <Modal.Title>Create Game</Modal.Title>
                     </Modal.Header>

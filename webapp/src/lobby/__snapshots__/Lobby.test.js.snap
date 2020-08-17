@@ -23,6 +23,7 @@ exports[`TEST SUITE Lobby:  Matches Lobby snapshot 1`] = `
       }
     >
       <PlayerList
+        numPlayers={2}
         onLeave={[Function]}
         players={
           Array [
@@ -50,11 +51,45 @@ exports[`TEST SUITE Lobby:  Matches Lobby snapshot 1`] = `
               }
             }
           >
-            <CardHeader>
+            <CardHeader
+              style={
+                Object {
+                  "display": "flex",
+                  "justifyContent": "space-between",
+                  "paddingLeft": "10px",
+                }
+              }
+            >
               <div
                 className="card-header"
+                style={
+                  Object {
+                    "display": "flex",
+                    "justifyContent": "space-between",
+                    "paddingLeft": "10px",
+                  }
+                }
               >
-                Lobby
+                <p
+                  style={
+                    Object {
+                      "marginBottom": "0",
+                    }
+                  }
+                >
+                  Lobby
+                </p>
+                <p
+                  data-test="player-count"
+                  style={
+                    Object {
+                      "marginBottom": "0",
+                    }
+                  }
+                >
+                  1
+                  /
+                </p>
               </div>
             </CardHeader>
             <CardBody
@@ -151,9 +186,20 @@ exports[`TEST SUITE Lobby:  Matches Lobby snapshot 1`] = `
               }
             }
           >
-            <CardHeader>
+            <CardHeader
+              style={
+                Object {
+                  "paddingLeft": "10px",
+                }
+              }
+            >
               <div
                 className="card-header"
+                style={
+                  Object {
+                    "paddingLeft": "10px",
+                  }
+                }
               >
                 Game: 
                 Match Two
@@ -164,7 +210,7 @@ exports[`TEST SUITE Lobby:  Matches Lobby snapshot 1`] = `
                 Object {
                   "height": "400px",
                   "overflowY": "auto",
-                  "padding": "5px 5px",
+                  "padding": "5px 10px",
                 }
               }
             >
@@ -174,7 +220,7 @@ exports[`TEST SUITE Lobby:  Matches Lobby snapshot 1`] = `
                   Object {
                     "height": "400px",
                     "overflowY": "auto",
-                    "padding": "5px 5px",
+                    "padding": "5px 10px",
                   }
                 }
               >
