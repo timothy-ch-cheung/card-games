@@ -112,14 +112,14 @@ exports[`TEST SUITE PlayerList:  Matches PlayerList snapshot 1`] = `
                     }
                   >
                     <Player
-                      data-test="player0-row"
-                      dataTest="player0-name"
+                      data-test="player-row-0"
+                      dataTest="player-name-0"
                       isHost={true}
                       key="0"
                       name="John"
                     >
                       <p
-                        data-test="player0-name"
+                        data-test="player-name-0"
                         style={
                           Object {
                             "marginBottom": "0",
@@ -142,14 +142,14 @@ exports[`TEST SUITE PlayerList:  Matches PlayerList snapshot 1`] = `
                     }
                   >
                     <Player
-                      data-test="player1-row"
-                      dataTest="player1-name"
+                      data-test="player-row-1"
+                      dataTest="player-name-1"
                       isHost={false}
                       key="1"
                       name="Jane"
                     >
                       <p
-                        data-test="player1-name"
+                        data-test="player-name-1"
                         style={
                           Object {
                             "marginBottom": "0",

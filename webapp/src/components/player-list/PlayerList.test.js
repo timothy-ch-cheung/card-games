@@ -16,21 +16,21 @@ describe("TEST SUITE PlayerList: ", () => {
 
     test('Player name has crown emoji if they are host', () => {
         const wrapper = shallow(<PlayerList players={[{username: "John", isHost: true}]}/>);
-        expect(wrapper.find('[data-test="player0-row"]').dive()
-            .find('[data-test="player0-name"]').text()).toEqual('John 👑')
+        expect(wrapper.find('[data-test="player-row-0"]').dive()
+            .find('[data-test="player-name-0"]').text()).toEqual('John 👑');
     });
 
     test('Player name does not have crown emoji if they are guest', () => {
         const wrapper = shallow(<PlayerList players={[{username: "Jane", isHost: false}]}/>);
-        expect(wrapper.find('[data-test="player0-row"]').dive()
-            .find('[data-test="player0-name"]').text()).toEqual('Jane')
+        expect(wrapper.find('[data-test="player-row-0"]').dive()
+            .find('[data-test="player-name-0"]').text()).toEqual('Jane')
     });
 
     each([undefined, null, "", "      "]).test('Row is not rendered if player name is blank', (blankValue) => {
         const wrapper = shallow(<PlayerList
             players={[{username: "Jack", isHost: true}, {username: blankValue, isHost: false}]}/>);
-        expect(wrapper.find('[data-test="player0-row"]').length).toEqual(1);
-        expect(wrapper.find('[data-test="player1-row"]').length).toEqual(0);
+        expect(wrapper.find('[data-test="player-row-0"]').length).toEqual(1);
+        expect(wrapper.find('[data-test="player-row-1"]').length).toEqual(0);
     });
 
     test('number of players in lobby is shown', () => {
