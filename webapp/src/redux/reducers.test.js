@@ -2,7 +2,7 @@ import {resetGame, resetGameMode, resetKey, resetPlayer, setGame, setGameMode, s
 import {gameModeReducer, gameReducer, keyReducer, userReducer} from "./reducers";
 import GameModes from "../GameModes";
 
-describe("TEST SUITE Index: ", () => {
+describe("TEST SUITE Redux Reducers: ", () => {
     describe("User reducer", () => {
         test("returns payload with SET", () => {
             expect(userReducer(null, setPlayer("4321"))).toEqual("4321");

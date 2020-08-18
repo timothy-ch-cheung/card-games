@@ -30,7 +30,7 @@ public class CreateGameTest extends BaseGameTest {
                 .body("{\"username\": \"John\"}")
                 .when()
                 .post(ENDPOINT + PLAYER);
-        this.player = player(response.path("id"),response.path("key"));
+        this.player = player(response.path("id"), response.path("key"));
     }
 
     @Test
@@ -91,7 +91,6 @@ public class CreateGameTest extends BaseGameTest {
                 .post(ENDPOINT + CREATE);
 
         String expectedResponse = JsonResponse("createGameIncorrectFormat")
-                .replacePlayerId("abababababababababababababababab")
                 .replaceMessage("Player id or key invalid")
                 .toString();
 
