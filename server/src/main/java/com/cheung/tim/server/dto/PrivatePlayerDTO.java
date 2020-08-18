@@ -22,10 +22,12 @@ public class PrivatePlayerDTO extends PublicPlayerDTO {
     @Setter
     private String key;
 
+    @Override
     public int hashCode() {
         return super.hashCode();
     }
 
+    @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
     }
