@@ -6,6 +6,11 @@ Build:
 
 Server:   
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=card-games-server&metric=alert_status)](https://sonarcloud.io/dashboard?id=card-games-server) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=card-games-server&metric=coverage)](https://sonarcloud.io/dashboard?id=card-games-server) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=card-games-server&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=card-games-server)  
+
+Web App:  
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=card-games-webapp&metric=alert_status)](https://sonarcloud.io/dashboard?id=card-games-webapp)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=card-games-webapp&metric=coverage)](https://sonarcloud.io/dashboard?id=card-games-webapp)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=card-games-webapp&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=card-games-webapp)
   
 ![website screenshot](doc/webpage.png)
 
