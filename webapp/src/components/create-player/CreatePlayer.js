@@ -5,7 +5,7 @@ import * as React from "react";
 import {useState} from "react";
 import {useDispatch} from "react-redux";
 import API from "../../API";
-import {setPlayer} from "../../actions";
+import {setKey, setPlayer} from "../../redux/actions";
 
 function CreatePlayer(props) {
 
@@ -33,7 +33,8 @@ function CreatePlayer(props) {
         }).then(function (response) {
             console.log(response)
             dispatch(setPlayer(response.data.id));
-            props.onSubmit(props.gameId, response.data.id);
+            dispatch(setKey(response.data.key));
+            props.onSubmit(props.gameId, response.data.id, response.data.key);
         }).catch(function (error) {
             console.log(error);
         });
@@ -74,7 +75,7 @@ function CreatePlayer(props) {
                         }
                     `}
             </style>
-            <Modal className="create-player-modal" show={props.show} onHide={props.onClose}>
+            <Modal className="create-player-modal" show={props.show} onHide={props.onClose} data-test="create-player-modal">
                 <Modal.Header closeButton>
                     <Modal.Title>Set Nickname</Modal.Title>
                 </Modal.Header>
@@ -85,8 +86,8 @@ function CreatePlayer(props) {
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={onClose}>Close</Button>
-                        <Button type="submit" variant="info">Join Game</Button>
+                        <Button variant="secondary" onClick={onClose} data-test="close-create-player-modal">Close</Button>
+                        <Button type="submit" variant="info" data-test="submit-create-player-modal">Join Game</Button>
                     </Modal.Footer>
                 </Form>
             </Modal>

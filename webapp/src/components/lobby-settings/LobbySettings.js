@@ -88,8 +88,8 @@ function LobbySettings(props) {
 
     return (
         <Card style={{width: "35%", margin: "10px"}}>
-            <Card.Header>Game: {props.gameMode}</Card.Header>
-            <Card.Body style={{padding: "5px 5px", height: "400px", overflowY: "auto"}}>
+            <Card.Header style={{paddingLeft: "10px"}}>Game: {props.gameMode}</Card.Header>
+            <Card.Body style={{padding: "5px 10px", height: "400px", overflowY: "auto"}}>
                 <Form noValidate validated={validated} onSubmit={submitHandler} data-test={'lobby-settings-form'}>
                     <RoundPicker/>
                 </Form>

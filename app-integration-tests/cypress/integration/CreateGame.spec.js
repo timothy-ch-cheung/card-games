@@ -8,7 +8,7 @@ const fillInDialog = (nickname) => {
 const submitCreateGame = (nickname) => {
     cy.contains('.modal-dialog .btn', 'Create').click({force: true});
     cy.get('.modal-dialog').should('not.be.visible');
-    cy.get('p[data-test="player0-name"]').invoke('text').should('eq', `${nickname ? nickname : 'John'} 👑`);
+    cy.get('p[data-test="player-name-0"]').invoke('text').should('eq', `${nickname ? nickname : 'John'} 👑`);
 }
 
 describe('Create Game ', () => {
@@ -52,7 +52,7 @@ describe('When nickname is stored from creating a game: ', () => {
         cy.get('input[name="lobbyName"]').type('Jane\'s Lobby');
         cy.get('select[data-test="game-mode-select"]').select('Match Two');
         cy.contains('.modal-dialog .btn', 'Create').click({force: true});
-        cy.get('p[data-test="player0-name"]').invoke('text').should('eq', 'Jane 👑');
+        cy.get('p[data-test="player-name-0"]').invoke('text').should('eq', 'Jane 👑');
     });
 
     it('user does not need to enter nickname to join game', () => {
@@ -61,6 +61,6 @@ describe('When nickname is stored from creating a game: ', () => {
         cy.get('[data-test=refresh-btn]').click();
         let lobbyCardBtn = cy.contains('.card-title', lobbyName).parent().children('.btn');
         lobbyCardBtn.click();
-        cy.get('p[data-test="player1-name"]').invoke('text').should('eq', 'Jane');
+        cy.get('p[data-test="player-name-1"]').invoke('text').should('eq', 'Jane');
     });
 });

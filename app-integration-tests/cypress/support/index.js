@@ -50,9 +50,11 @@ after(() => {
                 game = game.split(" ");
                 let gameId = game[0];
                 let playerId = game[1];
+                let playerKey = game[2]
 
                 cy.fixture('leaveGame.json').then((leaveGame) => {
                     leaveGame.id = playerId;
+                    leaveGame.key = playerKey;
                     cy.request({
                         url: `${Cypress.env('serverUrl')}/leave/${gameId}`,
                         method: 'PATCH',

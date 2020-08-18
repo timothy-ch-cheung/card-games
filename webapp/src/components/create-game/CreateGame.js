@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {useDispatch, useSelector} from "react-redux";
 import API from "../../API";
-import {setGame, setGameMode, setPlayer} from "../../actions";
+import {setGame, setGameMode, setKey, setPlayer} from "../../redux/actions";
 import {useHistory} from "react-router-dom";
 import GameModes from "../../GameModes";
 import NumberPicker from "../number-picker/NumberPicker";
@@ -23,6 +23,7 @@ function CreateGame(props) {
     const [validated, setValidated] = useState(false);
     const dispatch = useDispatch();
     const userId = useSelector(state => state.user);
+    const userKey = useSelector(state => state.key);
     const gameMode = useSelector(state => state.gameMode);
     const [numPlayers, setNumPlayers] = useState(GameModes[gameMode] ? GameModes[gameMode].minPlayers : undefined);
     const history = useHistory();
@@ -32,13 +33,16 @@ function CreateGame(props) {
         setValidated(false);
     };
 
-    const createGame = (lobbyName, playerId) => {
+    const createGame = (lobbyName, maxPlayers, playerId, playerKey) => {
         let id = (playerId != null) ? playerId : userId;
+        let key = (playerKey != null) ? playerKey : userKey;
         API.post('/create', {
             lobbyName: lobbyName,
             host: {
-                id: id
-            }
+                id: id,
+                key: key
+            },
+            maxPlayers: maxPlayers
         }).then(function (response) {
             dispatch(setGame(response.data.id));
             history.push('/current-game')
@@ -54,6 +58,7 @@ function CreateGame(props) {
         const valid = form.checkValidity();
 
         let submitGameMode = e.target.gameMode.value;
+        let submitMaxPlayer = e.target.numPlayers.value;
         let validGameMode = Object.keys(GameModes).includes(submitGameMode);
 
         if (valid === false || !validGameMode) {
@@ -65,13 +70,14 @@ function CreateGame(props) {
         let lobbyName = e.target.lobbyName.value;
 
         if (userId != null) {
-            createGame(lobbyName);
+            createGame(lobbyName, submitMaxPlayer);
         } else {
             API.post('/player', {
                 username: e.target.nickname.value
             }).then(function (response) {
                 dispatch(setPlayer(response.data.id));
-                createGame(lobbyName, response.data.id)
+                dispatch(setKey(response.data.key));
+                createGame(lobbyName, submitMaxPlayer, response.data.id, response.data.key)
             }).catch(function (error) {
                 console.log(error);
             });
@@ -149,7 +155,7 @@ function CreateGame(props) {
                         }
                     `}
                 </style>
-                <Modal className="create-game-modal" show={props.show} onHide={props.onClose}>
+                <Modal className="create-game-modal" show={props.show} onHide={props.onClose} data-test="create-game-modal">
                     <Modal.Header closeButton>
                         <Modal.Title>Create Game</Modal.Title>
                     </Modal.Header>

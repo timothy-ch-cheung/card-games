@@ -10,7 +10,7 @@ import static com.cheung.tim.Json.JsonRequest;
 import static com.cheung.tim.Json.JsonResponse;
 import static com.cheung.tim.Resource.GAME;
 import static com.cheung.tim.Resource.JOIN;
-import static com.cheung.tim.game.Game.Lobby;
+import static com.cheung.tim.game.Game.game;
 import static com.cheung.tim.game.GetGameTest.createGame;
 import static com.cheung.tim.game.GetGameTest.createPlayer;
 import static io.restassured.RestAssured.get;
@@ -26,21 +26,23 @@ public class JoinGameTest extends BaseGameTest {
 
     @BeforeEach
     public void setup() {
-        String playerId = createPlayer();
-        this.gameId = createGame(playerId);
-        queueCleanup(Lobby(playerId, gameId));
+        Player player = createPlayer();
+        this.gameId = createGame(player.getId(), player.getKey());
+        queueCleanup(game(player, gameId));
     }
 
     @Test
     public void joinGameExisting() {
+        Player player = createPlayer("Jane");
         String expectedGameState = JsonResponse("getGameReady")
                 .replaceGameId(this.gameId.toString())
                 .replaceGameStatus("READY")
+                .replaceGuests(String.format("[{\"username\":\"Jane\",\"id\":\"%s\"}]", player.getId()))
                 .toString();
 
-        String playerId = createPlayer("Jane");
         Response response = given().contentType(ContentType.JSON)
-                .body(JsonRequest("joinGame").replacePlayerId(playerId).toString())
+                .body(JsonRequest("joinGame").replacePlayerId(player.getId())
+                        .replaceKey(player.getKey()).toString())
                 .when()
                 .patch(ENDPOINT + JOIN + "/" + gameId.toString());
 
@@ -53,9 +55,10 @@ public class JoinGameTest extends BaseGameTest {
 
     @Test
     public void joinGameNonExisting() {
-        String playerId = createPlayer();
+        Player player = createPlayer();
         Response response = given().contentType(ContentType.JSON)
-                .body(JsonRequest("joinGame").replacePlayerId(playerId).toString())
+                .body(JsonRequest("joinGame").replacePlayerId(player.getId())
+                        .replaceKey(player.getKey()).toString())
                 .when()
                 .patch(ENDPOINT + JOIN + "/0");
 
@@ -65,37 +68,57 @@ public class JoinGameTest extends BaseGameTest {
 
     @Test
     public void joinGamePlayerAlreadyInGame() {
-        String secondPlayerId = createPlayer();
-        String secondGameId = createGame(secondPlayerId).toString();
-        String playerId = createPlayer();
+        Player secondPlayer = createPlayer();
+        String secondGameId = createGame(secondPlayer.getId(), secondPlayer.getKey()).toString();
+        Player player = createPlayer();
         given().contentType(ContentType.JSON)
-                .body(JsonRequest("joinGame").replacePlayerId(playerId).toString())
+                .body(JsonRequest("joinGame").replacePlayerId(player.getId())
+                        .replaceKey(player.getKey()).toString())
                 .when()
                 .patch(ENDPOINT + JOIN + "/" + gameId.toString());
 
         Response response = given().contentType(ContentType.JSON)
-                .body(JsonRequest("joinGame").replacePlayerId(playerId).toString())
+                .body(JsonRequest("joinGame").replacePlayerId(player.getId())
+                        .replaceKey(player.getKey()).toString())
                 .when()
                 .patch(ENDPOINT + JOIN + "/" + secondGameId);
 
         assertThat(response.statusCode(), is(400));
-        assertThat(response.getBody().asString(), jsonEquals(JsonResponse("joinGameAlreadyInGame").replaceGameId(secondGameId).toString()));
+        assertThat(response.getBody().asString(), jsonEquals(JsonResponse("joinGameBadRequest")
+                .replaceMessage("Player John is already in a game").replaceGameId(secondGameId).toString()));
 
-        queueCleanup(Lobby(secondPlayerId, parseInt(secondGameId)));
+        queueCleanup(game(secondPlayer, parseInt(secondGameId)));
     }
 
     @Test
     public void joinGameAlreadyFull() {
         String expectedResponse = JsonResponse("joinGameAlreadyFull").replaceGameId(this.gameId.toString()).toString();
-        String playerOneId = createPlayer();
+        Player playerOne = createPlayer();
         given().contentType(ContentType.JSON)
-                .body(JsonRequest("joinGame").replacePlayerId(playerOneId).toString())
+                .body(JsonRequest("joinGame").replacePlayerId(playerOne.getId())
+                        .replaceKey(playerOne.getKey()).toString())
                 .when()
                 .patch(ENDPOINT + JOIN + "/" + this.gameId.toString());
 
-        String playerTwoId = createPlayer();
+        Player playerTwo = createPlayer();
         Response response = given().contentType(ContentType.JSON)
-                .body(JsonRequest("joinGame").replacePlayerId(playerTwoId).toString())
+                .body(JsonRequest("joinGame").replacePlayerId(playerTwo.getId())
+                        .replaceKey(playerTwo.getKey()).toString())
+                .when()
+                .patch(ENDPOINT + JOIN + "/" + this.gameId.toString());
+
+        assertThat(response.statusCode(), is(400));
+        assertThat(response.getBody().asString(), jsonEquals(expectedResponse));
+    }
+
+    @Test
+    public void joinGameInvalidPlayerKey() {
+        String expectedResponse = JsonResponse("joinGameBadRequest").replaceGameId(this.gameId.toString())
+                .replaceMessage("Player id or key invalid").toString();
+        Player playerOne = createPlayer();
+        Response response = given().contentType(ContentType.JSON)
+                .body(JsonRequest("joinGame").replacePlayerId(playerOne.getId())
+                        .replaceKey("invalidinvalidinvalidinvalidinva").toString())
                 .when()
                 .patch(ENDPOINT + JOIN + "/" + this.gameId.toString());
 

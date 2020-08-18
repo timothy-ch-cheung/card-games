@@ -12,9 +12,10 @@ import static com.cheung.tim.Config.ENDPOINT;
 import static com.cheung.tim.Json.JsonRequest;
 import static com.cheung.tim.Json.JsonResponse;
 import static com.cheung.tim.Resource.*;
-import static com.cheung.tim.game.Game.Lobby;
+import static com.cheung.tim.game.Game.game;
 import static com.cheung.tim.game.GetGameTest.createGame;
 import static com.cheung.tim.game.GetGameTest.createPlayer;
+import static com.cheung.tim.game.Player.player;
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
@@ -27,9 +28,9 @@ class GetGameTest extends BaseGameTest {
 
     @BeforeEach
     public void setup() {
-        String playerId = createPlayer();
-        this.gameId = createGame(playerId);
-        queueCleanup(Lobby(playerId, gameId));
+        Player player = createPlayer();
+        this.gameId = createGame(player.getId(), player.getKey());
+        queueCleanup(game(player, gameId));
     }
 
     @Test
@@ -53,22 +54,23 @@ class GetGameTest extends BaseGameTest {
         assertThat(response.getBody().asString(), jsonEquals(expectedResponse));
     }
 
-    public static String createPlayer() {
+    public static Player createPlayer() {
         return createPlayer("John");
     }
 
-    public static String createPlayer(String name) {
+    public static Player createPlayer(String name) {
         Response response = given().contentType(ContentType.JSON)
                 .body(String.format("{\"username\": \"%s\"}", name))
                 .when()
                 .post(ENDPOINT + PLAYER);
-        return response.path("id");
+        return player(response.path("id"), response.path("key"));
     }
 
-    public static Integer createGame(String playerId) {
+    public static Integer createGame(String playerId, String key) {
         String request = JsonRequest("createGame")
                 .replaceLobbyName("test lobby")
                 .replacePlayerId(playerId)
+                .replaceKey(key)
                 .toString();
 
         Response response = given().contentType(ContentType.JSON)
@@ -82,17 +84,17 @@ class GetGameTest extends BaseGameTest {
 class GetGamesTest extends BaseGameTest {
     @BeforeEach
     public void setup() {
-        ArrayList<String> players = new ArrayList();
+        ArrayList<Player> players = new ArrayList();
         ArrayList<Integer> games = new ArrayList();
         for (int i = 0; i < 3; i++) {
             players.add(createPlayer());
         }
-        for (String id : players) {
-            games.add(createGame(id));
+        for (Player p : players) {
+            games.add(createGame(p.getId(), p.getKey()));
         }
 
         for (int i = 0; i < games.size(); i++) {
-            queueCleanup(Lobby(players.get(i), games.get(i)));
+            queueCleanup(game(players.get(i), games.get(i)));
         }
     }
 

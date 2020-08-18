@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -77,16 +78,16 @@ class GameTest {
     }
 
     @Test
-    void equals_returnsFalseForDifferentPlayer1() {
+    void equals_returnsFalseForDifferentHost() {
         Game otherGame = createGame();
-        otherGame.setPlayer1(mock(Player.class));
+        otherGame.setHost(mock(Player.class));
         assertThat(game.equals(otherGame), is(false));
     }
 
     @Test
-    void equals_returnsFalseForDifferentPlayer2() {
+    void equals_returnsFalseForDifferentGuests() {
         Game otherGame = createGame();
-        otherGame.setPlayer2(mock(Player.class));
+        otherGame.addGuest(new Player());
         assertThat(game.equals(otherGame), is(false));
     }
 
@@ -105,7 +106,7 @@ class GameTest {
     }
 
     private Game createGame() {
-        return new Game("test_lobby", new Player("John Smith"), GameStatus.OPEN);
+        return new Game("test_lobby", new Player("John Smith"), GameStatus.OPEN, 2);
     }
 
 }

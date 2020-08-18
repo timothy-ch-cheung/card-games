@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Matches Games snapshot 1`] = `
+exports[`TEST SUITE Game:  Matches snapshot 1`] = `
 <Provider
   store={
     Object {
@@ -44,6 +44,7 @@ exports[`Matches Games snapshot 1`] = `
       </style>
       <Button
         active={false}
+        data-test="create-game-btn"
         disabled={false}
         onClick={[Function]}
         size="xl"
@@ -52,6 +53,7 @@ exports[`Matches Games snapshot 1`] = `
       >
         <button
           className="btn btn-info btn-xl"
+          data-test="create-game-btn"
           disabled={false}
           onClick={[Function]}
           type="button"
@@ -107,6 +109,7 @@ exports[`Matches Games snapshot 1`] = `
           </style>
           <Bootstrap(Modal)
             className="create-player-modal"
+            data-test="create-player-modal"
             onHide={[Function]}
             show={false}
           >
@@ -116,6 +119,7 @@ exports[`Matches Games snapshot 1`] = `
               backdrop={true}
               bsPrefix="modal"
               className="create-player-modal"
+              data-test="create-player-modal"
               dialogAs={
                 Object {
                   "$$typeof": Symbol(react.forward_ref),

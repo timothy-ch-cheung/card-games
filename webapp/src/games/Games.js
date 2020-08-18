@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 import API from "../API";
 import CreatePlayer from "../components/create-player/CreatePlayer";
 import {useDispatch} from "react-redux";
-import {setGame} from "../actions";
+import {setGame} from "../redux/actions";
 import {useHistory} from "react-router-dom";
 import '../App.css';
 import Spinner from "react-bootstrap/Spinner";
@@ -27,9 +27,10 @@ function Games() {
 
     useEffect(() => {
         const getGames = () => {
-            API.get("/games").then(function (response) {
-                setGames(response.data.games)
-            })
+            API.get("/games")
+                .then(function (response) {
+                    setGames(response.data.games)
+                })
         };
         getGames();
         const interval = setInterval(function () {
@@ -41,9 +42,10 @@ function Games() {
         }
     }, []);
 
-    const joinGame = (gameId, userId) => {
+    const joinGame = (gameId, userId, userKey) => {
         API.patch(`/join/${gameId}`, {
-            id: userId
+            id: userId,
+            key: userKey
         }).then(function (response) {
             dispatch(setGame(gameId));
             history.push('/current-game')
@@ -87,9 +89,15 @@ function Games() {
         })
     }
 
-    const renderCard = (card, index) => {
-        return <LobbyCard gameId={card.id} lobbyName={card.lobbyName} host={card.host.username} key={index}
-                          onSubmit={joinGame} showModal={handleShowCreatePlayerModal}/>
+    const renderCard = (card) => {
+        return <LobbyCard gameId={card.id}
+                          lobbyName={card.lobbyName}
+                          host={card.host.username}
+                          key={card.id}
+                          onSubmit={joinGame}
+                          showModal={handleShowCreatePlayerModal}
+                          maxPlayers={card.maxPlayers}
+                          numPlayers={(card.guests ? card.guests.length : 0) + 1}/>
     }
 
     return (
@@ -121,7 +129,7 @@ function Games() {
             </style>
             <Button size="xl" variant="info" onClick={e => {
                 handleShowCreateGameModal();
-            }}>Create Game</Button>
+            }} data-test="create-game-btn">Create Game</Button>
             <CreateGame show={showCreateGameModal} onClose={handleHideCreateGameModal}/>
             <CreatePlayer show={showCreatePlayerModal} onClose={handleHideCreatePlayerModal}
                           onSubmit={joinGame} gameId={currentGameId}/>

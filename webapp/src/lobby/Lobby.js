@@ -2,25 +2,25 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import API from "../API";
 import {useHistory} from "react-router-dom";
-import {resetGame, resetGameMode} from "../actions";
+import {resetGame, resetGameMode} from "../redux/actions";
 import PlayerList from "../components/player-list/PlayerList";
 import LobbySettings from "../components/lobby-settings/LobbySettings";
-
-function getGuest(game) {
-    return game.guest != null ? game.guest.username : "";
-}
-
-function getHost(game) {
-    return game.host != null ? game.host.username : "";
-}
 
 function Lobby(props) {
     const gameId = useSelector(state => state.game);
     const userId = useSelector(state => state.user);
+    const userKey = useSelector(state => state.key);
     const gameMode = useSelector(state => state.gameMode);
     const [game, setGame] = useState({});
     const history = useHistory();
     const dispatch = useDispatch();
+
+    const getPlayersList = () => {
+        let host = game.host || {};
+        host.isHost = true;
+        return game.guests ? [host].concat(game.guests) : [host];
+    }
+
 
     useEffect(() => {
         const getGame = () => {
@@ -45,7 +45,8 @@ function Lobby(props) {
 
     const onLeaveGame = () => {
         API.patch(`/leave/${gameId}`, {
-            id: userId
+            id: userId,
+            key: userKey
         }).then(function (response) {
             dispatch(resetGame());
             dispatch(resetGameMode());
@@ -57,8 +58,7 @@ function Lobby(props) {
 
     return (
         <div style={{display: "flex"}}>
-            <PlayerList players={[{name: getHost(game), isHost: true}, {name: getGuest(game), isHost: false}]}
-                        onLeave={onLeaveGame}/>
+            <PlayerList players={getPlayersList()} onLeave={onLeaveGame} numPlayers={2} maxPlayers={game.maxPlayers}/>
             <LobbySettings gameMode={gameMode} numPlayers={2}/>
         </div>
     );

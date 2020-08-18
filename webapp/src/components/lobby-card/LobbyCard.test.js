@@ -27,8 +27,8 @@ describe("TEST SUITE LobbyCard: ", () => {
     });
 
     test('join game opens create player modal when no player is stored', () => {
-        const wrapper = mount(<Provider store={store}><LobbyCard onSubmit={submit} showModal={showModal}/></Provider>);
-        wrapper.find('button[data-test="join-game-btn"]').simulate('click');
+        const wrapper = mount(<Provider store={store}><LobbyCard onSubmit={submit} showModal={showModal} gameId={1}/></Provider>);
+        wrapper.find('button[data-test="join-game-btn-1"]').simulate('click');
         expect(showModal).toHaveBeenCalledTimes(1);
         expect(submit).toHaveBeenCalledTimes(0);
     });
@@ -37,8 +37,8 @@ describe("TEST SUITE LobbyCard: ", () => {
         store = mockStore({
             user: "12345678901234567890123456789012",
         });
-        const wrapper = mount(<Provider store={store}><LobbyCard onSubmit={submit} showModal={showModal}/></Provider>);
-        wrapper.find('button[data-test="join-game-btn"]').simulate('click');
+        const wrapper = mount(<Provider store={store}><LobbyCard onSubmit={submit} showModal={showModal} gameId={1}/></Provider>);
+        wrapper.find('button[data-test="join-game-btn-1"]').simulate('click');
         expect(submit).toHaveBeenCalledTimes(1);
         expect(showModal).toHaveBeenCalledTimes(0);
     });

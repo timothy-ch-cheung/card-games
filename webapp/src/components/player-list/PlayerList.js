@@ -16,12 +16,12 @@ function Player(props) {
 function PlayerList(props) {
 
     const renderPlayer = (card, index) => {
-        if (!isBlank(card.name)) {
+        if (!isBlank(card.username)) {
             return (
                 <tr key={index}>
                     <td style={{padding: "5px"}}>
-                        <Player name={card.name} isHost={card.isHost} key={index}
-                                dataTest={"player" + index + "-name"} data-test={"player" + index + "-row"}/>
+                        <Player name={card.username} isHost={card.isHost} key={index}
+                                dataTest={"player-name-" + index} data-test={"player-row-" + index}/>
                     </td>
                 </tr>);
         }
@@ -30,7 +30,10 @@ function PlayerList(props) {
 
     return (
         <Card style={{width: "35%", margin: "10px"}}>
-            <Card.Header>Lobby</Card.Header>
+            <Card.Header style={{display: "flex", justifyContent: "space-between", paddingLeft: "10px"}}>
+                <p style={{marginBottom: "0"}}>Lobby</p>
+                <p style={{marginBottom: "0"}} data-test="player-count">{props.players.length}/{props.maxPlayers}</p>
+            </Card.Header>
             <Card.Body style={{padding: "5px 5px", height: "400px", overflowY: "auto"}}>
                 <Table borderless variant="light">
                     <tbody>

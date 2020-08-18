@@ -70,16 +70,48 @@ exports[`TEST SUITE LobbyCard:  Matches LobbyCard snapshot 1`] = `
                 />
               </ForwardRef>
             </CardTitle>
-            <CardText>
+            <CardText
+              style={
+                Object {
+                  "marginBottom": "5px",
+                }
+              }
+            >
               <p
                 className="card-text"
+                style={
+                  Object {
+                    "marginBottom": "5px",
+                  }
+                }
               >
                 Host: 
               </p>
             </CardText>
+            <CardText
+              style={
+                Object {
+                  "color": "#707070",
+                  "fontSize": "0.8rem",
+                }
+              }
+            >
+              <p
+                className="card-text"
+                style={
+                  Object {
+                    "color": "#707070",
+                    "fontSize": "0.8rem",
+                  }
+                }
+              >
+                Players: 
+                /
+              </p>
+            </CardText>
             <Button
               active={false}
-              data-test="join-game-btn"
+              data-test="join-game-btn-undefined"
               disabled={false}
               onClick={[Function]}
               type="button"
@@ -87,7 +119,7 @@ exports[`TEST SUITE LobbyCard:  Matches LobbyCard snapshot 1`] = `
             >
               <button
                 className="btn btn-info"
-                data-test="join-game-btn"
+                data-test="join-game-btn-undefined"
                 disabled={false}
                 onClick={[Function]}
                 type="button"

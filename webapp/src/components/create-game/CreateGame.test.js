@@ -9,6 +9,12 @@ import {flushPromises} from "../../common/Util";
 
 configure({adapter: new Adapter()});
 
+jest.mock('react-router-dom', () => ({
+    useHistory: () => ({
+        push: jest.fn(),
+    }),
+}));
+
 describe("TEST SUITE CreateGame: ", () => {
     const MockAdapter = require("axios-mock-adapter");
     const mockStore = configureStore([]);
@@ -100,7 +106,8 @@ describe("TEST SUITE CreateGame: ", () => {
 
         test('POST /player AND /create when userId is null', async () => {
             let close = jest.fn();
-            mockAPI.onPost("/player").reply(200, {id: "12345678901234567890123456789012"});
+            mockAPI.onPost("/player").reply(200,
+                {id: "12345678901234567890123456789012", key:"keykeykeykeykeykeykeykeykeykeyke"});
             mockAPI.onPost("/create").reply(200, {id: 1});
             store = mockStore({user: null, gameMode: "Match Two"});
             wrapper = mount(<Provider store={store}><CreateGame show={true} onClose={close}/></Provider>);
@@ -108,6 +115,7 @@ describe("TEST SUITE CreateGame: ", () => {
                 target: {
                     gameMode: {value: 'Match Two'},
                     lobbyName: {value: 'test lobby'},
+                    numPlayers: {value: 2},
                     nickname: {value: 'John'}
                 }
             };
@@ -119,10 +127,11 @@ describe("TEST SUITE CreateGame: ", () => {
             expect(close).toHaveBeenCalledTimes(1);
             expect(mockAPI.history.post.length).toBe(2);
             let actions = store.getActions();
-            expect(actions.length).toBe(3);
+            expect(actions.length).toBe(4);
             expect(actions[0]).toEqual({"type": "SET_GAME_MODE", "payload": "Match Two"});
             expect(actions[1]).toEqual({"type": "SET_PLAYER", "payload": "12345678901234567890123456789012"});
-            expect(actions[2]).toEqual({"type": "SET_GAME", "payload": 1});
+            expect(actions[2]).toEqual({"type": "SET_KEY", "payload": "keykeykeykeykeykeykeykeykeykeyke"});
+            expect(actions[3]).toEqual({"type": "SET_GAME", "payload": 1});
         });
 
         test('POST only /create when userId is saved', async () => {
@@ -133,6 +142,7 @@ describe("TEST SUITE CreateGame: ", () => {
             const eventObj = {
                 target: {
                     gameMode: {value: 'Match Two'},
+                    numPlayers: {value: 2},
                     lobbyName: {value: 'test lobby'}
                 }
             };
@@ -156,7 +166,8 @@ describe("TEST SUITE CreateGame: ", () => {
             const eventObj = {
                 stopPropagation: jest.fn(),
                 target: {
-                    gameMode: {value: 'Match Two'}
+                    gameMode: {value: 'Match Two'},
+                    numPlayers: {value: 2},
                 }
             };
             let form = wrapper.find('form');

@@ -1,10 +1,19 @@
 package com.cheung.tim.server.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
 public class CreateLobbyDTO {
 
+    @Getter
+    @Setter
     private String lobbyName;
-    private PlayerDTO host;
+
+    @Getter
+    @Setter
+    private PrivatePlayerDTO host;
+
+    @Getter
+    @Setter
+    private Integer maxPlayers;
 }

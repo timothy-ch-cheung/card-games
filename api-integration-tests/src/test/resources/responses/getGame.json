@@ -3,6 +3,7 @@
   "createdAt": "${json-unit.ignore-element}",
   "lobbyName": "test lobby",
   "host": null,
-  "guest": null,
-  "gameStatus": "${game_status}"
+  "guests": [],
+  "gameStatus": "${game_status}",
+  "maxPlayers": 2
 }

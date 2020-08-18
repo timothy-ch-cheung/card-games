@@ -73,6 +73,7 @@ exports[`TEST SUITE CreateGame:  Matches CreateGame snapshot (visible) 1`] = `
       </style>
       <Bootstrap(Modal)
         className="create-game-modal"
+        data-test="create-game-modal"
         show={true}
       >
         <Modal
@@ -81,6 +82,7 @@ exports[`TEST SUITE CreateGame:  Matches CreateGame snapshot (visible) 1`] = `
           backdrop={true}
           bsPrefix="modal"
           className="create-game-modal"
+          data-test="create-game-modal"
           dialogAs={
             Object {
               "$$typeof": Symbol(react.forward_ref),
@@ -121,6 +123,7 @@ exports[`TEST SUITE CreateGame:  Matches CreateGame snapshot (visible) 1`] = `
                     >
                       <div
                         class="modal-dialog"
+                        data-test="create-game-modal"
                         role="document"
                       >
                         <div
@@ -298,6 +301,7 @@ exports[`TEST SUITE CreateGame:  Matches CreateGame snapshot (visible) 1`] = `
                         >
                           <div
                             class="modal-dialog"
+                            data-test="create-game-modal"
                             role="document"
                           >
                             <div
@@ -483,6 +487,7 @@ exports[`TEST SUITE CreateGame:  Matches CreateGame snapshot (visible) 1`] = `
                     >
                       <div
                         class="modal-dialog"
+                        data-test="create-game-modal"
                         role="document"
                       >
                         <div
@@ -682,6 +687,7 @@ exports[`TEST SUITE CreateGame:  Matches CreateGame snapshot (visible) 1`] = `
                   >
                     <div
                       class="modal-dialog"
+                      data-test="create-game-modal"
                       role="document"
                     >
                       <div
@@ -923,11 +929,13 @@ exports[`TEST SUITE CreateGame:  Matches CreateGame snapshot (visible) 1`] = `
                       tabIndex={-1}
                     >
                       <ModalDialog
+                        data-test="create-game-modal"
                         onMouseDown={[Function]}
                         role="document"
                       >
                         <div
                           className="modal-dialog"
+                          data-test="create-game-modal"
                           onMouseDown={[Function]}
                           role="document"
                         >

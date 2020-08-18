@@ -3,10 +3,10 @@
   "createdAt": "${json-unit.ignore-element}",
   "lobbyName": "test lobby",
   "host": {
+    "id": "${json-unit.ignore-element}",
     "username": "John"
   },
-  "guest": {
-    "username": "Jane"
-  },
-  "gameStatus": "${game_status}"
+  "guests": ${guests},
+  "gameStatus": "${game_status}",
+  "maxPlayers": 2
 }

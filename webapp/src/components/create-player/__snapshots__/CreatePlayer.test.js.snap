@@ -1,0 +1,733 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TEST SUITE Create Player:  Matches snapshot 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <CreatePlayer
+    onClose={[MockFunction]}
+    onSubmit={[MockFunction]}
+    show={true}
+  >
+    <div>
+      <style
+        type="text/css"
+      >
+        
+                        .modal-header button {
+                           display: none;
+                        }
+                        
+                        .btn-xxl {
+                            font-size: 1.6rem;
+                            border: grey solid 1px;
+                            width: 220px;
+                            margin: 20px 10px 30px;
+                        }
+                        
+                        .left-title {
+                            text-align: left;
+                        }
+                        
+                        @media screen and (max-width: 768px) {
+                            .btn-xxl {
+                                font-size: 1.3rem;
+                                width: 170px;
+                            }
+                        }
+                        
+                        .create-player-modal {
+                            margin-top: 50px;
+                        }
+                        
+                        input[type=text] {
+                            margin-bottom: 5px;
+                        }
+                    
+      </style>
+      <Bootstrap(Modal)
+        className="create-player-modal"
+        data-test="create-player-modal"
+        onHide={[MockFunction]}
+        show={true}
+      >
+        <Modal
+          animation={true}
+          autoFocus={true}
+          backdrop={true}
+          bsPrefix="modal"
+          className="create-player-modal"
+          data-test="create-player-modal"
+          dialogAs={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "displayName": "ModalDialog",
+              "render": [Function],
+            }
+          }
+          enforceFocus={true}
+          keyboard={true}
+          onHide={[MockFunction]}
+          restoreFocus={true}
+          show={true}
+        >
+          <Modal
+            autoFocus={true}
+            backdrop={true}
+            backdropTransition={[Function]}
+            className="create-player-modal modal"
+            containerClassName="modal-open"
+            enforceFocus={true}
+            keyboard={true}
+            manager={
+              BootstrapModalManager {
+                "adjustAndStore": [Function],
+                "containers": Array [
+                  <body
+                    class="modal-open"
+                    style="padding-right: 0px;"
+                  >
+                    <div
+                      class="fade modal-backdrop show"
+                    />
+                    <div
+                      aria-modal="true"
+                      class="fade create-player-modal modal show"
+                      role="dialog"
+                      style="display: block;"
+                      tabindex="-1"
+                    >
+                      <div
+                        class="modal-dialog"
+                        data-test="create-player-modal"
+                        role="document"
+                      >
+                        <div
+                          class="modal-content"
+                        >
+                          <div
+                            class="modal-header"
+                          >
+                            <div
+                              class="modal-title h4"
+                            >
+                              Set Nickname
+                            </div>
+                            <button
+                              class="close"
+                              type="button"
+                            >
+                              <span
+                                aria-hidden="true"
+                              >
+                                ×
+                              </span>
+                              <span
+                                class="sr-only"
+                              >
+                                Close
+                              </span>
+                            </button>
+                          </div>
+                          <form
+                            class=""
+                            novalidate=""
+                          >
+                            <div
+                              class="modal-body"
+                            >
+                              <label
+                                class="form-label"
+                              >
+                                Nickname
+                              </label>
+                              <input
+                                class="form-control"
+                                name="nickname"
+                                placeholder="name"
+                                required=""
+                                type="text"
+                              />
+                            </div>
+                            <div
+                              class="modal-footer"
+                            >
+                              <button
+                                class="btn btn-secondary"
+                                data-test="close-create-player-modal"
+                                type="button"
+                              >
+                                Close
+                              </button>
+                              <button
+                                class="btn btn-info"
+                                data-test="submit-create-player-modal"
+                                type="submit"
+                              >
+                                Join Game
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </body>,
+                ],
+                "data": Array [
+                  Object {
+                    "classes": Array [
+                      "modal-open",
+                    ],
+                    "modals": Array [
+                      Object {
+                        "add": [Function],
+                        "backdrop": <div
+                          class="fade modal-backdrop show"
+                        />,
+                        "dialog": <div
+                          aria-modal="true"
+                          class="fade create-player-modal modal show"
+                          role="dialog"
+                          style="display: block;"
+                          tabindex="-1"
+                        >
+                          <div
+                            class="modal-dialog"
+                            data-test="create-player-modal"
+                            role="document"
+                          >
+                            <div
+                              class="modal-content"
+                            >
+                              <div
+                                class="modal-header"
+                              >
+                                <div
+                                  class="modal-title h4"
+                                >
+                                  Set Nickname
+                                </div>
+                                <button
+                                  class="close"
+                                  type="button"
+                                >
+                                  <span
+                                    aria-hidden="true"
+                                  >
+                                    ×
+                                  </span>
+                                  <span
+                                    class="sr-only"
+                                  >
+                                    Close
+                                  </span>
+                                </button>
+                              </div>
+                              <form
+                                class=""
+                                novalidate=""
+                              >
+                                <div
+                                  class="modal-body"
+                                >
+                                  <label
+                                    class="form-label"
+                                  >
+                                    Nickname
+                                  </label>
+                                  <input
+                                    class="form-control"
+                                    name="nickname"
+                                    placeholder="name"
+                                    required=""
+                                    type="text"
+                                  />
+                                </div>
+                                <div
+                                  class="modal-footer"
+                                >
+                                  <button
+                                    class="btn btn-secondary"
+                                    data-test="close-create-player-modal"
+                                    type="button"
+                                  >
+                                    Close
+                                  </button>
+                                  <button
+                                    class="btn btn-info"
+                                    data-test="submit-create-player-modal"
+                                    type="submit"
+                                  >
+                                    Join Game
+                                  </button>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>,
+                        "isTopModal": [Function],
+                        "remove": [Function],
+                        "setBackdropRef": [Function],
+                        "setDialogRef": [Function],
+                      },
+                    ],
+                    "overflowing": true,
+                    "style": Object {
+                      "overflow": "",
+                      "paddingRight": "",
+                    },
+                  },
+                ],
+                "handleContainerOverflow": true,
+                "hideSiblingNodes": true,
+                "modals": Array [
+                  Object {
+                    "add": [Function],
+                    "backdrop": <div
+                      class="fade modal-backdrop show"
+                    />,
+                    "dialog": <div
+                      aria-modal="true"
+                      class="fade create-player-modal modal show"
+                      role="dialog"
+                      style="display: block;"
+                      tabindex="-1"
+                    >
+                      <div
+                        class="modal-dialog"
+                        data-test="create-player-modal"
+                        role="document"
+                      >
+                        <div
+                          class="modal-content"
+                        >
+                          <div
+                            class="modal-header"
+                          >
+                            <div
+                              class="modal-title h4"
+                            >
+                              Set Nickname
+                            </div>
+                            <button
+                              class="close"
+                              type="button"
+                            >
+                              <span
+                                aria-hidden="true"
+                              >
+                                ×
+                              </span>
+                              <span
+                                class="sr-only"
+                              >
+                                Close
+                              </span>
+                            </button>
+                          </div>
+                          <form
+                            class=""
+                            novalidate=""
+                          >
+                            <div
+                              class="modal-body"
+                            >
+                              <label
+                                class="form-label"
+                              >
+                                Nickname
+                              </label>
+                              <input
+                                class="form-control"
+                                name="nickname"
+                                placeholder="name"
+                                required=""
+                                type="text"
+                              />
+                            </div>
+                            <div
+                              class="modal-footer"
+                            >
+                              <button
+                                class="btn btn-secondary"
+                                data-test="close-create-player-modal"
+                                type="button"
+                              >
+                                Close
+                              </button>
+                              <button
+                                class="btn btn-info"
+                                data-test="submit-create-player-modal"
+                                type="submit"
+                              >
+                                Join Game
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>,
+                    "isTopModal": [Function],
+                    "remove": [Function],
+                    "setBackdropRef": [Function],
+                    "setDialogRef": [Function],
+                  },
+                ],
+                "restore": [Function],
+                "scrollbarSize": 0,
+              }
+            }
+            onClick={[Function]}
+            onEnter={[Function]}
+            onEntering={[Function]}
+            onExited={[Function]}
+            onHide={[MockFunction]}
+            onMouseUp={[Function]}
+            renderBackdrop={[Function]}
+            restoreFocus={true}
+            show={true}
+            style={
+              Object {
+                "paddingLeft": undefined,
+                "paddingRight": undefined,
+              }
+            }
+            transition={[Function]}
+          >
+            <Portal
+              containerInfo={
+                <body
+                  class="modal-open"
+                  style="padding-right: 0px;"
+                >
+                  <div
+                    class="fade modal-backdrop show"
+                  />
+                  <div
+                    aria-modal="true"
+                    class="fade create-player-modal modal show"
+                    role="dialog"
+                    style="display: block;"
+                    tabindex="-1"
+                  >
+                    <div
+                      class="modal-dialog"
+                      data-test="create-player-modal"
+                      role="document"
+                    >
+                      <div
+                        class="modal-content"
+                      >
+                        <div
+                          class="modal-header"
+                        >
+                          <div
+                            class="modal-title h4"
+                          >
+                            Set Nickname
+                          </div>
+                          <button
+                            class="close"
+                            type="button"
+                          >
+                            <span
+                              aria-hidden="true"
+                            >
+                              ×
+                            </span>
+                            <span
+                              class="sr-only"
+                            >
+                              Close
+                            </span>
+                          </button>
+                        </div>
+                        <form
+                          class=""
+                          novalidate=""
+                        >
+                          <div
+                            class="modal-body"
+                          >
+                            <label
+                              class="form-label"
+                            >
+                              Nickname
+                            </label>
+                            <input
+                              class="form-control"
+                              name="nickname"
+                              placeholder="name"
+                              required=""
+                              type="text"
+                            />
+                          </div>
+                          <div
+                            class="modal-footer"
+                          >
+                            <button
+                              class="btn btn-secondary"
+                              data-test="close-create-player-modal"
+                              type="button"
+                            >
+                              Close
+                            </button>
+                            <button
+                              class="btn btn-info"
+                              data-test="submit-create-player-modal"
+                              type="submit"
+                            >
+                              Join Game
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </body>
+              }
+            >
+              <BackdropTransition
+                appear={true}
+                in={true}
+              >
+                <Fade
+                  appear={true}
+                  in={true}
+                  mountOnEnter={false}
+                  timeout={300}
+                  unmountOnExit={false}
+                >
+                  <Transition
+                    addEndListener={[Function]}
+                    appear={true}
+                    enter={true}
+                    exit={true}
+                    in={true}
+                    mountOnEnter={false}
+                    onEnter={[Function]}
+                    onEntered={[Function]}
+                    onEntering={[Function]}
+                    onExit={[Function]}
+                    onExited={[Function]}
+                    onExiting={[Function]}
+                    timeout={300}
+                    unmountOnExit={false}
+                  >
+                    <div
+                      className="fade modal-backdrop show"
+                      onClick={[Function]}
+                    />
+                  </Transition>
+                </Fade>
+              </BackdropTransition>
+              <DialogTransition
+                appear={true}
+                in={true}
+                onEnter={[Function]}
+                onEntering={[Function]}
+                onExited={[Function]}
+                unmountOnExit={true}
+              >
+                <Fade
+                  appear={true}
+                  in={true}
+                  mountOnEnter={false}
+                  onEnter={[Function]}
+                  onEntering={[Function]}
+                  onExited={[Function]}
+                  timeout={300}
+                  unmountOnExit={true}
+                >
+                  <Transition
+                    addEndListener={[Function]}
+                    appear={true}
+                    enter={true}
+                    exit={true}
+                    in={true}
+                    mountOnEnter={false}
+                    onEnter={[Function]}
+                    onEntered={[Function]}
+                    onEntering={[Function]}
+                    onExit={[Function]}
+                    onExited={[Function]}
+                    onExiting={[Function]}
+                    timeout={300}
+                    unmountOnExit={true}
+                  >
+                    <div
+                      aria-modal={true}
+                      className="fade create-player-modal modal show"
+                      onClick={[Function]}
+                      onMouseUp={[Function]}
+                      role="dialog"
+                      style={
+                        Object {
+                          "paddingLeft": undefined,
+                          "paddingRight": undefined,
+                        }
+                      }
+                      tabIndex={-1}
+                    >
+                      <ModalDialog
+                        data-test="create-player-modal"
+                        onMouseDown={[Function]}
+                        role="document"
+                      >
+                        <div
+                          className="modal-dialog"
+                          data-test="create-player-modal"
+                          onMouseDown={[Function]}
+                          role="document"
+                        >
+                          <div
+                            className="modal-content"
+                          >
+                            <ModalHeader
+                              closeButton={true}
+                              closeLabel="Close"
+                            >
+                              <div
+                                className="modal-header"
+                              >
+                                <ModalTitle>
+                                  <ForwardRef
+                                    className="modal-title"
+                                  >
+                                    <div
+                                      className="modal-title h4"
+                                    >
+                                      Set Nickname
+                                    </div>
+                                  </ForwardRef>
+                                </ModalTitle>
+                                <CloseButton
+                                  label="Close"
+                                  onClick={[Function]}
+                                >
+                                  <button
+                                    className="close"
+                                    onClick={[Function]}
+                                    type="button"
+                                  >
+                                    <span
+                                      aria-hidden="true"
+                                    >
+                                      ×
+                                    </span>
+                                    <span
+                                      className="sr-only"
+                                    >
+                                      Close
+                                    </span>
+                                  </button>
+                                </CloseButton>
+                              </div>
+                            </ModalHeader>
+                            <Form
+                              inline={false}
+                              noValidate={true}
+                              onSubmit={[Function]}
+                              validated={false}
+                            >
+                              <form
+                                className=""
+                                noValidate={true}
+                                onSubmit={[Function]}
+                              >
+                                <ModalBody>
+                                  <div
+                                    className="modal-body"
+                                  >
+                                    <FormLabel
+                                      column={false}
+                                      srOnly={false}
+                                    >
+                                      <label
+                                        className="form-label"
+                                      >
+                                        Nickname
+                                      </label>
+                                    </FormLabel>
+                                    <FormControl
+                                      name="nickname"
+                                      placeholder="name"
+                                      required={true}
+                                      type="text"
+                                    >
+                                      <input
+                                        className="form-control"
+                                        name="nickname"
+                                        placeholder="name"
+                                        required={true}
+                                        type="text"
+                                      />
+                                    </FormControl>
+                                  </div>
+                                </ModalBody>
+                                <ModalFooter>
+                                  <div
+                                    className="modal-footer"
+                                  >
+                                    <Button
+                                      active={false}
+                                      data-test="close-create-player-modal"
+                                      disabled={false}
+                                      onClick={[Function]}
+                                      type="button"
+                                      variant="secondary"
+                                    >
+                                      <button
+                                        className="btn btn-secondary"
+                                        data-test="close-create-player-modal"
+                                        disabled={false}
+                                        onClick={[Function]}
+                                        type="button"
+                                      >
+                                        Close
+                                      </button>
+                                    </Button>
+                                    <Button
+                                      active={false}
+                                      data-test="submit-create-player-modal"
+                                      disabled={false}
+                                      type="submit"
+                                      variant="info"
+                                    >
+                                      <button
+                                        className="btn btn-info"
+                                        data-test="submit-create-player-modal"
+                                        disabled={false}
+                                        type="submit"
+                                      >
+                                        Join Game
+                                      </button>
+                                    </Button>
+                                  </div>
+                                </ModalFooter>
+                              </form>
+                            </Form>
+                          </div>
+                        </div>
+                      </ModalDialog>
+                    </div>
+                  </Transition>
+                </Fade>
+              </DialogTransition>
+            </Portal>
+          </Modal>
+        </Modal>
+      </Bootstrap(Modal)>
+    </div>
+  </CreatePlayer>
+</Provider>
+`;

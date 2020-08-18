@@ -5,10 +5,11 @@ import {useSelector} from "react-redux";
 
 function LobbyCard(props) {
     const userId = useSelector(state => state.user);
+    const userKey = useSelector(state => state.key);
 
     const onJoinGame = () => {
         if (userId != null) {
-            props.onSubmit(props.gameId, userId);
+            props.onSubmit(props.gameId, userId, userKey);
         } else {
             props.showModal(props.gameId);
         }
@@ -51,10 +52,13 @@ function LobbyCard(props) {
             <Card className="lobby-card">
                 <Card.Body>
                     <Card.Title className="card-title">{props.lobbyName}</Card.Title>
-                    <Card.Text>
+                    <Card.Text style={{marginBottom: "5px"}}>
                         Host: {props.host}
                     </Card.Text>
-                    <Button variant="info" onClick={onJoinGame} data-test="join-game-btn">Join Game</Button>
+                    <Card.Text style={{fontSize:"0.8rem", color:"#707070"}}>
+                        Players: {props.numPlayers}/{props.maxPlayers}
+                    </Card.Text>
+                    <Button variant="info" onClick={onJoinGame} data-test={`join-game-btn-${props.gameId}`}>Join Game</Button>
                 </Card.Body>
             </Card>
         </>
