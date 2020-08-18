@@ -22,6 +22,14 @@ public class PrivatePlayerDTO extends PublicPlayerDTO {
     @Setter
     private String key;
 
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
     public static PrivatePlayerDTO convertToPrivatePlayerDTO(Player player) {
         PrivatePlayerDTO privatePlayerDTO = new PrivatePlayerDTO();
         if (player != null && player.getUserId() != null) {

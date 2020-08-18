@@ -25,4 +25,28 @@ class PrivatePlayerDTOTest {
         PrivatePlayerDTO dto = convertToPrivatePlayerDTO(player);
         assertThat(dto, is(nullValue()));
     }
+
+    @Test
+    void equals_shouldReturnTrueWhenSameId() {
+        PrivatePlayerDTO dtoOne = new PrivatePlayerDTO("12345678901234567890123456789012", "John");
+        assertThat(dtoOne.equals(new PrivatePlayerDTO("12345678901234567890123456789012", "John")), is(true));
+    }
+
+    @Test
+    void equals_shouldReturnTrueWhenSameIdButDifferentUsername() {
+        PrivatePlayerDTO dtoOne = new PrivatePlayerDTO("12345678901234567890123456789012", "John");
+        assertThat(dtoOne.equals(new PrivatePlayerDTO("12345678901234567890123456789012", "Jane")), is(true));
+    }
+
+    @Test
+    void equals_shouldReturnTrueWhenSameIdButDifferentKey() {
+        PrivatePlayerDTO dtoOne = new PrivatePlayerDTO("12345678901234567890123456789012", "John", "keyone");
+        assertThat(dtoOne.equals(new PrivatePlayerDTO("12345678901234567890123456789012", "John", "keytwo")), is(true));
+    }
+
+    @Test
+    void equals_shouldReturnFalseWhenDifferentId() {
+        PrivatePlayerDTO dtoOne = new PrivatePlayerDTO("12345678901234567890123456789012", "John");
+        assertThat(dtoOne.equals(new PrivatePlayerDTO("90123456789012345678901212345678", "Jane")), is(false));
+    }
 }

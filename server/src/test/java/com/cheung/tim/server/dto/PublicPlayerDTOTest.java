@@ -41,11 +41,29 @@ class PublicPlayerDTOTest {
     void shouldReturnDTOSet() {
         Player player1 = new Player("40283481721d879601721d87b6350000", "John Smith");
         Player player2 = new Player("7b635000040283481721d879601721d8", "Jane Smith");
-        Set players = new HashSet<>(Arrays.asList(player1,player2));
+        Set players = new HashSet<>(Arrays.asList(player1, player2));
         Set<PublicPlayerDTO> playersDTO = convertToPublicPlayerDTOSet(players);
 
         assertThat(playersDTO, hasSize(2));
-        assertThat(playersDTO, hasItem(new PublicPlayerDTO("40283481721d879601721d87b6350000","John Smith")));
-        assertThat(playersDTO, hasItem(new PublicPlayerDTO("7b635000040283481721d879601721d8","Jane Smith")));
+        assertThat(playersDTO, hasItem(new PublicPlayerDTO("40283481721d879601721d87b6350000", "John Smith")));
+        assertThat(playersDTO, hasItem(new PublicPlayerDTO("7b635000040283481721d879601721d8", "Jane Smith")));
+    }
+
+    @Test
+    void equals_shouldReturnTrueWhenSameId() {
+        PublicPlayerDTO dtoOne = new PublicPlayerDTO("12345678901234567890123456789012", "John");
+        assertThat(dtoOne.equals(new PublicPlayerDTO("12345678901234567890123456789012", "John")), is(true));
+    }
+
+    @Test
+    void equals_shouldReturnTrueWhenSameIdButDifferentUsername() {
+        PublicPlayerDTO dtoOne = new PublicPlayerDTO("12345678901234567890123456789012", "John");
+        assertThat(dtoOne.equals(new PublicPlayerDTO("12345678901234567890123456789012", "Jane")), is(true));
+    }
+
+    @Test
+    void equals_shouldReturnFalseWhenDifferentId() {
+        PublicPlayerDTO dtoOne = new PublicPlayerDTO("12345678901234567890123456789012", "John");
+        assertThat(dtoOne.equals(new PublicPlayerDTO("90123456789012345678901212345678", "Jane")), is(false));
     }
 }
