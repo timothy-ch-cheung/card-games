@@ -51,7 +51,7 @@ public class Player extends BaseEntity {
     @JoinColumn(name = "game_id")
     @Getter
     @Setter
-    Game currentGame;
+    Lobby currentLobby;
 
     @PrePersist
     protected void onCreate() {

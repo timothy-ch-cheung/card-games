@@ -1,84 +1,37 @@
 package com.cheung.tim.server.domain;
 
-import com.cheung.tim.server.enums.GameStatus;
 import lombok.Getter;
-import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "GAME")
 public class Game extends BaseEntity {
 
-    public Game() {
-    }
-
-    public Game(String lobbyName, Player host, GameStatus status, Integer maxPlayers) {
-        this.lobbyName = lobbyName;
-        this.host = host;
-        this.gameStatus = status;
-        this.maxPlayers = maxPlayers;
-    }
-
-
+    @Getter
+    @Column(name = "user_id", columnDefinition = "CHAR(32)", nullable = false)
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
     @Id
-    @Getter
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long gameId;
+    private String id;
 
     @Getter
-    @Setter
-    private String lobbyName;
+    private Integer currentRound;
 
-    @Getter
-    @Setter
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", unique = true)
-    private Player host;
-
-    @OneToMany(
-            mappedBy = "currentGame",
-            cascade = CascadeType.PERSIST,
-            fetch = FetchType.LAZY)
-    private Set<Player> guests = new HashSet<>();
-    @Getter
-    @Setter
-    @Enumerated(EnumType.STRING)
-    private GameStatus gameStatus;
-
-    @Getter
-    @Setter
-    @NotNull
-    private Integer maxPlayers;
-
-    @OneToMany
-    private List<Move> moves = new ArrayList<>();
-
-    public List<Move> getMoves() {
-        List<Move> movesCopy = new ArrayList<>();
-        for (Move m : this.moves) {
-            movesCopy.add(new Move(m));
-        }
-        return movesCopy;
+    public void nextRound() {
+        this.currentRound += 1;
     }
 
-    public void addMove(Move move) {
-        this.moves.add(move);
-    }
-
-    public Set<Player> getGuests() {
-        return Collections.unmodifiableSet(this.guests);
-    }
-
-    public void addGuest(Player player) {
-        this.guests.add(player);
+    @PrePersist
+    protected void onCreate() {
+        this.currentRound = 1;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(gameId, lobbyName, host, guests, gameStatus, moves);
+        return Objects.hash(id, currentRound);
     }
 
     @Override
@@ -89,12 +42,8 @@ public class Game extends BaseEntity {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        Game otherPlayer = (Game) obj;
-        return Objects.equals(gameId, otherPlayer.gameId) &&
-                Objects.equals(lobbyName, otherPlayer.lobbyName) &&
-                Objects.equals(host, otherPlayer.host) &&
-                Objects.equals(guests, otherPlayer.guests) &&
-                Objects.equals(gameStatus, otherPlayer.gameStatus) &&
-                Objects.equals(moves, otherPlayer.moves);
+        Game otherGame = (Game) obj;
+        return Objects.equals(id, otherGame.id) &&
+                Objects.equals(currentRound, otherGame.currentRound);
     }
 }

@@ -1,41 +1,19 @@
 package com.cheung.tim.server.domain;
 
-import com.cheung.tim.server.enums.GameStatus;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.Set;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsSame.sameInstance;
-import static org.mockito.Mockito.mock;
 
 class GameTest {
 
-    Game game;
+    private Game game;
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws IllegalAccessException {
         this.game = createGame();
-    }
-
-    @Test
-    void getMoves_returnsCopy() {
-        List<Move> moves = this.game.getMoves();
-        assertThat(moves.size(), is(0));
-        moves.add(new Move());
-        assertThat(this.game.getMoves().size(), is(0));
-    }
-
-    @Test
-    void addMove_putsMoveInList() throws Exception {
-        Move move = new Move();
-        this.game.addMove(move);
-        assertThat(this.game.getMoves().size(), is(1));
-        assertThat(((List<Move>) FieldUtils.readField(this.game, "moves", true)).get(0), sameInstance(move));
     }
 
     @Test
@@ -44,7 +22,13 @@ class GameTest {
     }
 
     @Test
-    void equals_returnsTrueForEqualGame() {
+    void hashCode_returnsSameHashForEqualObject() throws IllegalAccessException {
+        Game otherGame = createGame();
+        assertThat(otherGame.hashCode(), is(game.hashCode()));
+    }
+
+    @Test
+    void equals_returnsTrueForEqualGame() throws IllegalAccessException {
         assertThat(game.equals(createGame()), is(true));
     }
 
@@ -64,49 +48,24 @@ class GameTest {
     }
 
     @Test
-    void equals_returnsFalseForDifferentLobbyName() {
+    void equals_returnsFalseForDifferentRoundNum() throws IllegalAccessException {
         Game otherGame = createGame();
-        otherGame.setLobbyName("Other Lobby");
+        otherGame.nextRound();
         assertThat(game.equals(otherGame), is(false));
     }
 
     @Test
-    void equals_returnsFalseForDifferentGameId() throws Exception {
-        Game otherGame = createGame();
-        FieldUtils.writeField(otherGame, "gameId", new Long(999), true);
-        assertThat(game.equals(otherGame), is(false));
+    void nextRound_incrementsRound() throws Exception {
+        Game game = createGame();
+        assertThat(game.getCurrentRound(), is(1));
+        game.nextRound();
+        assertThat(game.getCurrentRound(), is(2));
     }
 
-    @Test
-    void equals_returnsFalseForDifferentHost() {
-        Game otherGame = createGame();
-        otherGame.setHost(mock(Player.class));
-        assertThat(game.equals(otherGame), is(false));
+    private Game createGame() throws IllegalAccessException {
+        Game game = new Game();
+        FieldUtils.writeField(game, "id", "1234567890123456789012", true);
+        game.onCreate();
+        return game;
     }
-
-    @Test
-    void equals_returnsFalseForDifferentGuests() {
-        Game otherGame = createGame();
-        otherGame.addGuest(new Player());
-        assertThat(game.equals(otherGame), is(false));
-    }
-
-    @Test
-    void equals_returnsFalseForDifferentGameStatus() {
-        Game otherGame = createGame();
-        otherGame.setGameStatus(GameStatus.DELETED);
-        assertThat(game.equals(otherGame), is(false));
-    }
-
-    @Test
-    void equals_returnsFalseForDifferentMoves() {
-        Game otherGame = createGame();
-        otherGame.addMove(new Move());
-        assertThat(game.equals(otherGame), is(false));
-    }
-
-    private Game createGame() {
-        return new Game("test_lobby", new Player("John Smith"), GameStatus.OPEN, 2);
-    }
-
 }

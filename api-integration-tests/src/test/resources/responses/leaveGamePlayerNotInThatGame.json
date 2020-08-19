@@ -2,6 +2,6 @@
   "timestamp": "${json-unit.ignore-element}",
   "status": 400,
   "error": "Bad Request",
-  "message": "Player ${player_name} is not in game with id ${game_id}",
+  "message": "Player ${player_name} is not in lobby with id ${game_id}",
   "path": "/leave/${game_id}"
 }
