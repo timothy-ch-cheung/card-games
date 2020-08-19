@@ -42,7 +42,7 @@ public class LobbyService {
         }
         Player player = getPlayer(privatePlayerDTO.getId());
         if (isPlayerInGame(player)) {
-            throw new BadRequestException(String.format("Player %s is already in a lobby", player.getUsername()));
+            throw new BadRequestException(String.format("Player %s is already in a game", player.getUsername()));
         } else if (!player.getKey().equals(privatePlayerDTO.getKey())) {
             throw new BadRequestException(INVALID_AUTH);
         }
@@ -54,7 +54,7 @@ public class LobbyService {
     public void joinGame(Long gameId, PrivatePlayerDTO privatePlayerDTO) {
         Player player = getPlayer(privatePlayerDTO.getId());
         if (isPlayerInGame(player)) {
-            throw new BadRequestException(String.format("Player %s is already in a lobby", player.getUsername()));
+            throw new BadRequestException(String.format("Player %s is already in a game", player.getUsername()));
         }
         Lobby lobby = lobbyRepository.findByGameId(gameId);
         if (lobby == null) {

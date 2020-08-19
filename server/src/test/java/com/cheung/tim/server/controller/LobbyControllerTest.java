@@ -2,7 +2,7 @@ package com.cheung.tim.server.controller;
 
 import com.cheung.tim.server.domain.Lobby;
 import com.cheung.tim.server.domain.Player;
-import com.cheung.tim.server.dto.GameDTO;
+import com.cheung.tim.server.dto.LobbyDTO;
 import com.cheung.tim.server.dto.PrivatePlayerDTO;
 import com.cheung.tim.server.enums.GameStatus;
 import com.cheung.tim.server.exception.BadRequestException;
@@ -55,10 +55,10 @@ class LobbyControllerTest {
     void getGame_shouldReturn200() throws Exception {
         Player player = new Player("opjps1w7o66ckmthc18zo32r29wic9fo","John Smith");
         Lobby lobby = new Lobby("test_lobby", player, GameStatus.OPEN, 2);
-        GameDTO gameDTO = getGameDTO();
+        LobbyDTO lobbyDTO = getGameDTO();
 
         when(lobbyService.getGame(anyLong())).thenReturn(lobby);
-        when(modelMapper.map(lobby, GameDTO.class)).thenReturn(gameDTO);
+        when(modelMapper.map(lobby, LobbyDTO.class)).thenReturn(lobbyDTO);
 
         String expectedJson = "{\n" +
                 "   \"id\":null,\n" +
@@ -74,7 +74,7 @@ class LobbyControllerTest {
                 "}";
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
-                .get("/lobby/1")
+                .get("/game/1")
         ).andReturn();
 
         MockHttpServletResponse response = result.getResponse();
@@ -97,10 +97,10 @@ class LobbyControllerTest {
     void createGame_shouldReturn200() throws Exception {
         Player player = new Player("opjps1w7o66ckmthc18zo32r29wic9fo", "John Smith");
         Lobby lobby = new Lobby("test_lobby", player, GameStatus.OPEN, 2);
-        GameDTO gameDTO = getGameDTO();
+        LobbyDTO lobbyDTO = getGameDTO();
 
         when(lobbyService.createGame(any(PrivatePlayerDTO.class), anyString(), anyInt())).thenReturn(lobby);
-        when(modelMapper.map(lobby, GameDTO.class)).thenReturn(gameDTO);
+        when(modelMapper.map(lobby, LobbyDTO.class)).thenReturn(lobbyDTO);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                 .post("/create")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -151,16 +151,16 @@ class LobbyControllerTest {
         lobbies.add(lobby);
         when(lobbyService.findOpenGames()).thenReturn(lobbies);
 
-        when(modelMapper.map(lobby, GameDTO.class)).thenReturn(getGameDTO());
+        when(modelMapper.map(lobby, LobbyDTO.class)).thenReturn(getGameDTO());
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
-                .get("/lobbies").content("")).andReturn();
+                .get("/games").content("")).andReturn();
 
         MockHttpServletResponse response = result.getResponse();
 
         String expectedJson = "{\n" +
                 "   \"numOpenGames\": 1,\n" +
-                "   \"lobbies\": [\n" +
+                "   \"games\": [\n" +
                 "      {\n" +
                 "         \"id\": null,\n" +
                 "         \"createdAt\": null,\n" +
@@ -248,12 +248,12 @@ class LobbyControllerTest {
         ).andReturn();
     }
 
-    private GameDTO getGameDTO() {
-        GameDTO gameDTO = new GameDTO();
-        gameDTO.setLobbyName("test_lobby");
-        gameDTO.setGameStatus("OPEN");
-        gameDTO.setMaxPlayers(2);
-        return gameDTO;
+    private LobbyDTO getGameDTO() {
+        LobbyDTO lobbyDTO = new LobbyDTO();
+        lobbyDTO.setLobbyName("test_lobby");
+        lobbyDTO.setGameStatus("OPEN");
+        lobbyDTO.setMaxPlayers(2);
+        return lobbyDTO;
     }
 
     private String getCreateRequest() {

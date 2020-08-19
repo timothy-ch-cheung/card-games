@@ -2,7 +2,7 @@ package com.cheung.tim.server.controller;
 
 import com.cheung.tim.server.domain.Lobby;
 import com.cheung.tim.server.dto.CreateLobbyDTO;
-import com.cheung.tim.server.dto.GameDTO;
+import com.cheung.tim.server.dto.LobbyDTO;
 import com.cheung.tim.server.dto.PrivatePlayerDTO;
 import com.cheung.tim.server.service.LobbyService;
 import com.cheung.tim.server.service.PlayerService;
@@ -34,13 +34,13 @@ public class LobbyController {
     }
 
     @GetMapping(path = "/game/{gameId}")
-    public ResponseEntity<GameDTO> getGame(@PathVariable Long gameId) {
+    public ResponseEntity<LobbyDTO> getGame(@PathVariable Long gameId) {
         Lobby lobby = lobbyService.getGame(gameId);
         return ResponseEntity.ok(convertToDto(lobby));
     }
 
     @PostMapping(path = "/create")
-    public ResponseEntity<GameDTO> createGame(@RequestBody CreateLobbyDTO createLobbyDTO) {
+    public ResponseEntity<LobbyDTO> createGame(@RequestBody CreateLobbyDTO createLobbyDTO) {
         Lobby lobby = lobbyService.createGame(createLobbyDTO.getHost(), createLobbyDTO.getLobbyName(), createLobbyDTO.getMaxPlayers());
         return ResponseEntity.ok(convertToDto(lobby));
     }
@@ -63,17 +63,17 @@ public class LobbyController {
         return new ResponseEntity<>(convertToDtoMap(lobbies), HttpStatus.OK);
     }
 
-    private GameDTO convertToDto(Lobby lobby) {
-        GameDTO gameDto = modelMapper.map(lobby, GameDTO.class);
-        gameDto.setHost(convertToPublicPlayerDTO(lobby.getHost()));
-        gameDto.setGuests(convertToPublicPlayerDTOSet(lobby.getGuests()));
-        gameDto.setGameStatus(lobby.getGameStatus().toString());
-        return gameDto;
+    private LobbyDTO convertToDto(Lobby lobby) {
+        LobbyDTO lobbyDto = modelMapper.map(lobby, LobbyDTO.class);
+        lobbyDto.setHost(convertToPublicPlayerDTO(lobby.getHost()));
+        lobbyDto.setGuests(convertToPublicPlayerDTOSet(lobby.getGuests()));
+        lobbyDto.setGameStatus(lobby.getGameStatus().toString());
+        return lobbyDto;
     }
 
     private Map<String, Object> convertToDtoMap(List<Lobby> lobbies) {
         Map<String, Object> mapDTO = new HashMap<>();
-        List<GameDTO> gamesDto = lobbies.stream().map(this::convertToDto)
+        List<LobbyDTO> gamesDto = lobbies.stream().map(this::convertToDto)
                 .collect(Collectors.toList());
         mapDTO.put("numOpenGames", gamesDto.size());
         mapDTO.put("games", gamesDto);

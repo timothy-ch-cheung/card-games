@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import java.util.Set;
 
-public class GameDTO {
+public class LobbyDTO {
 
     @Getter
     @Setter

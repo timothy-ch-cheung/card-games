@@ -2,7 +2,7 @@ package com.cheung.tim.server.service;
 
 import com.cheung.tim.server.domain.Lobby;
 import com.cheung.tim.server.domain.Player;
-import com.cheung.tim.server.dto.GameDTO;
+import com.cheung.tim.server.dto.LobbyDTO;
 import com.cheung.tim.server.dto.PrivatePlayerDTO;
 import com.cheung.tim.server.enums.GameStatus;
 import com.cheung.tim.server.exception.BadRequestException;
@@ -352,11 +352,11 @@ class LobbyServiceTest {
         verify(lobbyRepository, never()).updateHost(any(), any());
     }
 
-    public GameDTO getGameDTO() {
-        GameDTO gameDTO = new GameDTO();
-        gameDTO.setHost(getPlayerDTO());
-        gameDTO.setLobbyName("test lobby");
-        return gameDTO;
+    public LobbyDTO getGameDTO() {
+        LobbyDTO lobbyDTO = new LobbyDTO();
+        lobbyDTO.setHost(getPlayerDTO());
+        lobbyDTO.setLobbyName("test lobby");
+        return lobbyDTO;
     }
 
     public PrivatePlayerDTO getPlayerDTO() {
