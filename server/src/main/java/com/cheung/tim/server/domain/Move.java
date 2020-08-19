@@ -35,20 +35,20 @@ public class Move extends BaseEntity {
     @Getter
     @Setter
     @JoinColumn(name = "game_id", nullable = false)
-    private Game game;
+    private Lobby lobby;
 
     public Move(Move move){
         this.moveId = move.moveId;
         this.colNum = move.colNum;
         this.rowNum = move.rowNum;
         this.player = move.player;
-        this.game = move.game;
+        this.lobby = move.lobby;
 
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(moveId, colNum, rowNum, player, game);
+        return Objects.hash(moveId, colNum, rowNum, player, lobby);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class Move extends BaseEntity {
         return Objects.equals(moveId, otherMove.moveId) &&
                 Objects.equals(colNum, otherMove.colNum) &&
                 Objects.equals(rowNum, otherMove.rowNum) &&
-                Objects.equals(game, otherMove.game) &&
+                Objects.equals(lobby, otherMove.lobby) &&
                 Objects.equals(player, otherMove.player);
     }
 }

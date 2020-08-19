@@ -17,7 +17,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<skip.frontend>true</skip.frontend>
-		<sonar.projectKey>card-games-server</sonar.projectKey>
+		<sonar.projectKey>card-lobbies-server</sonar.projectKey>
 		<sonar.organization>timothy-ch-cheung</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>

@@ -10,12 +10,12 @@ import java.util.*;
 
 @Entity
 @Table(name = "GAME")
-public class Game extends BaseEntity {
+public class Lobby extends BaseEntity {
 
-    public Game() {
+    public Lobby() {
     }
 
-    public Game(String lobbyName, Player host, GameStatus status, Integer maxPlayers) {
+    public Lobby(String lobbyName, Player host, GameStatus status, Integer maxPlayers) {
         this.lobbyName = lobbyName;
         this.host = host;
         this.gameStatus = status;
@@ -39,7 +39,7 @@ public class Game extends BaseEntity {
     private Player host;
 
     @OneToMany(
-            mappedBy = "currentGame",
+            mappedBy = "currentLobby",
             cascade = CascadeType.PERSIST,
             fetch = FetchType.LAZY)
     private Set<Player> guests = new HashSet<>();
@@ -89,7 +89,7 @@ public class Game extends BaseEntity {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        Game otherPlayer = (Game) obj;
+        Lobby otherPlayer = (Lobby) obj;
         return Objects.equals(gameId, otherPlayer.gameId) &&
                 Objects.equals(lobbyName, otherPlayer.lobbyName) &&
                 Objects.equals(host, otherPlayer.host) &&

@@ -27,10 +27,10 @@ class MoveTest {
     void equals_returnsTrueForEqualMoves() {
         Move otherMove = createMove();
         Player player = mock(Player.class);
-        Game game = mock(Game.class);
-        otherMove.setGame(game);
+        Lobby lobby = mock(Lobby.class);
+        otherMove.setLobby(lobby);
         otherMove.setPlayer(player);
-        move.setGame(game);
+        move.setLobby(lobby);
         move.setPlayer(player);
 
         assertThat(otherMove.equals(move), is(true));
@@ -75,8 +75,8 @@ class MoveTest {
     @Test
     void equals_returnsFalseForDifferentGame() {
         Move otherMove = createMove();
-        move.setGame(new Game("Lobby 1", new Player(), GameStatus.OPEN, 2));
-        otherMove.setGame(new Game("Lobby 2", new Player(), GameStatus.OPEN, 2));
+        move.setLobby(new Lobby("Lobby 1", new Player(), GameStatus.OPEN, 2));
+        otherMove.setLobby(new Lobby("Lobby 2", new Player(), GameStatus.OPEN, 2));
         assertThat(move.equals(otherMove), is(false));
     }
 
@@ -103,7 +103,7 @@ class MoveTest {
         move.setColNum(1);
         move.setRowNum(2);
         move.setPlayer(mock(Player.class));
-        move.setGame(mock(Game.class));
+        move.setLobby(mock(Lobby.class));
         return move;
     }
 }
