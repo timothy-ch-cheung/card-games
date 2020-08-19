@@ -46,7 +46,7 @@ function Lobby(props) {
         return () => {
             clearInterval(interval);
         }
-    }, [gameId, history, props]);
+    }, [gameId, history, props, dispatch]);
 
     const onLeaveGame = () => {
         API.patch(`/leave/${gameId}`, {
