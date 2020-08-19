@@ -27,7 +27,7 @@ const queueCleanup = (gameId, playerId, playerKey) => {
     cy.writeFile('games_cleanup.txt', `${gameId} ${playerId} ${playerKey}\n`, {flag: 'a+'})
 };
 
-Cypress.Commands.add("createGame", (lobbyName, nickname, maxPlayers) => {
+Cypress.Commands.add("createGame", (lobbyName, nickname, maxPlayers, queueForCleanup = true) => {
     cy.fixture('createPlayer.json').then((createPlayer) => {
         if (nickname !== undefined) {
             createPlayer.username = nickname;
@@ -62,8 +62,13 @@ Cypress.Commands.add("createGame", (lobbyName, nickname, maxPlayers) => {
                             .then(
                                 (body) => {
                                     let gameId = body.id;
-                                    queueCleanup(gameId, playerId, playerKey)
-                                    return cy.wrap({gameId: gameId});
+                                    if (queueForCleanup) {
+                                        queueCleanup(gameId, playerId, playerKey)
+                                    }
+                                    return cy.wrap({
+                                        gameId: gameId,
+                                        hostPlayerId: playerId, hostPlayerKey: playerKey
+                                    });
                                 }
                             );
                     }
@@ -98,6 +103,18 @@ Cypress.Commands.add("joinGame", {
                     });
                 });
             });
+    });
+});
+
+Cypress.Commands.add("leaveGame", (gameId, playerId, playerKey) => {
+    cy.fixture('leaveGame.json').then((leaveGame) => {
+        leaveGame.id = playerId;
+        leaveGame.key = playerKey;
+        cy.request({
+            url: `${Cypress.env('serverUrl')}/leave/${gameId}`,
+            method: 'PATCH',
+            body: leaveGame,
+        })
     });
 });
 

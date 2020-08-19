@@ -52,15 +52,7 @@ after(() => {
                 let playerId = game[1];
                 let playerKey = game[2]
 
-                cy.fixture('leaveGame.json').then((leaveGame) => {
-                    leaveGame.id = playerId;
-                    leaveGame.key = playerKey;
-                    cy.request({
-                        url: `${Cypress.env('serverUrl')}/leave/${gameId}`,
-                        method: 'PATCH',
-                        body: leaveGame,
-                    })
-                });
+                cy.leaveGame(gameId, playerId, playerKey);
             }
         }
     });
