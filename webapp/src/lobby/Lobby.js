@@ -21,14 +21,19 @@ function Lobby(props) {
         return game.guests ? [host].concat(game.guests) : [host];
     }
 
-
     useEffect(() => {
         const getGame = () => {
             API.get(`/game/${gameId}`
             ).then(function (response) {
+                if (response.data.gameStatus === 'DELETED') {
+                    dispatch(resetGame());
+                    clearInterval(interval);
+                    history.push("/games/public");
+                }
                 setGame(response.data);
             }).catch(function (error) {
                 props.onShowError(error.response.data.message);
+                clearInterval(interval);
                 history.push("/games/public");
             });
         };
@@ -41,7 +46,7 @@ function Lobby(props) {
         return () => {
             clearInterval(interval);
         }
-    }, [gameId, history, props]);
+    }, [gameId, history, props, dispatch]);
 
     const onLeaveGame = () => {
         API.patch(`/leave/${gameId}`, {
