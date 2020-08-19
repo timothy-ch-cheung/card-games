@@ -1,17 +1,13 @@
 package com.cheung.tim.server.domain;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
+import javax.persistence.*;
 import java.util.Objects;
 
-import static org.apache.commons.lang.RandomStringUtils.randomAlphanumeric;
-
+@Entity
+@Table(name = "GAME")
 public class Game extends BaseEntity {
 
     @Getter
@@ -24,7 +20,7 @@ public class Game extends BaseEntity {
     @Getter
     private Integer currentRound;
 
-    public void nextRound(){
+    public void nextRound() {
         this.currentRound += 1;
     }
 

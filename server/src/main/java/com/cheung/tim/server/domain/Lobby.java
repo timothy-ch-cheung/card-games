@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "GAME")
+@Table(name = "LOBBY")
 public class Lobby extends BaseEntity {
 
     public Lobby() {
