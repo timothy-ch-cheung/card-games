@@ -6,7 +6,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "GAME")
@@ -26,11 +29,17 @@ public class Lobby extends BaseEntity {
     @Id
     @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long gameId;
+    private Long lobbyId;
 
     @Getter
     @Setter
     private String lobbyName;
+
+    @Getter
+    @Setter
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "game_id", unique = true)
+    private Game game;
 
     @Getter
     @Setter
@@ -53,21 +62,6 @@ public class Lobby extends BaseEntity {
     @NotNull
     private Integer maxPlayers;
 
-    @OneToMany
-    private List<Move> moves = new ArrayList<>();
-
-    public List<Move> getMoves() {
-        List<Move> movesCopy = new ArrayList<>();
-        for (Move m : this.moves) {
-            movesCopy.add(new Move(m));
-        }
-        return movesCopy;
-    }
-
-    public void addMove(Move move) {
-        this.moves.add(move);
-    }
-
     public Set<Player> getGuests() {
         return Collections.unmodifiableSet(this.guests);
     }
@@ -78,7 +72,7 @@ public class Lobby extends BaseEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(gameId, lobbyName, host, guests, gameStatus, moves);
+        return Objects.hash(lobbyId, lobbyName, host, guests, gameStatus);
     }
 
     @Override
@@ -89,12 +83,11 @@ public class Lobby extends BaseEntity {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        Lobby otherPlayer = (Lobby) obj;
-        return Objects.equals(gameId, otherPlayer.gameId) &&
-                Objects.equals(lobbyName, otherPlayer.lobbyName) &&
-                Objects.equals(host, otherPlayer.host) &&
-                Objects.equals(guests, otherPlayer.guests) &&
-                Objects.equals(gameStatus, otherPlayer.gameStatus) &&
-                Objects.equals(moves, otherPlayer.moves);
+        Lobby otherLobby = (Lobby) obj;
+        return Objects.equals(lobbyId, otherLobby.lobbyId) &&
+                Objects.equals(lobbyName, otherLobby.lobbyName) &&
+                Objects.equals(host, otherLobby.host) &&
+                Objects.equals(guests, otherLobby.guests) &&
+                Objects.equals(gameStatus, otherLobby.gameStatus);
     }
 }

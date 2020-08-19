@@ -2,6 +2,6 @@
   "timestamp": "${json-unit.ignore-element}",
   "status": 400,
   "error": "Bad Request",
-  "message": "Game with id ${game_id} is already full",
+  "message": "Lobby with id ${game_id} is already full",
   "path": "/join/${game_id}"
 }

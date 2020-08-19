@@ -1,6 +1,6 @@
 {
   "error": "Not Found",
-  "message": "Game with id ${game_id} does not exist",
+  "message": "Lobby with id ${game_id} does not exist",
   "path": "/game/${game_id}",
   "status": 404,
   "timestamp": "${json-unit.ignore-element}"
