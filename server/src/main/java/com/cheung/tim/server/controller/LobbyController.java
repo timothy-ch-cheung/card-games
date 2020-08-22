@@ -4,6 +4,7 @@ import com.cheung.tim.server.domain.Lobby;
 import com.cheung.tim.server.dto.CreateLobbyDTO;
 import com.cheung.tim.server.dto.LobbyDTO;
 import com.cheung.tim.server.dto.PrivatePlayerDTO;
+import com.cheung.tim.server.dto.UpdateLobbyDTO;
 import com.cheung.tim.server.service.LobbyService;
 import com.cheung.tim.server.service.PlayerService;
 import org.modelmapper.ModelMapper;
@@ -34,32 +35,38 @@ public class LobbyController {
     }
 
     @GetMapping(path = "/game/{gameId}")
-    public ResponseEntity<LobbyDTO> getGame(@PathVariable Long gameId) {
-        Lobby lobby = lobbyService.getGame(gameId);
+    public ResponseEntity<LobbyDTO> getLobby(@PathVariable Long gameId) {
+        Lobby lobby = lobbyService.getLobby(gameId);
         return ResponseEntity.ok(convertToDto(lobby));
     }
 
     @PostMapping(path = "/create")
-    public ResponseEntity<LobbyDTO> createGame(@RequestBody CreateLobbyDTO createLobbyDTO) {
-        Lobby lobby = lobbyService.createGame(createLobbyDTO.getHost(), createLobbyDTO.getLobbyName(), createLobbyDTO.getMaxPlayers());
+    public ResponseEntity<LobbyDTO> createLobby(@RequestBody CreateLobbyDTO createLobbyDTO) {
+        Lobby lobby = lobbyService.createLobby(createLobbyDTO);
         return ResponseEntity.ok(convertToDto(lobby));
     }
 
+    @PatchMapping(path = "/update/{gameId}")
+    public ResponseEntity<Void> updateLobby(@PathVariable Long gameId, UpdateLobbyDTO updateLobbyDTO) {
+        lobbyService.updateLobby(gameId, updateLobbyDTO);
+        return ResponseEntity.noContent().header("Content-Length", "0").build();
+    }
+
     @PatchMapping(path = "/join/{gameId}")
-    public ResponseEntity<Void> joinGame(@PathVariable Long gameId, @RequestBody PrivatePlayerDTO privatePlayerDTO) {
-        lobbyService.joinGame(gameId, privatePlayerDTO);
+    public ResponseEntity<Void> joinLobby(@PathVariable Long gameId, @RequestBody PrivatePlayerDTO privatePlayerDTO) {
+        lobbyService.joinLobby(gameId, privatePlayerDTO);
         return ResponseEntity.noContent().header("Content-Length", "0").build();
     }
 
     @PatchMapping(path = "/leave/{gameId}")
-    public ResponseEntity<Void> leaveGame(@PathVariable Long gameId, @RequestBody PrivatePlayerDTO privatePlayerDTO) {
-        lobbyService.leaveGame(gameId, privatePlayerDTO);
+    public ResponseEntity<Void> leaveLobby(@PathVariable Long gameId, @RequestBody PrivatePlayerDTO privatePlayerDTO) {
+        lobbyService.leaveLobby(gameId, privatePlayerDTO);
         return ResponseEntity.noContent().header("Content-Length", "0").build();
     }
 
     @GetMapping(path = "/games")
-    public ResponseEntity<Map<String, Object>> getGames() {
-        List<Lobby> lobbies = lobbyService.findOpenGames();
+    public ResponseEntity<Map<String, Object>> getLobbies() {
+        List<Lobby> lobbies = lobbyService.findOpenLobbies();
         return new ResponseEntity<>(convertToDtoMap(lobbies), HttpStatus.OK);
     }
 

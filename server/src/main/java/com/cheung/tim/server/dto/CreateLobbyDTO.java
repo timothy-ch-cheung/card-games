@@ -16,4 +16,8 @@ public class CreateLobbyDTO {
     @Getter
     @Setter
     private Integer maxPlayers;
+
+    @Getter
+    @Setter
+    private String gameMode;
 }

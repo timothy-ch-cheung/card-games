@@ -1,5 +1,6 @@
 package com.cheung.tim.server.domain;
 
+import com.cheung.tim.server.enums.GameMode;
 import com.cheung.tim.server.enums.GameStatus;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,11 +19,13 @@ public class Lobby extends BaseEntity {
     public Lobby() {
     }
 
-    public Lobby(String lobbyName, Player host, GameStatus status, Integer maxPlayers) {
+    public Lobby(String lobbyName, Player host, GameStatus status, Integer maxPlayers, GameMode gameMode) {
         this.lobbyName = lobbyName;
         this.host = host;
         this.gameStatus = status;
         this.maxPlayers = maxPlayers;
+        this.gameMode = gameMode;
+        this.rounds = gameMode.getInitialRounds();
     }
 
 
@@ -52,6 +55,7 @@ public class Lobby extends BaseEntity {
             cascade = CascadeType.PERSIST,
             fetch = FetchType.LAZY)
     private Set<Player> guests = new HashSet<>();
+
     @Getter
     @Setter
     @Enumerated(EnumType.STRING)
@@ -59,8 +63,17 @@ public class Lobby extends BaseEntity {
 
     @Getter
     @Setter
+    @Enumerated(EnumType.STRING)
+    private GameMode gameMode;
+
+    @Getter
+    @Setter
     @NotNull
     private Integer maxPlayers;
+
+    @Getter
+    @Setter
+    private Integer rounds;
 
     public Set<Player> getGuests() {
         return Collections.unmodifiableSet(this.guests);
