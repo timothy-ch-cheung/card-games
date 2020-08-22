@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import API from "../API";
 import {useHistory} from "react-router-dom";
-import {resetGame, resetGameMode} from "../redux/actions";
+import {resetGame, resetGameMode, setGameMode} from "../redux/actions";
 import PlayerList from "../components/player-list/PlayerList";
 import LobbySettings from "../components/lobby-settings/LobbySettings";
 
@@ -31,6 +31,7 @@ function Lobby(props) {
                     history.push("/games/public");
                 }
                 setGame(response.data);
+                setGameMode(response.data.gameMode);
             }).catch(function (error) {
                 props.onShowError(error.response.data.message);
                 clearInterval(interval);

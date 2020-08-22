@@ -22,6 +22,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static com.cheung.tim.server.enums.GameMode.CHOICE_POKER;
 import static com.cheung.tim.server.enums.GameMode.MATCH_TWO;
 import static com.cheung.tim.server.enums.GameStatus.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -145,6 +146,28 @@ class LobbyServiceTest {
             lobbyService.createLobby(lobbyDTO);
         });
         assertThat(exception.getMessage(), is("Player id or key invalid"));
+    }
+
+    @Test
+    void createLobby_shouldThrowExceptionIfGameModeIsNotEnabled() {
+        when(lobbyRepository.getPlayerInLobby(any())).thenReturn(null);
+        CreateLobbyDTO lobbyDTO = getLobbyDTO();
+        lobbyDTO.setGameMode("CHOICE_POKER");
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            lobbyService.createLobby(lobbyDTO);
+        });
+        assertThat(exception.getMessage(), is("Game mode CHOICE_POKER is not enabled"));
+    }
+
+    @Test
+    void createLobby_shouldThrowExceptionIfGameModeInvalid() {
+        when(lobbyRepository.getPlayerInLobby(any())).thenReturn(null);
+        CreateLobbyDTO lobbyDTO = getLobbyDTO();
+        lobbyDTO.setGameMode("ABCDEFG");
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            lobbyService.createLobby(lobbyDTO);
+        });
+        assertThat(exception.getMessage(), is("Game mode ABCDEFG is not enabled"));
     }
 
     @Test

@@ -4,5 +4,6 @@
     "id": "${player_id}",
     "key": "${key}"
   },
-  "maxPlayers": 2
+  "maxPlayers": 2,
+  "gameMode": "MATCH_TWO"
 }

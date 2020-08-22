@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static com.cheung.tim.server.enums.GameMode.MATCH_TWO;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 
 class GameModeTest {
@@ -22,21 +23,21 @@ class GameModeTest {
     @ParameterizedTest
     @ValueSource(strings = {"MATCH_TWO", "CHOICE_POKER"})
     void isValidRounds_shouldReturnTrueForPositive(String gameMode) {
-        GameMode mode = GameMode.valueOf(gameMode);
+        GameMode mode = GameMode.getEnum(gameMode);
         assertThat(mode.isValidRounds(lobby, 2), is(true));
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"MATCH_TWO", "CHOICE_POKER"})
     void isValidRounds_shouldReturnFalseForZero(String gameMode) {
-        GameMode mode = GameMode.valueOf(gameMode);
+        GameMode mode = GameMode.getEnum(gameMode);
         assertThat(mode.isValidRounds(lobby, 0), is(false));
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"MATCH_TWO", "CHOICE_POKER"})
     void isValidRounds_shouldReturnFalseForNegative(String gameMode) {
-        GameMode mode = GameMode.valueOf(gameMode);
+        GameMode mode = GameMode.getEnum(gameMode);
         assertThat(mode.isValidRounds(lobby, -2), is(false));
     }
 
@@ -49,8 +50,8 @@ class GameModeTest {
     @ParameterizedTest
     @ValueSource(ints = {3, 6, 9})
     void isValidRoundsMatchTwo_shouldReturnTrueWhenScalingWithPlayerCount(Integer rounds) {
-        lobby.addGuest(new Player("123","John"));
-        lobby.addGuest(new Player("321","Jane"));
+        lobby.addGuest(new Player("123", "John"));
+        lobby.addGuest(new Player("321", "Jane"));
         assertThat(MATCH_TWO.isValidRounds(lobby, rounds), is(true));
     }
 
@@ -59,5 +60,12 @@ class GameModeTest {
     void isValidRoundsMatchTwo_shouldReturnFalseWhenNotAMultipleOfPlayerCount(Integer rounds) {
         lobby.addGuest(new Player());
         assertThat(MATCH_TWO.isValidRounds(lobby, rounds), is(false));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"Match Two", "Choice Poker"})
+    void getEnum_returnsNullIfInvalidString(String gameMode) {
+        GameMode mode = GameMode.getEnum(gameMode);
+        assertThat(mode, is(nullValue()));
     }
 }

@@ -33,7 +33,7 @@ function CreateGame(props) {
         setValidated(false);
     };
 
-    const createGame = (lobbyName, maxPlayers, playerId, playerKey) => {
+    const createGame = (lobbyName, maxPlayers, gameMode, playerId, playerKey) => {
         let id = (playerId != null) ? playerId : userId;
         let key = (playerKey != null) ? playerKey : userKey;
         API.post('/create', {
@@ -42,7 +42,8 @@ function CreateGame(props) {
                 id: id,
                 key: key
             },
-            maxPlayers: maxPlayers
+            maxPlayers: maxPlayers,
+            gameMode: gameMode
         }).then(function (response) {
             dispatch(setGame(response.data.id));
             history.push('/current-game')
@@ -70,14 +71,14 @@ function CreateGame(props) {
         let lobbyName = e.target.lobbyName.value;
 
         if (userId != null) {
-            createGame(lobbyName, submitMaxPlayer);
+            createGame(lobbyName, submitMaxPlayer, GameModes[submitGameMode].code);
         } else {
             API.post('/player', {
                 username: e.target.nickname.value
             }).then(function (response) {
                 dispatch(setPlayer(response.data.id));
                 dispatch(setKey(response.data.key));
-                createGame(lobbyName, submitMaxPlayer, response.data.id, response.data.key)
+                createGame(lobbyName, submitMaxPlayer, GameModes[submitGameMode].code, response.data.id, response.data.key)
             }).catch(function (error) {
                 console.log(error);
             });

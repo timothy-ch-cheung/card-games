@@ -50,10 +50,14 @@ public class LobbyService {
             throw new BadRequestException(String.format("Player %s is already in a game", player.getUsername()));
         }
 
-        validatePlayerAuth(hostDTO, player);
-        Lobby lobby = new Lobby(createLobbyDTO.getLobbyName(), player, OPEN, createLobbyDTO.getMaxPlayers(),
-                GameMode.valueOf(createLobbyDTO.getGameMode()));
-        return lobbyRepository.save(lobby);
+        GameMode gameMode = GameMode.getEnum(createLobbyDTO.getGameMode());
+        if (gameMode != null && gameMode.isEnabled()){
+            validatePlayerAuth(hostDTO, player);
+            Lobby lobby = new Lobby(createLobbyDTO.getLobbyName(), player, OPEN, createLobbyDTO.getMaxPlayers(),
+                    GameMode.valueOf(createLobbyDTO.getGameMode()));
+            return lobbyRepository.save(lobby);
+        }
+        throw new BadRequestException(String.format("Game mode %s is not enabled", createLobbyDTO.getGameMode()));
     }
 
     @Transactional

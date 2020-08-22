@@ -36,8 +36,20 @@ public enum GameMode {
     @Getter
     private final Integer initialRounds;
 
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
+    public static GameMode getEnum(String mode) {
+        try {
+            return valueOf(mode);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
     public boolean isValidRounds(Lobby lobby, Integer rounds) {
-        if(rounds <= 0) {
+        if (rounds <= 0) {
             return false;
         }
         if (this.roundIncrement == PLAYER) {

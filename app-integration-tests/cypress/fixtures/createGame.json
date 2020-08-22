@@ -4,5 +4,6 @@
     "id": "4028348172e7e9fe0172e7ea24180000",
     "key": "keykeykeykeykeykeykeykeykeykeyke"
   },
-  "maxPlayers": 2
+  "maxPlayers": 2,
+  "gameMode": "MATCH_TWO"
 }
