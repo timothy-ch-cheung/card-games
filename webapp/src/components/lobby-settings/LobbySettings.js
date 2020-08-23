@@ -73,8 +73,8 @@ function LobbySettings(props) {
             <div style={{display: "flex"}}>
                 <div style={{marginRight: "5px"}}>
                     <Form.Label>{isSingleRoundIncrement() ? "Rounds" : "Stages"}</Form.Label>
-                    <NumberPicker value={rounds} onIncrease={increase} onDecrease={decrease}
-                                  name={"numRounds"} data-test={'round-number-picker'}/>
+                    <NumberPicker value={rounds} onIncrease={increase} onDecrease={decrease} name={"numRounds"}
+                                  disabled={!props.isHost} data-test={'round-number-picker'}/>
                 </div>
                 <div style={isSingleRoundIncrement() ? {display: "none"} : {display: "visible"}}>
                     <Form.Label>Rounds</Form.Label>
@@ -88,7 +88,9 @@ function LobbySettings(props) {
 
     return (
         <Card style={{width: "35%", margin: "10px"}}>
-            <Card.Header style={{paddingLeft: "10px"}}>Game: {props.gameMode}</Card.Header>
+            <Card.Header
+                style={{paddingLeft: "10px"}}>Game: {props.gameMode ? GameModes[props.gameMode].name : ""}
+            </Card.Header>
             <Card.Body style={{padding: "5px 10px", height: "400px", overflowY: "auto"}}>
                 <Form noValidate validated={validated} onSubmit={submitHandler} data-test={'lobby-settings-form'}>
                     <RoundPicker/>

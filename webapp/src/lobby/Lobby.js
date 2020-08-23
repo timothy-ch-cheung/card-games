@@ -14,6 +14,7 @@ function Lobby(props) {
     const [game, setGame] = useState({});
     const history = useHistory();
     const dispatch = useDispatch();
+    const isHost = game.host && game.host.id === userId;
 
     const getPlayersList = () => {
         let host = game.host || {};
@@ -31,7 +32,7 @@ function Lobby(props) {
                     history.push("/games/public");
                 }
                 setGame(response.data);
-                setGameMode(response.data.gameMode);
+                dispatch(setGameMode(response.data.gameMode));
             }).catch(function (error) {
                 props.onShowError(error.response.data.message);
                 clearInterval(interval);
@@ -65,7 +66,7 @@ function Lobby(props) {
     return (
         <div style={{display: "flex"}}>
             <PlayerList players={getPlayersList()} onLeave={onLeaveGame} numPlayers={2} maxPlayers={game.maxPlayers}/>
-            <LobbySettings gameMode={gameMode} numPlayers={2}/>
+            <LobbySettings gameMode={gameMode} numPlayers={2} isHost={isHost}/>
         </div>
     );
 

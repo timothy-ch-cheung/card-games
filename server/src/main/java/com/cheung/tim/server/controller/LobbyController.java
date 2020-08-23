@@ -75,6 +75,7 @@ public class LobbyController {
         lobbyDto.setHost(convertToPublicPlayerDTO(lobby.getHost()));
         lobbyDto.setGuests(convertToPublicPlayerDTOSet(lobby.getGuests()));
         lobbyDto.setGameStatus(lobby.getGameStatus().toString());
+        lobbyDto.setGameMode(lobby.getGameMode().toString());
         return lobbyDto;
     }
 

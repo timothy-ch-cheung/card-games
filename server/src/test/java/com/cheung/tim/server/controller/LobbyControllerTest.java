@@ -74,7 +74,8 @@ class LobbyControllerTest {
                 "   },\n" +
                 "   \"guests\": [],\n" +
                 "   \"gameStatus\":\"OPEN\",\n" +
-                "   \"maxPlayers\": 2\n" +
+                "   \"maxPlayers\": 2,\n" +
+                "   \"gameMode\": \"MATCH_TWO\"\n" +
                 "}";
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
@@ -123,7 +124,8 @@ class LobbyControllerTest {
                 "   },\n" +
                 "   \"guests\": [],\n" +
                 "   \"gameStatus\":\"OPEN\",\n" +
-                "   \"maxPlayers\": 2\n" +
+                "   \"maxPlayers\": 2,\n" +
+                "   \"gameMode\": \"MATCH_TWO\"\n" +
                 "}";
 
         verify(lobbyService).createLobby((CreateLobbyDTO) createLobbyDTOCapture.capture());
@@ -189,8 +191,9 @@ class LobbyControllerTest {
                 "         },\n" +
                 "         \"guests\": [],\n" +
                 "         \"gameStatus\": \"OPEN\",\n" +
-                "         \"maxPlayers\": 2\n" +
-                "      }\n" +
+                "   \"maxPlayers\": 2,\n" +
+                "   \"gameMode\": \"MATCH_TWO\"\n" +
+                    "}\n" +
                 "   ]\n" +
                 "}";
 

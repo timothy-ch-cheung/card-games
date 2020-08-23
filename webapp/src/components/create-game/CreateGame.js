@@ -71,14 +71,14 @@ function CreateGame(props) {
         let lobbyName = e.target.lobbyName.value;
 
         if (userId != null) {
-            createGame(lobbyName, submitMaxPlayer, GameModes[submitGameMode].code);
+            createGame(lobbyName, submitMaxPlayer, submitGameMode);
         } else {
             API.post('/player', {
                 username: e.target.nickname.value
             }).then(function (response) {
                 dispatch(setPlayer(response.data.id));
                 dispatch(setKey(response.data.key));
-                createGame(lobbyName, submitMaxPlayer, GameModes[submitGameMode].code, response.data.id, response.data.key)
+                createGame(lobbyName, submitMaxPlayer, submitGameMode, response.data.id, response.data.key)
             }).catch(function (error) {
                 console.log(error);
             });
@@ -105,11 +105,11 @@ function CreateGame(props) {
     const renderGameMode = (game, index) => {
         if (GameModes[game].enabled) {
             return (
-                <option key={index} value={game}>{game}</option>
+                <option key={index} value={game}>{GameModes[game].name}</option>
             );
         } else {
             return (
-                <option disabled key={index} value={game}>{game} (not yet available)</option>
+                <option disabled key={index} value={game}>{GameModes[game].name} (not yet available)</option>
             );
         }
     }

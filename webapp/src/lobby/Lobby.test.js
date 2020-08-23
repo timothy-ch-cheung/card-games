@@ -19,7 +19,7 @@ describe("TEST SUITE Lobby: ", () => {
     let wrapper;
     const showError = jest.fn();
     const mockStore = configureStore([]);
-    let store = mockStore({gameMode: "Match Two", game: 1});
+    let store = mockStore({gameMode: "MATCH_TWO", game: 1});
     const MockAdapter = require("axios-mock-adapter");
     let mockAPI;
 

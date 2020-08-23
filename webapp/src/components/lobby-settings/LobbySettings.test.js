@@ -9,18 +9,18 @@ describe("TEST SUITE LobbySettings: ", () => {
     let wrapper;
 
     test('Matches LobbySettings snapshot [Match Two]', () => {
-        wrapper = shallow(<LobbySettings numPlayers={2} gameModes="Match Two"/>);
+        wrapper = shallow(<LobbySettings numPlayers={2} gameModes="MATCH_TWO"/>);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('Matches LobbySettings snapshot [Choice Poker]', () => {
-        wrapper = shallow(<LobbySettings numPlayers={2} gameModes="Choice Poker"/>);
+        wrapper = shallow(<LobbySettings numPlayers={2} gameModes="CHOICE_POKER"/>);
         expect(wrapper).toMatchSnapshot();
     });
 
     describe('Number of rounds - ', () => {
         test('plus/minus buttons change rounds by player count', () => {
-            wrapper = mount(<LobbySettings gameMode={"Match Two"} numPlayers={2}/>);
+            wrapper = mount(<LobbySettings gameMode={"MATCH_TWO"} numPlayers={2} isHost={true}/>);
             expect(wrapper.find('input[data-test="round-number-text"]').props().value).toEqual(2);
             wrapper.find('button[data-test="numRounds-plus-btn"]').simulate('click');
             expect(wrapper.find('input[data-test="round-number-text"]').props().value).toEqual(4);
@@ -29,7 +29,7 @@ describe("TEST SUITE LobbySettings: ", () => {
         });
 
         test('plus/minus buttons change rounds by one', () => {
-            wrapper = mount(<LobbySettings gameMode={"Choice Poker"} numPlayers={2}/>);
+            wrapper = mount(<LobbySettings gameMode={"CHOICE_POKER"} numPlayers={2} isHost={true}/>);
             expect(wrapper.find('input[data-test="round-number-text"]').props().value).toEqual(1);
             wrapper.find('button[data-test="numRounds-plus-btn"]').simulate('click');
             expect(wrapper.find('input[data-test="round-number-text"]').props().value).toEqual(2);
@@ -39,7 +39,7 @@ describe("TEST SUITE LobbySettings: ", () => {
 
         test('onSubmit function is set and called on submit event', () => {
             let submit = jest.fn();
-            wrapper = mount(<LobbySettings gameMode={"Match Two"} numPlayers={2} onSubmit={submit}/>);
+            wrapper = mount(<LobbySettings gameMode={"MATCH_TWO"} numPlayers={2} onSubmit={submit}/>);
             const formEventMocked = {preventDefault: jest.fn(), target: {numRounds: {value: 4}}};
             wrapper.find('form').simulate('submit', formEventMocked);
             expect(wrapper.props().onSubmit).toEqual(submit);
@@ -48,10 +48,16 @@ describe("TEST SUITE LobbySettings: ", () => {
 
         test('onSubmit function is not called when rounds invalid', () => {
             let submit = jest.fn();
-            wrapper = mount(<LobbySettings gameMode={"Match Two"} numPlayers={2} onSubmit={submit}/>);
+            wrapper = mount(<LobbySettings gameMode={"MATCH_TWO"} numPlayers={2} onSubmit={submit}/>);
             const formEventMocked = {preventDefault: jest.fn(), target: {numRounds: {value: undefined}}};
             wrapper.find('form').simulate('submit', formEventMocked);
             expect(submit).toHaveBeenCalledTimes(0);
+        });
+
+        test('plus/minus are disabled when not host', () => {
+            wrapper = mount(<LobbySettings gameMode={"CHOICE_POKER"} numPlayers={2} isHost={false}/>);
+            expect(wrapper.find('button[data-test="numRounds-plus-btn"]').props().disabled).toBe(true);
+            expect(wrapper.find('button[data-test="numRounds-minus-btn"]').props().disabled).toBe(true);
         });
     });
 });
