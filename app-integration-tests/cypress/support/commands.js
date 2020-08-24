@@ -118,3 +118,17 @@ Cypress.Commands.add("leaveGame", (gameId, playerId, playerKey) => {
     });
 });
 
+Cypress.Commands.add("updateGame", (gameId, playerId, playerKey, rounds) => {
+    cy.fixture('updateGame.json').then((updateGame) => {
+        if (rounds != null) {
+            updateGame.rounds = rounds;
+        }
+        updateGame.host.id = playerId;
+        updateGame.host.key = playerKey;
+        cy.request({
+            url: `${Cypress.env('serverUrl')}/update/${gameId}`,
+            method: 'PATCH',
+            body: updateGame,
+        })
+    });
+});

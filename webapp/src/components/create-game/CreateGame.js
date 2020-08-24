@@ -33,7 +33,7 @@ function CreateGame(props) {
         setValidated(false);
     };
 
-    const createGame = (lobbyName, maxPlayers, gameMode, playerId, playerKey) => {
+    const createGame = (lobbyName, maxPlayers, gameModeKey, playerId, playerKey) => {
         let id = (playerId != null) ? playerId : userId;
         let key = (playerKey != null) ? playerKey : userKey;
         API.post('/create', {
@@ -43,7 +43,7 @@ function CreateGame(props) {
                 key: key
             },
             maxPlayers: maxPlayers,
-            gameMode: gameMode
+            gameMode: gameModeKey
         }).then(function (response) {
             dispatch(setGame(response.data.id));
             history.push('/current-game')
@@ -156,7 +156,8 @@ function CreateGame(props) {
                         }
                     `}
                 </style>
-                <Modal className="create-game-modal" show={props.show} onHide={props.onClose} data-test="create-game-modal">
+                <Modal className="create-game-modal" show={props.show} onHide={props.onClose}
+                       data-test="create-game-modal">
                     <Modal.Header closeButton>
                         <Modal.Title>Create Game</Modal.Title>
                     </Modal.Header>

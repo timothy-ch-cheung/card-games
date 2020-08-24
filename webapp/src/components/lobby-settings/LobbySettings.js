@@ -4,7 +4,6 @@ import NumberPicker from "../number-picker/NumberPicker";
 import GameModes from "../../GameModes";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import {useSelector} from "react-redux";
 import API from "../../API";
 
 function LobbySettings(props) {
@@ -24,10 +23,8 @@ function LobbySettings(props) {
         switch (stepType) {
             case "ONE":
                 return 1;
-            case "PLAYER_COUNT" && props.numPlayers < GameModes[props.gameMode].minPlayers:
-                return GameModes[props.gameMode].minPlayers;
             case "PLAYER_COUNT":
-                return props.numPlayers;
+                return GameModes[props.gameMode].minPlayers;
             default:
                 return undefined;
         }
@@ -52,23 +49,23 @@ function LobbySettings(props) {
     const [rounds, setRounds] = useState(1);
     const [totalRounds, setTotalRounds] = useState(step);
 
-    const calculateTotalRounds = (step, rounds) => {
-        return step * rounds;
+    const calculateTotalRounds = (currentRounds) => {
+        return step * currentRounds;
     }
 
-    const calculateRounds = (step, totalRounds) => {
-        return totalRounds / step;
+    const calculateRounds = (totalRoundsUpdate) => {
+        return totalRoundsUpdate / step;
     }
 
-    const updateRounds = (totalRounds, oldRounds) => {
+    const updateRounds = (totalRoundsUpdate, oldRounds) => {
         API.patch(`/update/${props.gameId}`, {
             host: {
                 id: props.userId,
                 key: props.userKey
             },
-            rounds: totalRounds
+            rounds: totalRoundsUpdate
         }).then(function (response) {
-            setTotalRounds(totalRounds);
+            setTotalRounds(totalRoundsUpdate);
         }).catch(function (error) {
             setRounds(oldRounds);
             console.log(error);
@@ -79,7 +76,7 @@ function LobbySettings(props) {
         if (GameModes[props.gameMode] && totalRounds > step) {
             let newRounds = rounds - 1;
             setRounds(newRounds);
-            updateRounds(calculateTotalRounds(step, newRounds), rounds);
+            updateRounds(calculateTotalRounds(newRounds), rounds);
         }
     }
 
@@ -87,22 +84,22 @@ function LobbySettings(props) {
         if (GameModes[props.gameMode] && totalRounds < (step * MAX_ROUNDS_MULTIPLIER)) {
             let newRounds = rounds + 1;
             setRounds(newRounds);
-            updateRounds(calculateTotalRounds(step, newRounds), rounds);
+            updateRounds(calculateTotalRounds(newRounds), rounds);
         }
     }
 
     useEffect(() => {
         if (props.isHost === true) {
-            setTotalRounds(calculateTotalRounds(step, rounds))
+            setTotalRounds(calculateTotalRounds(rounds))
         }
-    }, [step, rounds]);
+    }, [step, rounds, props.isHost, calculateTotalRounds]);
 
     useEffect(() => {
         if (props.isHost === false) {
-            setRounds(calculateRounds(step, props.rounds))
+            setRounds(calculateRounds(props.rounds))
             setTotalRounds(props.rounds)
         }
-    }, [step, props.rounds])
+    }, [step, props.rounds, props.isHost, calculateRounds])
 
     const RoundPicker = () => {
         return (

@@ -423,7 +423,7 @@ exports[`TEST SUITE Lobby:  Matches Initial Lobby snapshot 1`] = `
                               }
                             }
                             type="text"
-                            value={1}
+                            value={2}
                           >
                             <input
                               className="form-control"
@@ -439,7 +439,7 @@ exports[`TEST SUITE Lobby:  Matches Initial Lobby snapshot 1`] = `
                                 }
                               }
                               type="text"
-                              value={1}
+                              value={2}
                             />
                           </FormControl>
                         </div>
