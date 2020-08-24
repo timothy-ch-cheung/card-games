@@ -23,7 +23,6 @@ exports[`TEST SUITE Lobby:  Matches Initial Lobby snapshot 1`] = `
       }
     >
       <PlayerList
-        numPlayers={2}
         onLeave={[Function]}
         players={
           Array [
@@ -165,8 +164,10 @@ exports[`TEST SUITE Lobby:  Matches Initial Lobby snapshot 1`] = `
         </Card>
       </PlayerList>
       <LobbySettings
+        gameId={1}
         gameMode="MATCH_TWO"
-        numPlayers={2}
+        numPlayers={1}
+        rounds={1}
       >
         <Card
           body={false}
@@ -259,7 +260,7 @@ exports[`TEST SUITE Lobby:  Matches Initial Lobby snapshot 1`] = `
                             <label
                               className="form-label"
                             >
-                              Rounds
+                              Stages
                             </label>
                           </FormLabel>
                           <NumberPicker
@@ -395,7 +396,7 @@ exports[`TEST SUITE Lobby:  Matches Initial Lobby snapshot 1`] = `
                         <div
                           style={
                             Object {
-                              "display": "none",
+                              "display": "visible",
                             }
                           }
                         >
@@ -422,7 +423,7 @@ exports[`TEST SUITE Lobby:  Matches Initial Lobby snapshot 1`] = `
                               }
                             }
                             type="text"
-                            value={2}
+                            value={1}
                           >
                             <input
                               className="form-control"
@@ -438,7 +439,7 @@ exports[`TEST SUITE Lobby:  Matches Initial Lobby snapshot 1`] = `
                                 }
                               }
                               type="text"
-                              value={2}
+                              value={1}
                             />
                           </FormControl>
                         </div>

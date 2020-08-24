@@ -43,6 +43,7 @@ public class LeaveGameTest extends BaseGameTest {
         String expectedGameState = JsonResponse("getGameSuccess")
                 .replaceGameId(this.gameId.toString())
                 .replaceGameStatus("OPEN")
+                .replaceRounds("2")
                 .toString();
 
         Response response = given().contentType(ContentType.JSON)
@@ -63,6 +64,7 @@ public class LeaveGameTest extends BaseGameTest {
         String expectedGameState = JsonResponse("getGame")
                 .replaceGameId(this.gameId.toString())
                 .replaceGameStatus("DELETED")
+                .replaceRounds("2")
                 .toString();
 
         Response response = given().contentType(ContentType.JSON)
@@ -83,6 +85,7 @@ public class LeaveGameTest extends BaseGameTest {
         String expectedGameState = JsonResponse("getGame")
                 .replaceGameId(this.gameId.toString())
                 .replaceGameStatus("DELETED")
+                .replaceRounds("2")
                 .toString();
 
         given().contentType(ContentType.JSON)

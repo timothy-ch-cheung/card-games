@@ -49,6 +49,7 @@ public class CreateGameTest extends BaseGameTest {
         String expectedResponse = JsonResponse("createGameSuccess")
                 .replacePlayerId(player.getId())
                 .replaceKey(player.getKey())
+                .replaceRounds("2")
                 .toString();
 
         assertThat(response.statusCode(), is(200));

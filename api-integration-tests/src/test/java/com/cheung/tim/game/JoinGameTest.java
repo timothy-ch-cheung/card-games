@@ -38,6 +38,7 @@ public class JoinGameTest extends BaseGameTest {
                 .replaceGameId(this.gameId.toString())
                 .replaceGameStatus("READY")
                 .replaceGuests(String.format("[{\"username\":\"Jane\",\"id\":\"%s\"}]", player.getId()))
+                .replaceRounds("2")
                 .toString();
 
         Response response = given().contentType(ContentType.JSON)

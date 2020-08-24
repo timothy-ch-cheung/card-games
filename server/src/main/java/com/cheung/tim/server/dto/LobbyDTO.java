@@ -38,4 +38,8 @@ public class LobbyDTO {
     @Getter
     @Setter
     private String gameMode;
+
+    @Getter
+    @Setter
+    private Integer rounds;
 }

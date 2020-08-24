@@ -47,7 +47,7 @@ public class LobbyController {
     }
 
     @PatchMapping(path = "/update/{gameId}")
-    public ResponseEntity<Void> updateLobby(@PathVariable Long gameId, UpdateLobbyDTO updateLobbyDTO) {
+    public ResponseEntity<Void> updateLobby(@PathVariable Long gameId, @RequestBody UpdateLobbyDTO updateLobbyDTO) {
         lobbyService.updateLobby(gameId, updateLobbyDTO);
         return ResponseEntity.noContent().header("Content-Length", "0").build();
     }

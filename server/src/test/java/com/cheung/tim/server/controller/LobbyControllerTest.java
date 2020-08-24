@@ -75,7 +75,8 @@ class LobbyControllerTest {
                 "   \"guests\": [],\n" +
                 "   \"gameStatus\":\"OPEN\",\n" +
                 "   \"maxPlayers\": 2,\n" +
-                "   \"gameMode\": \"MATCH_TWO\"\n" +
+                "   \"gameMode\": \"MATCH_TWO\",\n" +
+                "   \"rounds\": 2\n" +
                 "}";
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
@@ -125,7 +126,8 @@ class LobbyControllerTest {
                 "   \"guests\": [],\n" +
                 "   \"gameStatus\":\"OPEN\",\n" +
                 "   \"maxPlayers\": 2,\n" +
-                "   \"gameMode\": \"MATCH_TWO\"\n" +
+                "   \"gameMode\": \"MATCH_TWO\",\n" +
+                "   \"rounds\": 2\n" +
                 "}";
 
         verify(lobbyService).createLobby((CreateLobbyDTO) createLobbyDTOCapture.capture());
@@ -192,7 +194,8 @@ class LobbyControllerTest {
                 "         \"guests\": [],\n" +
                 "         \"gameStatus\": \"OPEN\",\n" +
                 "   \"maxPlayers\": 2,\n" +
-                "   \"gameMode\": \"MATCH_TWO\"\n" +
+                "   \"gameMode\": \"MATCH_TWO\",\n" +
+                "   \"rounds\": 2\n" +
                     "}\n" +
                 "   ]\n" +
                 "}";
@@ -274,6 +277,7 @@ class LobbyControllerTest {
         lobbyDTO.setLobbyName("test_lobby");
         lobbyDTO.setGameStatus("OPEN");
         lobbyDTO.setMaxPlayers(2);
+        lobbyDTO.setRounds(2);
         return lobbyDTO;
     }
 
