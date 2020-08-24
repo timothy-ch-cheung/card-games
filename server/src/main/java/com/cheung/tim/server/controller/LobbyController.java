@@ -23,6 +23,7 @@ import static com.cheung.tim.server.dto.PublicPlayerDTO.convertToPublicPlayerDTO
 @RestController
 public class LobbyController {
 
+    public static final String CONTENT_LENGTH = "Content-Length";
     private ModelMapper modelMapper;
 
     LobbyService lobbyService;
@@ -49,19 +50,19 @@ public class LobbyController {
     @PatchMapping(path = "/update/{gameId}")
     public ResponseEntity<Void> updateLobby(@PathVariable Long gameId, @RequestBody UpdateLobbyDTO updateLobbyDTO) {
         lobbyService.updateLobby(gameId, updateLobbyDTO);
-        return ResponseEntity.noContent().header("Content-Length", "0").build();
+        return ResponseEntity.noContent().header(CONTENT_LENGTH, "0").build();
     }
 
     @PatchMapping(path = "/join/{gameId}")
     public ResponseEntity<Void> joinLobby(@PathVariable Long gameId, @RequestBody PrivatePlayerDTO privatePlayerDTO) {
         lobbyService.joinLobby(gameId, privatePlayerDTO);
-        return ResponseEntity.noContent().header("Content-Length", "0").build();
+        return ResponseEntity.noContent().header(CONTENT_LENGTH, "0").build();
     }
 
     @PatchMapping(path = "/leave/{gameId}")
     public ResponseEntity<Void> leaveLobby(@PathVariable Long gameId, @RequestBody PrivatePlayerDTO privatePlayerDTO) {
         lobbyService.leaveLobby(gameId, privatePlayerDTO);
-        return ResponseEntity.noContent().header("Content-Length", "0").build();
+        return ResponseEntity.noContent().header(CONTENT_LENGTH, "0").build();
     }
 
     @GetMapping(path = "/games")

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Card from "react-bootstrap/Card";
 import NumberPicker from "../number-picker/NumberPicker";
 import GameModes from "../../GameModes";
@@ -49,13 +49,13 @@ function LobbySettings(props) {
     const [rounds, setRounds] = useState(1);
     const [totalRounds, setTotalRounds] = useState(step);
 
-    const calculateTotalRounds = (currentRounds) => {
+    const calculateTotalRounds = useCallback((currentRounds) => {
         return step * currentRounds;
-    }
+    });
 
-    const calculateRounds = (totalRoundsUpdate) => {
+    const calculateRounds = useCallback((totalRoundsUpdate) => {
         return totalRoundsUpdate / step;
-    }
+    });
 
     const updateRounds = (totalRoundsUpdate, oldRounds) => {
         API.patch(`/update/${props.gameId}`, {

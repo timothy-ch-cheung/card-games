@@ -3,6 +3,7 @@ package com.cheung.tim.server.service;
 import com.cheung.tim.server.domain.Lobby;
 import com.cheung.tim.server.domain.Player;
 import com.cheung.tim.server.dto.CreateLobbyDTO;
+import com.cheung.tim.server.dto.LobbyDTO;
 import com.cheung.tim.server.dto.PrivatePlayerDTO;
 import com.cheung.tim.server.dto.UpdateLobbyDTO;
 import com.cheung.tim.server.enums.GameStatus;
@@ -87,8 +88,9 @@ class LobbyServiceTest {
     @Test
     void createLobby_shouldThrowExceptionIfPlayerDoesNotExist() {
         when(playerService.findPlayerById(any())).thenReturn(null);
+        CreateLobbyDTO lobbyDTO = getLobbyDTO();
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            lobbyService.createLobby(getLobbyDTO());
+            lobbyService.createLobby(lobbyDTO);
         });
         assertThat(exception.getMessage(), is("Player with id 40283481721d879601721d87b6350000 not found"));
     }
@@ -96,8 +98,9 @@ class LobbyServiceTest {
     @Test
     void createLobby_shouldThrowExceptionIfPlayerAlreadyInGame() {
         when(lobbyRepository.getPlayerInLobby(any())).thenReturn(player);
+        CreateLobbyDTO lobbyDTO = getLobbyDTO();
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
-            lobbyService.createLobby(getLobbyDTO());
+            lobbyService.createLobby(lobbyDTO);
         });
         assertThat(exception.getMessage(), is("Player John Smith is already in a game"));
     }
@@ -130,8 +133,9 @@ class LobbyServiceTest {
     @EmptySource
     @ValueSource(strings = {" ", "   ", "\n", "\t"})
     void createLobby_shouldThrowExceptionIfLobbyNameEmpty(String lobbyName) {
+        CreateLobbyDTO lobbyDTO = getLobbyDTO(lobbyName);
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
-            lobbyService.createLobby(getLobbyDTO(lobbyName));
+            lobbyService.createLobby(lobbyDTO);
         });
         assertThat(exception.getMessage(), is("Lobby name or Host not supplied"));
     }

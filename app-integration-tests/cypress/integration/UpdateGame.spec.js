@@ -9,10 +9,13 @@ describe('Update Game ', () => {
         cy.contains('.btn', 'Create Game').click();
         fillInDialog();
         submitCreateGame();
+        cy.get('[data-test="numRounds-value"]').should('have.value', 1);
         cy.get('[data-test="round-number-text"]').should('have.value', 2);
         cy.get('[data-test="numRounds-plus-btn"]').click();
+        cy.get('[data-test="numRounds-value"]').should('have.value', 2);
         cy.get('[data-test="round-number-text"]').should('have.value', 4);
         cy.get('[data-test="numRounds-minus-btn"]').click();
+        cy.get('[data-test="numRounds-value"]').should('have.value', 1);
         cy.get('[data-test="round-number-text"]').should('have.value', 2);
     });
 
@@ -24,9 +27,11 @@ describe('Update Game ', () => {
             cy.get('input[name="nickname"]').type('Jane');
             cy.contains('[data-test="submit-create-player-modal"]', 'Join Game').click();
 
+            cy.get('[data-test="numRounds-value"]').should('have.value', 1);
             cy.get('[data-test="round-number-text"]').should('have.value', 2);
             cy.updateGame(data.gameId, data.hostPlayerId, data.hostPlayerKey, 4);
 
+            cy.get('[data-test="numRounds-value"]').should('have.value', 2);
             cy.get('[data-test="round-number-text"]').should('have.value', 4);
         });
     });
