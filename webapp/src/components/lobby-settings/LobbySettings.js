@@ -51,11 +51,11 @@ function LobbySettings(props) {
 
     const calculateTotalRounds = useCallback((currentRounds) => {
         return step * currentRounds;
-    });
+    }, [step, props.rounds, props.isHost]);
 
     const calculateRounds = useCallback((totalRoundsUpdate) => {
         return totalRoundsUpdate / step;
-    });
+    }, [step, props.rounds, props.isHost]);
 
     const updateRounds = (totalRoundsUpdate, oldRounds) => {
         API.patch(`/update/${props.gameId}`, {
