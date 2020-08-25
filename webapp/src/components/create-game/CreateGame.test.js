@@ -27,7 +27,7 @@ describe("TEST SUITE CreateGame: ", () => {
     beforeEach(() => {
         store = mockStore({
             user: null,
-            gameMode: "Match Two"
+            gameMode: "MATCH_TWO"
         });
     });
 
@@ -95,12 +95,12 @@ describe("TEST SUITE CreateGame: ", () => {
         });
 
         test('can switch game mode', async () => {
-            let eventObj = {target: {value: 'Match Two'}}
+            let eventObj = {target: {value: 'MATCH_TWO'}}
             wrapper.find('select[data-test="game-mode-select"]').simulate('change', eventObj);
             await flushPromises();
             let actions = store.getActions();
             expect(actions.length).toBe(1);
-            expect(actions[0]).toEqual({"type": "SET_GAME_MODE", "payload": "Match Two"});
+            expect(actions[0]).toEqual({"type": "SET_GAME_MODE", "payload": "MATCH_TWO"});
             expect(wrapper.find('input[data-test="numPlayers-value"]').props().value).toEqual(2);
         });
 
@@ -109,11 +109,11 @@ describe("TEST SUITE CreateGame: ", () => {
             mockAPI.onPost("/player").reply(200,
                 {id: "12345678901234567890123456789012", key:"keykeykeykeykeykeykeykeykeykeyke"});
             mockAPI.onPost("/create").reply(200, {id: 1});
-            store = mockStore({user: null, gameMode: "Match Two"});
+            store = mockStore({user: null, gameMode: "MATCH_TWO"});
             wrapper = mount(<Provider store={store}><CreateGame show={true} onClose={close}/></Provider>);
             const eventObj = {
                 target: {
-                    gameMode: {value: 'Match Two'},
+                    gameMode: {value: 'MATCH_TWO'},
                     lobbyName: {value: 'test lobby'},
                     numPlayers: {value: 2},
                     nickname: {value: 'John'}
@@ -128,7 +128,7 @@ describe("TEST SUITE CreateGame: ", () => {
             expect(mockAPI.history.post.length).toBe(2);
             let actions = store.getActions();
             expect(actions.length).toBe(4);
-            expect(actions[0]).toEqual({"type": "SET_GAME_MODE", "payload": "Match Two"});
+            expect(actions[0]).toEqual({"type": "SET_GAME_MODE", "payload": "MATCH_TWO"});
             expect(actions[1]).toEqual({"type": "SET_PLAYER", "payload": "12345678901234567890123456789012"});
             expect(actions[2]).toEqual({"type": "SET_KEY", "payload": "keykeykeykeykeykeykeykeykeykeyke"});
             expect(actions[3]).toEqual({"type": "SET_GAME", "payload": 1});
@@ -137,11 +137,11 @@ describe("TEST SUITE CreateGame: ", () => {
         test('POST only /create when userId is saved', async () => {
             let close = jest.fn();
             mockAPI.onPost("/create").reply(200, {id: 1});
-            store = mockStore({user: "12345678901234567890123456789012", gameMode: "Match Two"});
+            store = mockStore({user: "12345678901234567890123456789012", gameMode: "MATCH_TWO"});
             wrapper = mount(<Provider store={store}><CreateGame show={true} onClose={close}/></Provider>);
             const eventObj = {
                 target: {
-                    gameMode: {value: 'Match Two'},
+                    gameMode: {value: 'MATCH_TWO'},
                     numPlayers: {value: 2},
                     lobbyName: {value: 'test lobby'}
                 }
@@ -155,18 +155,18 @@ describe("TEST SUITE CreateGame: ", () => {
             expect(mockAPI.history.post.length).toBe(1);
             let actions = store.getActions();
             expect(actions.length).toBe(2);
-            expect(actions[0]).toEqual({"type": "SET_GAME_MODE", "payload": "Match Two"});
+            expect(actions[0]).toEqual({"type": "SET_GAME_MODE", "payload": "MATCH_TWO"});
             expect(actions[1]).toEqual({"type": "SET_GAME", "payload": 1});
         });
 
         test('Invalid form sends no requests and does not close modal', async () => {
             let close = jest.fn();
-            store = mockStore({gameMode: "Match Two"});
+            store = mockStore({gameMode: "MATCH_TWO"});
             wrapper = mount(<Provider store={store}><CreateGame show={true} onClose={close}/></Provider>);
             const eventObj = {
                 stopPropagation: jest.fn(),
                 target: {
-                    gameMode: {value: 'Match Two'},
+                    gameMode: {value: 'MATCH_TWO'},
                     numPlayers: {value: 2},
                 }
             };

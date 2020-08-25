@@ -5,6 +5,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static com.cheung.tim.server.enums.GameMode.MATCH_TWO;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.mock;
@@ -79,7 +80,7 @@ class LobbyTest {
     }
 
     private Lobby createLobby() {
-        return new Lobby("test_lobby", new Player("John Smith"), GameStatus.OPEN, 2);
+        return new Lobby("test_lobby", new Player("John Smith"), GameStatus.OPEN, 2, MATCH_TWO);
     }
 
 }

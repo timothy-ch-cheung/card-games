@@ -10,14 +10,14 @@ function NumberPicker(props) {
         <InputGroup style={{width: "150px"}}>
             <InputGroup.Prepend>
                 <Button variant="info" style={largeFont} onClick={props.onDecrease}
-                        data-test={props.name + "-minus-btn"}>-</Button>
+                        data-test={props.name + "-minus-btn"} disabled={props.disabled}>-</Button>
             </InputGroup.Prepend>
             <FormControl className="number-picker" disabled name={props.name}
                          style={{backgroundColor: "#fff", textAlign: "center"}} value={props.value || ""}
                          data-test={props.name + "-value"}/>
             <InputGroup.Append>
                 <Button variant="info" style={largeFont} onClick={props.onIncrease}
-                        data-test={props.name + "-plus-btn"}>+</Button>
+                        data-test={props.name + "-plus-btn"} disabled={props.disabled}>+</Button>
             </InputGroup.Append>
         </InputGroup>
     );

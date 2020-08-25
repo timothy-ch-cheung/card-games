@@ -1,0 +1,7 @@
+{
+  "rounds": "${rounds}",
+  "host": {
+    "id": "${player_id}",
+    "key": "${key}"
+  }
+}

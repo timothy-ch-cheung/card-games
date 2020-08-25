@@ -23,7 +23,7 @@ describe("TEST SUITE Game: ", () => {
 
     beforeEach(() => {
         store = mockStore({
-            gameMode: "Match Two"
+            gameMode: "MATCH_TWO"
         });
         mockGames = {
             numGames: 2,

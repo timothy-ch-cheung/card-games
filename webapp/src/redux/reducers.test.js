@@ -59,15 +59,15 @@ describe("TEST SUITE Redux Reducers: ", () => {
 
     describe("Game Mode reducer", () => {
         test("returns payload with SET", () => {
-            expect(gameModeReducer(null, setGameMode(GameModes["Match Two"]))).toEqual(GameModes["Match Two"]);
+            expect(gameModeReducer(null, setGameMode(GameModes["MATCH_TWO"]))).toEqual(GameModes["MATCH_TWO"]);
         });
 
         test("returns null with RESET", () => {
-            expect(gameModeReducer(GameModes["Match Two"], resetGameMode())).toEqual(null);
+            expect(gameModeReducer(GameModes["MATCH_TWO"], resetGameMode())).toEqual(null);
         });
 
         test("returns state when no action matched", () => {
-            expect(gameModeReducer(GameModes["Match Two"], {type: "REVERT_GAME_MODE"})).toEqual(GameModes["Match Two"]);
+            expect(gameModeReducer(GameModes["MATCH_TWO"], {type: "REVERT_GAME_MODE"})).toEqual(GameModes["MATCH_TWO"]);
         });
 
         test("initialises state if undefined", () => {

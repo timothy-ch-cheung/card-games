@@ -38,6 +38,7 @@ class GetGameTest extends BaseGameTest {
         String expectedResponse = JsonResponse("getGameSuccess")
                 .replaceGameId(this.gameId.toString())
                 .replaceGameStatus("OPEN")
+                .replaceRounds("2")
                 .toString();
         Response response = get(ENDPOINT + GAME + "/" + this.gameId);
 

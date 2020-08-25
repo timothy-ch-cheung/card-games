@@ -8,5 +8,7 @@
   },
   "guests": ${guests},
   "gameStatus": "${game_status}",
-  "maxPlayers": 2
+  "maxPlayers": 2,
+  "gameMode": "MATCH_TWO",
+  "rounds": ${rounds}
 }

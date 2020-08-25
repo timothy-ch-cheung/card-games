@@ -23,7 +23,6 @@ exports[`TEST SUITE Lobby:  Matches Initial Lobby snapshot 1`] = `
       }
     >
       <PlayerList
-        numPlayers={2}
         onLeave={[Function]}
         players={
           Array [
@@ -165,8 +164,10 @@ exports[`TEST SUITE Lobby:  Matches Initial Lobby snapshot 1`] = `
         </Card>
       </PlayerList>
       <LobbySettings
-        gameMode="Match Two"
-        numPlayers={2}
+        gameId={1}
+        gameMode="MATCH_TWO"
+        numPlayers={1}
+        rounds={1}
       >
         <Card
           body={false}
@@ -259,11 +260,12 @@ exports[`TEST SUITE Lobby:  Matches Initial Lobby snapshot 1`] = `
                             <label
                               className="form-label"
                             >
-                              Rounds
+                              Stages
                             </label>
                           </FormLabel>
                           <NumberPicker
                             data-test="round-number-picker"
+                            disabled={true}
                             name="numRounds"
                             onDecrease={[Function]}
                             onIncrease={[Function]}
@@ -291,7 +293,7 @@ exports[`TEST SUITE Lobby:  Matches Initial Lobby snapshot 1`] = `
                                     <Button
                                       active={false}
                                       data-test="numRounds-minus-btn"
-                                      disabled={false}
+                                      disabled={true}
                                       onClick={[Function]}
                                       style={
                                         Object {
@@ -306,7 +308,7 @@ exports[`TEST SUITE Lobby:  Matches Initial Lobby snapshot 1`] = `
                                       <button
                                         className="btn btn-info"
                                         data-test="numRounds-minus-btn"
-                                        disabled={false}
+                                        disabled={true}
                                         onClick={[Function]}
                                         style={
                                           Object {
@@ -356,7 +358,7 @@ exports[`TEST SUITE Lobby:  Matches Initial Lobby snapshot 1`] = `
                                     <Button
                                       active={false}
                                       data-test="numRounds-plus-btn"
-                                      disabled={false}
+                                      disabled={true}
                                       onClick={[Function]}
                                       style={
                                         Object {
@@ -371,7 +373,7 @@ exports[`TEST SUITE Lobby:  Matches Initial Lobby snapshot 1`] = `
                                       <button
                                         className="btn btn-info"
                                         data-test="numRounds-plus-btn"
-                                        disabled={false}
+                                        disabled={true}
                                         onClick={[Function]}
                                         style={
                                           Object {
@@ -394,7 +396,7 @@ exports[`TEST SUITE Lobby:  Matches Initial Lobby snapshot 1`] = `
                         <div
                           style={
                             Object {
-                              "display": "none",
+                              "display": "visible",
                             }
                           }
                         >

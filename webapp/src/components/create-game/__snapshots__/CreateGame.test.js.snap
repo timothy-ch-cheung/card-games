@@ -203,13 +203,13 @@ exports[`TEST SUITE CreateGame:  Matches CreateGame snapshot (visible) 1`] = `
                                   Select...
                                 </option>
                                 <option
-                                  value="Match Two"
+                                  value="MATCH_TWO"
                                 >
                                   Match Two
                                 </option>
                                 <option
                                   disabled=""
-                                  value="Choice Poker"
+                                  value="CHOICE_POKER"
                                 >
                                   Choice Poker (not yet available)
                                 </option>
@@ -381,13 +381,13 @@ exports[`TEST SUITE CreateGame:  Matches CreateGame snapshot (visible) 1`] = `
                                       Select...
                                     </option>
                                     <option
-                                      value="Match Two"
+                                      value="MATCH_TWO"
                                     >
                                       Match Two
                                     </option>
                                     <option
                                       disabled=""
-                                      value="Choice Poker"
+                                      value="CHOICE_POKER"
                                     >
                                       Choice Poker (not yet available)
                                     </option>
@@ -567,13 +567,13 @@ exports[`TEST SUITE CreateGame:  Matches CreateGame snapshot (visible) 1`] = `
                                   Select...
                                 </option>
                                 <option
-                                  value="Match Two"
+                                  value="MATCH_TWO"
                                 >
                                   Match Two
                                 </option>
                                 <option
                                   disabled=""
-                                  value="Choice Poker"
+                                  value="CHOICE_POKER"
                                 >
                                   Choice Poker (not yet available)
                                 </option>
@@ -767,13 +767,13 @@ exports[`TEST SUITE CreateGame:  Matches CreateGame snapshot (visible) 1`] = `
                                 Select...
                               </option>
                               <option
-                                value="Match Two"
+                                value="MATCH_TWO"
                               >
                                 Match Two
                               </option>
                               <option
                                 disabled=""
-                                value="Choice Poker"
+                                value="CHOICE_POKER"
                               >
                                 Choice Poker (not yet available)
                               </option>
@@ -1086,14 +1086,14 @@ exports[`TEST SUITE CreateGame:  Matches CreateGame snapshot (visible) 1`] = `
                                         </option>
                                         <option
                                           key="0"
-                                          value="Match Two"
+                                          value="MATCH_TWO"
                                         >
                                           Match Two
                                         </option>
                                         <option
                                           disabled={true}
                                           key="1"
-                                          value="Choice Poker"
+                                          value="CHOICE_POKER"
                                         >
                                           Choice Poker
                                            (not yet available)

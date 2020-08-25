@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import API from "../API";
 import {useHistory} from "react-router-dom";
-import {resetGame, resetGameMode} from "../redux/actions";
+import {resetGame, resetGameMode, setGameMode} from "../redux/actions";
 import PlayerList from "../components/player-list/PlayerList";
 import LobbySettings from "../components/lobby-settings/LobbySettings";
 
@@ -14,6 +14,13 @@ function Lobby(props) {
     const [game, setGame] = useState({});
     const history = useHistory();
     const dispatch = useDispatch();
+
+    const isGameHost = () => {
+        if (!game.host || !userId) {
+            return undefined;
+        }
+        return game.host.id === userId
+    }
 
     const getPlayersList = () => {
         let host = game.host || {};
@@ -31,6 +38,7 @@ function Lobby(props) {
                     history.push("/games/public");
                 }
                 setGame(response.data);
+                dispatch(setGameMode(response.data.gameMode));
             }).catch(function (error) {
                 props.onShowError(error.response.data.message);
                 clearInterval(interval);
@@ -63,8 +71,9 @@ function Lobby(props) {
 
     return (
         <div style={{display: "flex"}}>
-            <PlayerList players={getPlayersList()} onLeave={onLeaveGame} numPlayers={2} maxPlayers={game.maxPlayers}/>
-            <LobbySettings gameMode={gameMode} numPlayers={2}/>
+            <PlayerList players={getPlayersList()} onLeave={onLeaveGame} maxPlayers={game.maxPlayers}/>
+            <LobbySettings gameMode={gameMode} numPlayers={getPlayersList().length} isHost={isGameHost()}
+                           rounds={game.rounds || 1} userId={userId} userKey={userKey} gameId={gameId}/>
         </div>
     );
 

@@ -23,7 +23,7 @@ describe("TEST SUITE Create Player: ", () => {
     beforeEach(() => {
         close = jest.fn();
         submit = jest.fn();
-        store = mockStore({gameMode: "Match Two", game: 1});
+        store = mockStore({gameMode: "MATCH_TWO", game: 1});
         wrapper = mount(<Provider store={store}><CreatePlayer onClose={close} show={true}
                                                               onSubmit={submit}/></Provider>);
         mockAPI.onPost("/player").reply(200, {

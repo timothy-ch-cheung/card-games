@@ -2,7 +2,10 @@ package com.cheung.tim.server.service;
 
 import com.cheung.tim.server.domain.Lobby;
 import com.cheung.tim.server.domain.Player;
+import com.cheung.tim.server.dto.CreateLobbyDTO;
 import com.cheung.tim.server.dto.PrivatePlayerDTO;
+import com.cheung.tim.server.dto.UpdateLobbyDTO;
+import com.cheung.tim.server.enums.GameMode;
 import com.cheung.tim.server.exception.BadRequestException;
 import com.cheung.tim.server.exception.NotFoundException;
 import com.cheung.tim.server.repository.LobbyRepository;
@@ -20,6 +23,7 @@ public class LobbyService {
 
     public static final String GAME_NOT_EXIST = "Lobby with id %s does not exist";
     public static final String INVALID_AUTH = "Player id or key invalid";
+    public static final String INVALID_PLAYER = "Lobby name or Host not supplied";
     private LobbyRepository lobbyRepository;
     private PlayerService playerService;
 
@@ -28,73 +32,92 @@ public class LobbyService {
         this.playerService = playerService;
     }
 
-    public Lobby getGame(Long gameId) {
-        Lobby lobby = lobbyRepository.findByGameId(gameId);
+    public Lobby getLobby(Long gameId) {
+        Lobby lobby = lobbyRepository.findByLobbyId(gameId);
         if (lobby == null) {
             throw new NotFoundException(String.format(GAME_NOT_EXIST, gameId));
         }
         return lobby;
     }
 
-    public Lobby createGame(PrivatePlayerDTO privatePlayerDTO, String lobbyName, Integer maxPlayers) {
-        if (privatePlayerDTO == null || !privatePlayerDTO.getId().matches(PLAYER_ID_REGEX) || isBlank(lobbyName)) {
-            throw new BadRequestException("Lobby name or Host not supplied");
+    public Lobby createLobby(CreateLobbyDTO createLobbyDTO) {
+        PrivatePlayerDTO hostDTO = createLobbyDTO.getHost();
+        if (hostDTO == null || !hostDTO.getId().matches(PLAYER_ID_REGEX) || isBlank(createLobbyDTO.getLobbyName())) {
+            throw new BadRequestException(INVALID_PLAYER);
         }
-        Player player = getPlayer(privatePlayerDTO.getId());
-        if (isPlayerInGame(player)) {
+        Player player = getPlayer(hostDTO.getId());
+        if (isPlayerInLobby(player)) {
             throw new BadRequestException(String.format("Player %s is already in a game", player.getUsername()));
-        } else if (!player.getKey().equals(privatePlayerDTO.getKey())) {
-            throw new BadRequestException(INVALID_AUTH);
         }
-        Lobby lobby = new Lobby(lobbyName, player, OPEN, maxPlayers);
-        return lobbyRepository.save(lobby);
+
+        GameMode gameMode = GameMode.getEnum(createLobbyDTO.getGameMode());
+        if (gameMode != null && gameMode.isEnabled()){
+            validatePlayerAuth(hostDTO, player);
+            Lobby lobby = new Lobby(createLobbyDTO.getLobbyName(), player, OPEN, createLobbyDTO.getMaxPlayers(),
+                    GameMode.valueOf(createLobbyDTO.getGameMode()));
+            return lobbyRepository.save(lobby);
+        }
+        throw new BadRequestException(String.format("Game mode %s is not enabled", createLobbyDTO.getGameMode()));
     }
 
     @Transactional
-    public void joinGame(Long gameId, PrivatePlayerDTO privatePlayerDTO) {
+    public void updateLobby(Long gameId, UpdateLobbyDTO lobbyDTO) {
+        if (lobbyDTO.getHost() == null) {
+            throw new BadRequestException(INVALID_PLAYER);
+        }
+        Player player = getPlayer(lobbyDTO.getHost().getId());
+        Lobby lobby = lobbyRepository.findByLobbyId(gameId);
+        if (!player.getUserId().equals(lobby.getHost().getUserId())) {
+            throw new BadRequestException("Only host can update lobby");
+        }
+        validatePlayerAuth(lobbyDTO.getHost(), player);
+        if (lobby.getGameMode().isValidRounds(lobby, lobbyDTO.getRounds())) {
+            lobbyRepository.updateRounds(gameId, lobbyDTO.getRounds());
+        } else {
+            throw new BadRequestException("Invalid rounds for game mode");
+        }
+    }
+
+    @Transactional
+    public void joinLobby(Long gameId, PrivatePlayerDTO privatePlayerDTO) {
         Player player = getPlayer(privatePlayerDTO.getId());
-        if (isPlayerInGame(player)) {
+        if (isPlayerInLobby(player)) {
             throw new BadRequestException(String.format("Player %s is already in a game", player.getUsername()));
         }
-        Lobby lobby = lobbyRepository.findByGameId(gameId);
+        Lobby lobby = lobbyRepository.findByLobbyId(gameId);
         if (lobby == null) {
             throw new NotFoundException(String.format(GAME_NOT_EXIST, gameId));
-        } else if (isGameFull(lobby)) {
+        } else if (isLobbyFull(lobby)) {
             throw new BadRequestException(String.format("Lobby with id %s is already full", gameId));
-        } else if (!player.getKey().equals(privatePlayerDTO.getKey())) {
-            throw new BadRequestException(INVALID_AUTH);
         }
 
+        validatePlayerAuth(privatePlayerDTO, player);
         if (isGuestsOneFromFull(lobby)) {
             lobbyRepository.updateStatus(gameId, READY);
         }
-        lobbyRepository.updatePlayersCurrentGame(lobby, player.getUserId());
+        lobbyRepository.updatePlayersCurrentLobby(lobby, player.getUserId());
     }
 
     @Transactional
-    public void leaveGame(Long gameId, PrivatePlayerDTO privatePlayerDTO) {
-        Lobby lobby = lobbyRepository.findByGameId(gameId);
+    public void leaveLobby(Long gameId, PrivatePlayerDTO privatePlayerDTO) {
+        Lobby lobby = lobbyRepository.findByLobbyId(gameId);
         if (lobby == null) {
             throw new NotFoundException(String.format(GAME_NOT_EXIST, gameId));
         }
 
         if (lobby.getHost() != null && lobby.getHost().equalDTO(privatePlayerDTO)) {
-            if (!lobby.getHost().getKey().equals(privatePlayerDTO.getKey())) {
-                throw new BadRequestException(INVALID_AUTH);
-            }
+            validatePlayerAuth(privatePlayerDTO, lobby.getHost());
             lobbyRepository.updateStatus(gameId, DELETED);
             lobbyRepository.updateHost(gameId, null);
-            lobbyRepository.updatePlayersCurrentGame(null, privatePlayerDTO.getId());
-            lobby.getGuests().forEach(p -> lobbyRepository.updatePlayersCurrentGame(null, p.getUserId()));
+            lobbyRepository.updatePlayersCurrentLobby(null, privatePlayerDTO.getId());
+            lobby.getGuests().forEach(p -> lobbyRepository.updatePlayersCurrentLobby(null, p.getUserId()));
         } else if (lobby.getGuests() != null && lobby.getGuests().contains(new Player(privatePlayerDTO.getId(), privatePlayerDTO.getUsername()))) {
             Player guest = playerService.findPlayerById(privatePlayerDTO.getId());
-            if (!guest.getKey().equals(privatePlayerDTO.getKey())) {
-                throw new BadRequestException(INVALID_AUTH);
-            }
-            if (isGameFull(lobby)) {
+            validatePlayerAuth(privatePlayerDTO, guest);
+            if (isLobbyFull(lobby)) {
                 lobbyRepository.updateStatus(gameId, OPEN);
             }
-            lobbyRepository.updatePlayersCurrentGame(null, guest.getUserId());
+            lobbyRepository.updatePlayersCurrentLobby(null, guest.getUserId());
         } else {
             Player player = playerService.findPlayerById(privatePlayerDTO.getId());
             if (player != null) {
@@ -104,8 +127,8 @@ public class LobbyService {
         }
     }
 
-    public List<Lobby> findOpenGames() {
-        return lobbyRepository.findByGameStatus(OPEN);
+    public List<Lobby> findOpenLobbies() {
+        return lobbyRepository.findByLobbyStatus(OPEN);
     }
 
     private Player getPlayer(String userId) {
@@ -116,19 +139,25 @@ public class LobbyService {
         return player;
     }
 
-    private boolean isPlayerInGame(Player player) {
-        return lobbyRepository.getPlayerInGame(player.getUserId()) != null;
+    private boolean isPlayerInLobby(Player player) {
+        return lobbyRepository.getPlayerInLobby(player.getUserId()) != null;
     }
 
-    private boolean isGameFull(Lobby lobby) {
-        return lobby.getMaxPlayers() <= getPlayersInGame(lobby);
+    private boolean isLobbyFull(Lobby lobby) {
+        return lobby.getMaxPlayers() <= getPlayersInLobby(lobby);
     }
 
     private boolean isGuestsOneFromFull(Lobby lobby) {
-        return lobby.getMaxPlayers() - 1 == getPlayersInGame(lobby);
+        return lobby.getMaxPlayers() - 1 == getPlayersInLobby(lobby);
     }
 
-    private int getPlayersInGame(Lobby lobby) {
+    private int getPlayersInLobby(Lobby lobby) {
         return 1 + lobby.getGuests().size();
+    }
+
+    private void validatePlayerAuth(PrivatePlayerDTO playerDTO, Player player) {
+        if (!playerDTO.getKey().equals(player.getKey())) {
+            throw new BadRequestException(INVALID_AUTH);
+        }
     }
 }

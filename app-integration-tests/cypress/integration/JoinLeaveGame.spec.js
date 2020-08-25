@@ -1,9 +1,4 @@
-const fillInDialog = (nickname) => {
-    cy.get('input[name="nickname"]').type(nickname ? nickname : 'John');
-    cy.get('input[name="lobbyName"]').type('John\'s Lobby');
-    cy.get('select[data-test="game-mode-select"]').select('Match Two');
-    cy.contains('.modal-dialog .btn', 'Create').click({force: true});
-}
+import {fillInDialog} from "../support/util";
 
 describe('Join Game ', () => {
     let lobbyName;
@@ -42,6 +37,7 @@ describe('Leave Game ', () => {
         cy.visit('/games/public');
         cy.contains('.btn', 'Create Game').click();
         fillInDialog();
+        cy.contains('.modal-dialog .btn', 'Create').click({force: true});
         cy.get('p[data-test="player-name-0"]').invoke('text').should('eq', 'John 👑');
         cy.get('[data-test="leave-game-btn"]').click();
         cy.contains('Public games');
