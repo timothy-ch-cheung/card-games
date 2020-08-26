@@ -9,8 +9,10 @@ import com.cheung.tim.server.enums.GameMode;
 import com.cheung.tim.server.exception.BadRequestException;
 import com.cheung.tim.server.exception.NotFoundException;
 import com.cheung.tim.server.repository.LobbyRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -26,14 +28,24 @@ public class LobbyService {
     public static final String INVALID_PLAYER = "Lobby name or Host not supplied";
     private LobbyRepository lobbyRepository;
     private PlayerService playerService;
+    private final ApplicationEventPublisher publisher;
 
-    public LobbyService(LobbyRepository lobbyRepository, PlayerService playerService) {
+    public LobbyService(LobbyRepository lobbyRepository, PlayerService playerService, ApplicationEventPublisher publisher) {
         this.lobbyRepository = lobbyRepository;
         this.playerService = playerService;
+        this.publisher = publisher;
     }
 
     public Lobby getLobby(Long gameId) {
         Lobby lobby = lobbyRepository.findByLobbyId(gameId);
+        if (lobby == null) {
+            throw new NotFoundException(String.format(GAME_NOT_EXIST, gameId));
+        }
+        return lobby;
+    }
+
+    public Mono<Lobby> get(Long gameId) {
+        Mono<Lobby> lobby = lobbyRepository.findMonoByLobbyId(gameId);
         if (lobby == null) {
             throw new NotFoundException(String.format(GAME_NOT_EXIST, gameId));
         }
