@@ -27,10 +27,12 @@ public class LobbyController {
     private ModelMapper modelMapper;
 
     LobbyService lobbyService;
+    LobbySocketController lobbySocketController;
     PlayerService playerService;
 
-    public LobbyController(LobbyService lobbyService, PlayerService playerService, ModelMapper modelMapper) {
+    public LobbyController(LobbyService lobbyService, LobbySocketController lobbySocketController, PlayerService playerService, ModelMapper modelMapper) {
         this.lobbyService = lobbyService;
+        this.lobbySocketController = lobbySocketController;
         this.playerService = playerService;
         this.modelMapper = modelMapper;
     }
@@ -50,18 +52,21 @@ public class LobbyController {
     @PatchMapping(path = "/update/{gameId}")
     public ResponseEntity<Void> updateLobby(@PathVariable Long gameId, @RequestBody UpdateLobbyDTO updateLobbyDTO) {
         lobbyService.updateLobby(gameId, updateLobbyDTO);
+        lobbySocketController.getLobby(gameId);
         return ResponseEntity.noContent().header(CONTENT_LENGTH, "0").build();
     }
 
     @PatchMapping(path = "/join/{gameId}")
     public ResponseEntity<Void> joinLobby(@PathVariable Long gameId, @RequestBody PrivatePlayerDTO privatePlayerDTO) {
         lobbyService.joinLobby(gameId, privatePlayerDTO);
+        lobbySocketController.getLobby(gameId);
         return ResponseEntity.noContent().header(CONTENT_LENGTH, "0").build();
     }
 
     @PatchMapping(path = "/leave/{gameId}")
     public ResponseEntity<Void> leaveLobby(@PathVariable Long gameId, @RequestBody PrivatePlayerDTO privatePlayerDTO) {
         lobbyService.leaveLobby(gameId, privatePlayerDTO);
+        lobbySocketController.getLobby(gameId);
         return ResponseEntity.noContent().header(CONTENT_LENGTH, "0").build();
     }
 
@@ -71,13 +76,17 @@ public class LobbyController {
         return new ResponseEntity<>(convertToDtoMap(lobbies), HttpStatus.OK);
     }
 
-    private LobbyDTO convertToDto(Lobby lobby) {
+    static LobbyDTO convertToDto(Lobby lobby, ModelMapper modelMapper) {
         LobbyDTO lobbyDto = modelMapper.map(lobby, LobbyDTO.class);
         lobbyDto.setHost(convertToPublicPlayerDTO(lobby.getHost()));
         lobbyDto.setGuests(convertToPublicPlayerDTOSet(lobby.getGuests()));
         lobbyDto.setGameStatus(lobby.getGameStatus().toString());
         lobbyDto.setGameMode(lobby.getGameMode().toString());
         return lobbyDto;
+    }
+
+    private LobbyDTO convertToDto(Lobby lobby) {
+        return convertToDto(lobby, modelMapper);
     }
 
     private Map<String, Object> convertToDtoMap(List<Lobby> lobbies) {
