@@ -51,7 +51,7 @@ public class LobbyService {
         }
 
         GameMode gameMode = GameMode.getEnum(createLobbyDTO.getGameMode());
-        if (gameMode != null && gameMode.isEnabled()){
+        if (gameMode != null && gameMode.isEnabled()) {
             validatePlayerAuth(hostDTO, player);
             Lobby lobby = new Lobby(createLobbyDTO.getLobbyName(), player, OPEN, createLobbyDTO.getMaxPlayers(),
                     GameMode.valueOf(createLobbyDTO.getGameMode()));
@@ -71,11 +71,12 @@ public class LobbyService {
             throw new BadRequestException("Only host can update lobby");
         }
         validatePlayerAuth(lobbyDTO.getHost(), player);
-        if (lobby.getGameMode().isValidRounds(lobby, lobbyDTO.getRounds())) {
-            lobbyRepository.updateRounds(gameId, lobbyDTO.getRounds());
-        } else {
+        if (!lobby.getGameMode().isValidRounds(lobby, lobbyDTO.getRounds())) {
             throw new BadRequestException("Invalid rounds for game mode");
         }
+
+        lobby.setRounds(lobbyDTO.getRounds());
+        lobbyRepository.save(lobby);
     }
 
     @Transactional
@@ -93,9 +94,10 @@ public class LobbyService {
 
         validatePlayerAuth(privatePlayerDTO, player);
         if (isGuestsOneFromFull(lobby)) {
-            lobbyRepository.updateStatus(gameId, READY);
+            lobby.setGameStatus(READY);
+            lobbyRepository.save(lobby);
         }
-        lobbyRepository.updatePlayersCurrentLobby(lobby, player.getUserId());
+        playerService.updateCurrentLobby(player, lobby);
     }
 
     @Transactional
@@ -107,17 +109,17 @@ public class LobbyService {
 
         if (lobby.getHost() != null && lobby.getHost().equalDTO(privatePlayerDTO)) {
             validatePlayerAuth(privatePlayerDTO, lobby.getHost());
-            lobbyRepository.updateStatus(gameId, DELETED);
-            lobbyRepository.updateHost(gameId, null);
-            lobbyRepository.updatePlayersCurrentLobby(null, privatePlayerDTO.getId());
-            lobby.getGuests().forEach(p -> lobbyRepository.updatePlayersCurrentLobby(null, p.getUserId()));
+            lobby.setGameStatus(DELETED);
+            lobby.setHost(null);
+
+            playerService.resetLobby(lobby.getGuests());
         } else if (lobby.getGuests() != null && lobby.getGuests().contains(new Player(privatePlayerDTO.getId(), privatePlayerDTO.getUsername()))) {
             Player guest = playerService.findPlayerById(privatePlayerDTO.getId());
             validatePlayerAuth(privatePlayerDTO, guest);
             if (isLobbyFull(lobby)) {
-                lobbyRepository.updateStatus(gameId, OPEN);
+                lobby.setGameStatus(OPEN);
             }
-            lobbyRepository.updatePlayersCurrentLobby(null, guest.getUserId());
+            playerService.updateCurrentLobby(guest, null);
         } else {
             Player player = playerService.findPlayerById(privatePlayerDTO.getId());
             if (player != null) {
@@ -125,6 +127,8 @@ public class LobbyService {
             }
             throw new NotFoundException(String.format("Player with id %s not found", privatePlayerDTO.getId()));
         }
+
+        lobbyRepository.save(lobby);
     }
 
     public List<Lobby> findOpenLobbies() {
