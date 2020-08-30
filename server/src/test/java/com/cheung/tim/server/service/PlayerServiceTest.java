@@ -1,7 +1,9 @@
 package com.cheung.tim.server.service;
 
+import com.cheung.tim.server.domain.Lobby;
 import com.cheung.tim.server.domain.Player;
 import com.cheung.tim.server.dto.PrivatePlayerDTO;
+import com.cheung.tim.server.enums.GameStatus;
 import com.cheung.tim.server.exception.BadRequestException;
 import com.cheung.tim.server.exception.NotFoundException;
 import com.cheung.tim.server.repository.PlayerRepository;
@@ -11,12 +13,17 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
+import static com.cheung.tim.server.enums.GameMode.MATCH_TWO;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -30,6 +37,9 @@ class PlayerServiceTest {
 
     PlayerService playerService;
     PrivatePlayerDTO privatePlayerDTO;
+
+    ArgumentCaptor playerCapture = ArgumentCaptor.forClass(Player.class);
+    ArgumentCaptor playerListCapture = ArgumentCaptor.forClass(Iterable.class);
 
     @BeforeEach
     public void setup() {
@@ -94,5 +104,34 @@ class PlayerServiceTest {
             playerService.findPlayerById(playerId);
         });
         assertThat(exception.getMessage(), is("id must match regex [a-z0-9]{32}"));
+    }
+
+    @Test
+    void updateCurrentLobby_setsPlayersLobby() {
+        Player player = new Player();
+        Lobby lobby = new Lobby("test_lobby", player, GameStatus.OPEN, 2, MATCH_TWO);
+        playerService.updateCurrentLobby(player, lobby);
+
+        verify(playerRepository).save((Player) playerCapture.capture());
+        Player savedPlayer = (Player) playerCapture.getAllValues().get(0);
+        assertThat(savedPlayer.getCurrentLobby(), is(lobby));
+    }
+
+    @Test
+    void resetLobby_setsAllCurrentLobbiesToNull() {
+        Lobby lobby = new Lobby("test_lobby", new Player(), GameStatus.OPEN, 2, MATCH_TWO);
+        Player player1 = new Player();
+        Player player2 = new Player();
+        player1.setCurrentLobby(lobby);
+        player2.setCurrentLobby(lobby);
+
+        List<Player> players = Arrays.asList(new Player[]{player1, player2});
+        playerService.resetLobby(players);
+
+        verify(playerRepository).saveAll((Iterable<? extends Player>) playerListCapture.capture());
+        List<Player> savedPlayerList = (List<Player>) playerListCapture.getAllValues().get(0);
+        assertThat(savedPlayerList.size(), is(2));
+        assertThat(savedPlayerList.get(0).getCurrentLobby(), is(nullValue()));
+        assertThat(savedPlayerList.get(1).getCurrentLobby(), is(nullValue()));
     }
 }
