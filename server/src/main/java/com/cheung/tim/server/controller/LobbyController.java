@@ -51,22 +51,22 @@ public class LobbyController {
 
     @PatchMapping(path = "/update/{gameId}")
     public ResponseEntity<Void> updateLobby(@PathVariable Long gameId, @RequestBody UpdateLobbyDTO updateLobbyDTO) {
-        lobbyService.updateLobby(gameId, updateLobbyDTO);
-        lobbySocketController.broadcastLobby(gameId);
+        Lobby lobby = lobbyService.updateLobby(gameId, updateLobbyDTO);
+        lobbySocketController.broadcastLobby(lobby);
         return ResponseEntity.noContent().header(CONTENT_LENGTH, "0").build();
     }
 
     @PatchMapping(path = "/join/{gameId}")
     public ResponseEntity<Void> joinLobby(@PathVariable Long gameId, @RequestBody PrivatePlayerDTO privatePlayerDTO) {
-        lobbyService.joinLobby(gameId, privatePlayerDTO);
-        lobbySocketController.broadcastLobby(gameId);
+        Lobby lobby = lobbyService.joinLobby(gameId, privatePlayerDTO);
+        lobbySocketController.broadcastLobby(lobby);
         return ResponseEntity.noContent().header(CONTENT_LENGTH, "0").build();
     }
 
     @PatchMapping(path = "/leave/{gameId}")
     public ResponseEntity<Void> leaveLobby(@PathVariable Long gameId, @RequestBody PrivatePlayerDTO privatePlayerDTO) {
-        lobbyService.leaveLobby(gameId, privatePlayerDTO);
-        lobbySocketController.broadcastLobby(gameId);
+        Lobby lobby = lobbyService.leaveLobby(gameId, privatePlayerDTO);
+        lobbySocketController.broadcastLobby(lobby);
         return ResponseEntity.noContent().header(CONTENT_LENGTH, "0").build();
     }
 
