@@ -27,32 +27,58 @@ describe("TEST SUITE Lobby: ", () => {
         mockAPI = new MockAdapter(API);
     });
 
-    beforeEach(() => {
-        mockAPI.onGet("/game/1").reply(200, {
-            id: 1,
-            host: {id: "123", username: "John"},
-            guests: [{id: "321", username: "Jane"}]
-        });
-        wrapper = mount(<Provider store={store} onShowError={showError}><Lobby/></Provider>);
-    });
-
     afterEach(() => {
         store.clearActions();
         mockAPI.resetHistory();
         mockAPI.reset();
     });
 
-    test('Matches Initial Lobby snapshot', () => {
-        expect(wrapper).toMatchSnapshot()
+    describe("When lobby is active, ", () => {
+        beforeEach(() => {
+            mockAPI.onGet("/game/1").reply(200, {
+                id: 1,
+                host: {id: "123", username: "John"},
+                guests: [{id: "321", username: "Jane"}],
+                gameMode: "MATCH_TWO"
+            });
+            wrapper = mount(<Provider store={store} onShowError={showError}><Lobby/></Provider>);
+        });
+
+        test('Matches Initial Lobby snapshot', () => {
+            expect(wrapper).toMatchSnapshot()
+        });
+
+        test('Leave game button sends PATCH', async () => {
+            mockAPI.onPatch("/leave/1").reply(204, {});
+            wrapper.find('button[data-test="leave-game-btn"]').simulate('click');
+            await flushPromises();
+
+            expect(mockAPI.history.patch.length).toBe(1);
+            let actions = store.getActions();
+            expect(actions.length).toBe(3);
+            expect(actions[0]).toEqual({"type": "SET_GAME_MODE", "payload": "MATCH_TWO"});
+            expect(actions[1]).toEqual({"type": "RESET_GAME"});
+            expect(actions[2]).toEqual({"type": "RESET_GAME_MODE"});
+        });
     });
 
-    //TODO: Enable test case when migrated to using websockets for updates
-    test.skip('Leave game button sends PATCH', async () => {
-        mockAPI.onPatch("/leave/1").reply(204, {});
-        wrapper.find('button[data-test="leave-game-btn"]').simulate('click');
-        await flushPromises();
+    describe("When lobby is DELETED", () => {
+        beforeEach(() => {
+            mockAPI.onGet("/game/1").reply(200, {
+                id: 1,
+                host: {id: "123", username: "John"},
+                guests: [{id: "321", username: "Jane"}],
+                gameMode: "MATCH_TWO",
+                gameStatus: "DELETED"
+            });
+            wrapper = mount(<Provider store={store} onShowError={showError}><Lobby/></Provider>);
+        });
 
-        expect(mockAPI.history.patch.length).toBe(1);
-        expect(store.getActions().length).toBe(2);
+        test('On component load GET DELETED game resets Game Id', async () => {
+            let actions = store.getActions();
+            expect(actions.length).toBe(1);
+            expect(actions[0]).toEqual({"type": "RESET_GAME"});
+        });
     });
+
 });

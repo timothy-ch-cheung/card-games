@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TEST SUITE Lobby:  Matches Initial Lobby snapshot 1`] = `
+exports[`TEST SUITE Lobby:  When lobby is active,  Matches Initial Lobby snapshot 1`] = `
 <Provider
   onShowError={[MockFunction]}
   store={
@@ -22,6 +22,24 @@ exports[`TEST SUITE Lobby:  Matches Initial Lobby snapshot 1`] = `
         }
       }
     >
+      <SockJsClient
+        autoReconnect={true}
+        debug={false}
+        getRetryInterval={[Function]}
+        headers={Object {}}
+        heartbeat={10000}
+        onConnect={[Function]}
+        onDisconnect={[Function]}
+        onMessage={[Function]}
+        options={Object {}}
+        subscribeHeaders={Object {}}
+        topics={
+          Array [
+            "/topic/game/1",
+          ]
+        }
+        url="https://card-games-tcc.herokuapp.com/websocket"
+      />
       <PlayerList
         onLeave={[Function]}
         players={

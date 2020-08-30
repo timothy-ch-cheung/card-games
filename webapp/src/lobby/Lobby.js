@@ -34,17 +34,19 @@ function Lobby(props) {
     useEffect(() => {
         API.get(`/game/${gameId}`
         ).then(function (response) {
+            const history = useHistory();
             if (response.data.gameStatus === 'DELETED') {
                 dispatch(resetGame());
                 history.push("/games/public");
+            } else{
+                setGame(response.data);
+                dispatch(setGameMode(response.data.gameMode));
             }
-            setGame(response.data);
-            dispatch(setGameMode(response.data.gameMode));
         }).catch(function (error) {
             props.onShowError(error.response.data.message);
             history.push("/games/public");
         });
-    }, [gameId, history, props, dispatch]);
+    }, [gameId, props, dispatch]);
 
     const onLobbyUpdate = gameData => {
         if (isEmpty(gameData) || gameData == null) {
