@@ -3,7 +3,6 @@ package com.cheung.tim.server.service;
 import com.cheung.tim.server.domain.Lobby;
 import com.cheung.tim.server.domain.Player;
 import com.cheung.tim.server.dto.CreateLobbyDTO;
-import com.cheung.tim.server.dto.LobbyDTO;
 import com.cheung.tim.server.dto.PrivatePlayerDTO;
 import com.cheung.tim.server.dto.UpdateLobbyDTO;
 import com.cheung.tim.server.enums.GameStatus;
@@ -17,16 +16,17 @@ import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static com.cheung.tim.server.enums.GameMode.CHOICE_POKER;
 import static com.cheung.tim.server.enums.GameMode.MATCH_TWO;
 import static com.cheung.tim.server.enums.GameStatus.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -43,6 +43,9 @@ class LobbyServiceTest {
 
     LobbyService lobbyService;
     Player player;
+
+    ArgumentCaptor lobbyCapture = ArgumentCaptor.forClass(Lobby.class);
+    ArgumentCaptor playerCapture = ArgumentCaptor.forClass(Player.class);
 
     @BeforeEach
     public void setup() {
@@ -197,7 +200,7 @@ class LobbyServiceTest {
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
             lobbyService.updateLobby(1L, lobbyDTO);
         });
-        verify(lobbyRepository, never()).updateRounds(1L, 4);
+        verify(lobbyRepository, never()).save(any());
         assertThat(exception.getMessage(), is("Player id or key invalid"));
     }
 
@@ -209,7 +212,7 @@ class LobbyServiceTest {
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
             lobbyService.updateLobby(1L, lobbyDTO);
         });
-        verify(lobbyRepository, never()).updateRounds(1L, 4);
+        verify(lobbyRepository, never()).save(any());
         assertThat(exception.getMessage(), is("Lobby name or Host not supplied"));
     }
 
@@ -223,7 +226,7 @@ class LobbyServiceTest {
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
             lobbyService.updateLobby(1L, lobbyDTO);
         });
-        verify(lobbyRepository, never()).updateRounds(1L, 4);
+        verify(lobbyRepository, never()).save(any());
         assertThat(exception.getMessage(), is("Only host can update lobby"));
     }
 
@@ -237,7 +240,7 @@ class LobbyServiceTest {
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
             lobbyService.updateLobby(1L, lobbyDTO);
         });
-        verify(lobbyRepository, never()).updateRounds(1L, 3);
+        verify(lobbyRepository, never()).save(any());
         assertThat(exception.getMessage(), is("Invalid rounds for game mode"));
     }
 
@@ -251,7 +254,9 @@ class LobbyServiceTest {
         assertDoesNotThrow(() -> {
             lobbyService.updateLobby(1L, lobbyDTO);
         });
-        verify(lobbyRepository).updateRounds(1L, 4);
+        verify(lobbyRepository).save((Lobby) lobbyCapture.capture());
+        Lobby savedLobby = (Lobby) lobbyCapture.getAllValues().get(0);
+        assertThat(savedLobby.getRounds(), is(4));
     }
 
     @Test
@@ -327,8 +332,18 @@ class LobbyServiceTest {
         assertDoesNotThrow(() -> {
             lobbyService.joinLobby(1L, privatePlayerDTO);
         });
-        verify(lobbyRepository).updatePlayersCurrentLobby(any(Lobby.class), eq("40283481721d879601721d87b6350000"));
-        verify(lobbyRepository).updateStatus(1L, READY);
+        verify(lobbyRepository).save((Lobby) lobbyCapture.capture());
+        verify(playerService).updateCurrentLobby((Player) playerCapture.capture(), (Lobby) lobbyCapture.capture());
+
+        assertThat(lobbyCapture.getAllValues().size(), is(2));
+        Lobby savedLobby = (Lobby) lobbyCapture.getAllValues().get(0);
+        assertThat(savedLobby.getGameStatus(), is(READY));
+
+        assertThat(playerCapture.getAllValues().size(), is(1));
+        savedLobby = (Lobby) lobbyCapture.getAllValues().get(1);
+        Player savedPlayer = (Player) playerCapture.getAllValues().get(0);
+        assertThat(savedPlayer.getUserId(), is("40283481721d879601721d87b6350000"));
+        assertThat(savedLobby.getLobbyName(), is("test_lobby"));
     }
 
     @Test
@@ -421,9 +436,12 @@ class LobbyServiceTest {
         assertDoesNotThrow(() -> {
             lobbyService.leaveLobby(1L, privatePlayerDTO);
         });
-        verify(lobbyRepository).updateStatus(1L, DELETED);
-        verify(lobbyRepository).updateHost(1L, null);
-        verify(lobbyRepository).updatePlayersCurrentLobby(null, "40283481721d879601721d87b6350000");
+        verify(lobbyRepository).save((Lobby) lobbyCapture.capture());
+
+        Lobby savedEntity = (Lobby) lobbyCapture.getAllValues().get(0);
+        assertThat(savedEntity.getHost(), is(nullValue()));
+        assertThat(savedEntity.getGameStatus(), is(DELETED));
+        verify(playerService).resetLobby(any());
     }
 
     @Test
@@ -439,9 +457,15 @@ class LobbyServiceTest {
         assertDoesNotThrow(() -> {
             lobbyService.leaveLobby(1L, privatePlayerDTO);
         });
-        verify(lobbyRepository).updateStatus(1L, OPEN);
-        verify(lobbyRepository).updatePlayersCurrentLobby(null, "1721d87b635000040283481721d87960");
-        verify(lobbyRepository, never()).updateHost(any(), any());
+
+        verify(lobbyRepository).save((Lobby) lobbyCapture.capture());
+        assertThat(lobbyCapture.getAllValues().size(), is(1));
+        Lobby savedLobby = (Lobby) lobbyCapture.getAllValues().get(0);
+        assertThat(savedLobby.getGameStatus(), is(OPEN));
+
+        verify(playerService).updateCurrentLobby((Player) playerCapture.capture(), isNull());
+        Player savedPlayer = (Player) playerCapture.getAllValues().get(0);
+        assertThat(savedPlayer.getUserId(), is("1721d87b635000040283481721d87960"));
     }
 
     public PrivatePlayerDTO getPlayerDTO() {
