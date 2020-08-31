@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import Lobby from "./Lobby";
 import configureStore from "redux-mock-store";
 import {Provider} from "react-redux";
-import {flushPromises} from "../common/Util";
+import {actWait, flushPromises} from "../common/Util";
 import API from "../API";
 
 configure({adapter: new Adapter()});
@@ -34,7 +34,7 @@ describe("TEST SUITE Lobby: ", () => {
     });
 
     describe("When lobby is active, ", () => {
-        beforeEach(() => {
+        beforeEach(async () => {
             mockAPI.onGet("/game/1").reply(200, {
                 id: 1,
                 host: {id: "123", username: "John"},
@@ -42,6 +42,7 @@ describe("TEST SUITE Lobby: ", () => {
                 gameMode: "MATCH_TWO"
             });
             wrapper = mount(<Provider store={store} onShowError={showError}><Lobby/></Provider>);
+            await actWait();
         });
 
         test('Matches Initial Lobby snapshot', () => {
