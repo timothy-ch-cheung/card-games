@@ -15,6 +15,15 @@ jest.mock('react-router-dom', () => ({
     }),
 }));
 
+const mockHistoryPush = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: mockHistoryPush,
+    }),
+}));
+
 describe("TEST SUITE Lobby: ", () => {
     let wrapper;
     const showError = jest.fn();
@@ -126,5 +135,16 @@ describe("TEST SUITE Lobby: ", () => {
             expect(actions.length).toBe(1);
             expect(actions[0]).toEqual({"type": "RESET_GAME"});
         });
+    });
+
+    test('Game with null gameId', async () => {
+        mockAPI.onGet("/game/null").reply(404, {
+            message: "invalid lobby"
+        });
+        store = mockStore({gameMode: "MATCH_TWO", game: null});
+        wrapper = mount(<Provider store={store}><Lobby onShowError={showError}/></Provider>);
+        await flushPromises();
+        expect(mockHistoryPush).toHaveBeenCalledWith('/games/public');
+        expect(showError).toHaveBeenCalledTimes(1);
     });
 });
