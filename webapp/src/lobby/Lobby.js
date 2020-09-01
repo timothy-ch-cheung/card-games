@@ -34,30 +34,28 @@ function Lobby(props) {
     useEffect(() => {
         API.get(`/game/${gameId}`
         ).then(function (response) {
-            const history = useHistory();
             if (response.data.gameStatus === 'DELETED') {
                 dispatch(resetGame());
-                history.push("/games/public");
-            } else{
+            } else {
                 setGame(response.data);
                 dispatch(setGameMode(response.data.gameMode));
             }
         }).catch(function (error) {
             props.onShowError(error.response.data.message);
-            history.push("/games/public");
+            dispatch(resetGame());
         });
-    }, [gameId, props, dispatch]);
+    }, [gameId, props]);
+
+    useEffect(() => {
+        if (gameId == null) {
+            history.push('/games/public')
+        }
+    }, [gameId, history])
 
     const onLobbyUpdate = gameData => {
-        if (isEmpty(gameData) || gameData == null) {
+        if (isEmpty(gameData) || gameData == null || gameData.gameStatus === 'DELETED') {
             dispatch(resetGame());
-            history.push("/games/public");
         } else {
-            if (gameData.gameStatus === 'DELETED') {
-                dispatch(resetGame());
-                history.push("/games/public");
-                return;
-            }
             setGame(gameData);
         }
     }

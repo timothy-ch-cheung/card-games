@@ -4,8 +4,8 @@ import Adapter from 'enzyme-adapter-react-16';
 import Lobby from "./Lobby";
 import configureStore from "redux-mock-store";
 import {Provider} from "react-redux";
-import {actWait, flushPromises} from "../common/Util";
 import API from "../API";
+import {flushPromises} from "../common/Util";
 
 configure({adapter: new Adapter()});
 
@@ -34,7 +34,7 @@ describe("TEST SUITE Lobby: ", () => {
     });
 
     describe("When lobby is active, ", () => {
-        beforeEach(async () => {
+        beforeEach(() => {
             mockAPI.onGet("/game/1").reply(200, {
                 id: 1,
                 host: {id: "123", username: "John"},
@@ -42,11 +42,11 @@ describe("TEST SUITE Lobby: ", () => {
                 gameMode: "MATCH_TWO"
             });
             wrapper = mount(<Provider store={store} onShowError={showError}><Lobby/></Provider>);
-            await actWait();
         });
 
         test('Matches Initial Lobby snapshot', () => {
-            expect(wrapper).toMatchSnapshot()
+            expect(wrapper).toMatchSnapshot();
+            wrapper.unmount();
         });
 
         test('Leave game button sends PATCH', async () => {
@@ -60,6 +60,7 @@ describe("TEST SUITE Lobby: ", () => {
             expect(actions[0]).toEqual({"type": "SET_GAME_MODE", "payload": "MATCH_TWO"});
             expect(actions[1]).toEqual({"type": "RESET_GAME"});
             expect(actions[2]).toEqual({"type": "RESET_GAME_MODE"});
+            wrapper.unmount();
         });
     });
 
@@ -76,10 +77,10 @@ describe("TEST SUITE Lobby: ", () => {
         });
 
         test('On component load GET DELETED game resets Game Id', async () => {
+            await flushPromises();
             let actions = store.getActions();
             expect(actions.length).toBe(1);
             expect(actions[0]).toEqual({"type": "RESET_GAME"});
         });
     });
-
 });
