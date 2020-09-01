@@ -19,7 +19,7 @@ describe("TEST SUITE Lobby: ", () => {
     let wrapper;
     const showError = jest.fn();
     const mockStore = configureStore([]);
-    let store = mockStore({gameMode: "MATCH_TWO", game: 1});
+    let store = mockStore({gameMode: "MATCH_TWO", game: 1, user: "12345678901234567890123456789012"});
     const MockAdapter = require("axios-mock-adapter");
     let mockAPI;
 
@@ -62,6 +62,32 @@ describe("TEST SUITE Lobby: ", () => {
             expect(actions[1]).toEqual({"type": "RESET_GAME"});
             expect(actions[2]).toEqual({"type": "RESET_GAME_MODE"});
             wrapper.unmount();
+        });
+
+        test('Another player deletes lobby', async () => {
+            wrapper.find('[data-test="sock-js-client"]').props().onMessage({gameStatus: "DELETED"})
+            let actions = store.getActions();
+            expect(actions.length).toBe(2);
+            expect(actions[0]).toEqual({"type": "SET_GAME_MODE", "payload": "MATCH_TWO"});
+            expect(actions[1]).toEqual({"type": "RESET_GAME"});
+        });
+
+        test('Another player updates lobby', async () => {
+            await flushPromises();
+            const lobbyUpdate = {
+                id: 1,
+                host: {id: "123", username: "John"},
+                guests: [{id: "321", username: "Jane"}],
+                gameMode: "MATCH_TWO",
+                gameStatus: "OPEN",
+                rounds: 4
+            }
+            wrapper.find('[data-test="sock-js-client"]').props().onMessage(lobbyUpdate);
+            wrapper.setProps();
+            let actions = store.getActions();
+            expect(actions.length).toBe(1);
+            expect(actions[0]).toEqual({"type": "SET_GAME_MODE", "payload": "MATCH_TWO"});
+            expect(wrapper.find('input[data-test="round-number-text"]').props().value).toEqual(4);
         });
     });
 

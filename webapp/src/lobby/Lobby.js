@@ -75,7 +75,7 @@ function Lobby(props) {
 
     return (
         <div style={{display: "flex"}}>
-            <SockJsClient url={baseURL + `/websocket`} topics={[`/topic/game/${gameId}`]} onMessage={onLobbyUpdate}/>
+            <SockJsClient url={baseURL + `/websocket`} topics={[`/topic/game/${gameId}`]} onMessage={onLobbyUpdate} data-test="sock-js-client"/>
             <PlayerList players={getPlayersList()} onLeave={onLeaveGame} maxPlayers={game.maxPlayers}/>
             <LobbySettings gameMode={gameMode} numPlayers={getPlayersList().length} isHost={isGameHost()}
                            rounds={game.rounds || 1} userId={userId} userKey={userKey} gameId={gameId}/>

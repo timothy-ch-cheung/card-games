@@ -25,6 +25,7 @@ exports[`TEST SUITE Lobby:  When lobby is active,  Matches Initial Lobby snapsho
     >
       <SockJsClient
         autoReconnect={true}
+        data-test="sock-js-client"
         debug={false}
         getRetryInterval={[Function]}
         headers={Object {}}
@@ -187,6 +188,7 @@ exports[`TEST SUITE Lobby:  When lobby is active,  Matches Initial Lobby snapsho
         gameMode="MATCH_TWO"
         numPlayers={1}
         rounds={1}
+        userId="12345678901234567890123456789012"
       >
         <Card
           body={false}
