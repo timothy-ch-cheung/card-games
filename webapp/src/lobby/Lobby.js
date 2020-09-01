@@ -44,7 +44,7 @@ function Lobby(props) {
             props.onShowError(error.response.data.message);
             dispatch(resetGame());
         });
-    }, [gameId, props]);
+    }, [gameId, props, dispatch]);
 
     useEffect(() => {
         if (gameId == null) {
