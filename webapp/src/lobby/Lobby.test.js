@@ -39,9 +39,10 @@ describe("TEST SUITE Lobby: ", () => {
                 id: 1,
                 host: {id: "123", username: "John"},
                 guests: [{id: "321", username: "Jane"}],
-                gameMode: "MATCH_TWO"
+                gameMode: "MATCH_TWO",
+                gameStatus: "OPEN"
             });
-            wrapper = mount(<Provider store={store} onShowError={showError}><Lobby/></Provider>);
+            wrapper = mount(<Provider store={store}><Lobby onShowError={showError}/></Provider>);
         });
 
         test('Matches Initial Lobby snapshot', () => {
@@ -73,10 +74,27 @@ describe("TEST SUITE Lobby: ", () => {
                 gameMode: "MATCH_TWO",
                 gameStatus: "DELETED"
             });
-            wrapper = mount(<Provider store={store} onShowError={showError}><Lobby/></Provider>);
+            wrapper = mount(<Provider store={store}><Lobby onShowError={showError}/></Provider>);
         });
 
         test('On component load GET DELETED game resets Game Id', async () => {
+            await flushPromises();
+            let actions = store.getActions();
+            expect(actions.length).toBe(1);
+            expect(actions[0]).toEqual({"type": "RESET_GAME"});
+        });
+    });
+
+    describe("When lobby is not returned ", () => {
+
+        beforeEach(() => {
+            mockAPI.onGet("/game/1").reply(400, {
+                message: "Server inactive"
+            });
+            wrapper = mount(<Provider store={store}><Lobby onShowError={showError}/></Provider>);
+        });
+
+        test('from API call after component mount', async () => {
             await flushPromises();
             let actions = store.getActions();
             expect(actions.length).toBe(1);

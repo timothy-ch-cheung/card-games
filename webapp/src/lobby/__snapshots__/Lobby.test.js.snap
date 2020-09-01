@@ -2,7 +2,6 @@
 
 exports[`TEST SUITE Lobby:  When lobby is active,  Matches Initial Lobby snapshot 1`] = `
 <Provider
-  onShowError={[MockFunction]}
   store={
     Object {
       "clearActions": [Function],
@@ -14,7 +13,9 @@ exports[`TEST SUITE Lobby:  When lobby is active,  Matches Initial Lobby snapsho
     }
   }
 >
-  <Lobby>
+  <Lobby
+    onShowError={[MockFunction]}
+  >
     <div
       style={
         Object {
