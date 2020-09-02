@@ -31,7 +31,6 @@ function CreatePlayer(props) {
         API.post('/player', {
             username: e.target.nickname.value
         }).then(function (response) {
-            console.log(response)
             dispatch(setPlayer(response.data.id));
             dispatch(setKey(response.data.key));
             props.onSubmit(props.gameId, response.data.id, response.data.key);

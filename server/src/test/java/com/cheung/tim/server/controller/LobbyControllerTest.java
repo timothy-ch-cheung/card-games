@@ -5,7 +5,7 @@ import com.cheung.tim.server.domain.Player;
 import com.cheung.tim.server.dto.CreateLobbyDTO;
 import com.cheung.tim.server.dto.LobbyDTO;
 import com.cheung.tim.server.dto.PrivatePlayerDTO;
-import com.cheung.tim.server.enums.GameMode;
+import com.cheung.tim.server.dto.UpdateLobbyDTO;
 import com.cheung.tim.server.enums.GameStatus;
 import com.cheung.tim.server.exception.BadRequestException;
 import com.cheung.tim.server.exception.NotFoundException;
@@ -28,7 +28,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.cheung.tim.server.enums.GameMode.*;
+import static com.cheung.tim.server.enums.GameMode.MATCH_TWO;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -46,18 +46,19 @@ class LobbyControllerTest {
     LobbyService lobbyService;
 
     @MockBean
+    LobbySocketController lobbySocketController;
+
+    @MockBean
     PlayerService playerService;
 
     @MockBean
     ModelMapper modelMapper;
 
-    ArgumentCaptor playerDTOCapture = ArgumentCaptor.forClass(PrivatePlayerDTO.class);
-    ArgumentCaptor lobbyNameCapture = ArgumentCaptor.forClass(String.class);
     ArgumentCaptor createLobbyDTOCapture = ArgumentCaptor.forClass(CreateLobbyDTO.class);
 
     @Test
     void getLobby_shouldReturn200() throws Exception {
-        Player player = new Player("opjps1w7o66ckmthc18zo32r29wic9fo","John Smith");
+        Player player = new Player("opjps1w7o66ckmthc18zo32r29wic9fo", "John Smith");
         Lobby lobby = new Lobby("test_lobby", player, GameStatus.OPEN, 2, MATCH_TWO);
         LobbyDTO lobbyDTO = getLobbyDTO();
 
@@ -153,7 +154,8 @@ class LobbyControllerTest {
 
     @Test
     void updateLobby_shouldReturn204() throws Exception {
-        MvcResult result =  mockMvc.perform(MockMvcRequestBuilders
+        when(lobbyService.updateLobby(anyLong(), any(UpdateLobbyDTO.class))).thenReturn(new Lobby());
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                 .patch("/update/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"rounds\":4, \"host\":{\"id\":\"40283481721d879601721d87b6350000\"}}")
@@ -163,12 +165,13 @@ class LobbyControllerTest {
 
         assertThat(response.getStatus(), is(204));
         assertThat(response.getContentAsString(), is(""));
+        verify(lobbySocketController).broadcastLobby(any(Lobby.class));
     }
 
     @Test
     void getLobbys_shouldReturn200() throws Exception {
         List<Lobby> lobbies = new ArrayList();
-        Player player = new Player("opjps1w7o66ckmthc18zo32r29wic9fo","John Smith");
+        Player player = new Player("opjps1w7o66ckmthc18zo32r29wic9fo", "John Smith");
         Lobby lobby = new Lobby("test_lobby", player, GameStatus.OPEN, 2, MATCH_TWO);
         lobbies.add(lobby);
         when(lobbyService.findOpenLobbies()).thenReturn(lobbies);
@@ -196,7 +199,7 @@ class LobbyControllerTest {
                 "   \"maxPlayers\": 2,\n" +
                 "   \"gameMode\": \"MATCH_TWO\",\n" +
                 "   \"rounds\": 2\n" +
-                    "}\n" +
+                "}\n" +
                 "   ]\n" +
                 "}";
 
@@ -206,12 +209,14 @@ class LobbyControllerTest {
 
     @Test
     void joinLobby_shouldReturn204() throws Exception {
+        when(lobbyService.joinLobby(anyLong(), any(PrivatePlayerDTO.class))).thenReturn(new Lobby());
         MvcResult result = performPatch("/join/1");
 
         MockHttpServletResponse response = result.getResponse();
 
         assertThat(response.getStatus(), is(204));
         assertThat(response.getContentAsString(), is(""));
+        verify(lobbySocketController).broadcastLobby(any(Lobby.class));
     }
 
     @Test
@@ -236,12 +241,14 @@ class LobbyControllerTest {
 
     @Test
     void leaveLobby_shouldReturn204() throws Exception {
+        when(lobbyService.leaveLobby(anyLong(), any(PrivatePlayerDTO.class))).thenReturn(new Lobby());
         MvcResult result = performPatch("/leave/1");
 
         MockHttpServletResponse response = result.getResponse();
 
         assertThat(response.getStatus(), is(204));
         assertThat(response.getContentAsString(), is(""));
+        verify(lobbySocketController).broadcastLobby(any(Lobby.class));
     }
 
     @Test

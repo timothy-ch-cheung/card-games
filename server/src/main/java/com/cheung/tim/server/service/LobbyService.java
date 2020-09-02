@@ -61,7 +61,7 @@ public class LobbyService {
     }
 
     @Transactional
-    public void updateLobby(Long gameId, UpdateLobbyDTO lobbyDTO) {
+    public Lobby updateLobby(Long gameId, UpdateLobbyDTO lobbyDTO) {
         if (lobbyDTO.getHost() == null) {
             throw new BadRequestException(INVALID_PLAYER);
         }
@@ -76,11 +76,11 @@ public class LobbyService {
         }
 
         lobby.setRounds(lobbyDTO.getRounds());
-        lobbyRepository.save(lobby);
+        return lobbyRepository.save(lobby);
     }
 
     @Transactional
-    public void joinLobby(Long gameId, PrivatePlayerDTO privatePlayerDTO) {
+    public Lobby joinLobby(Long gameId, PrivatePlayerDTO privatePlayerDTO) {
         Player player = getPlayer(privatePlayerDTO.getId());
         if (isPlayerInLobby(player)) {
             throw new BadRequestException(String.format("Player %s is already in a game", player.getUsername()));
@@ -98,10 +98,11 @@ public class LobbyService {
             lobbyRepository.save(lobby);
         }
         playerService.updateCurrentLobby(player, lobby);
+        return lobbyRepository.findByLobbyId(gameId);
     }
 
     @Transactional
-    public void leaveLobby(Long gameId, PrivatePlayerDTO privatePlayerDTO) {
+    public Lobby leaveLobby(Long gameId, PrivatePlayerDTO privatePlayerDTO) {
         Lobby lobby = lobbyRepository.findByLobbyId(gameId);
         if (lobby == null) {
             throw new NotFoundException(String.format(GAME_NOT_EXIST, gameId));
@@ -128,7 +129,7 @@ public class LobbyService {
             throw new NotFoundException(String.format("Player with id %s not found", privatePlayerDTO.getId()));
         }
 
-        lobbyRepository.save(lobby);
+        return lobbyRepository.save(lobby);
     }
 
     public List<Lobby> findOpenLobbies() {

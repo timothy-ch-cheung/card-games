@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import API from "../API";
+import API, {baseURL} from "../API";
 import {useHistory} from "react-router-dom";
 import {resetGame, resetGameMode, setGameMode} from "../redux/actions";
 import PlayerList from "../components/player-list/PlayerList";
 import LobbySettings from "../components/lobby-settings/LobbySettings";
+import SockJsClient from 'react-stomp';
+import {isEmpty} from "lodash";
 
 function Lobby(props) {
     const gameId = useSelector(state => state.game);
@@ -28,33 +30,35 @@ function Lobby(props) {
         return game.guests ? [host].concat(game.guests) : [host];
     }
 
+
     useEffect(() => {
-        const getGame = () => {
-            API.get(`/game/${gameId}`
-            ).then(function (response) {
-                if (response.data.gameStatus === 'DELETED') {
-                    dispatch(resetGame());
-                    clearInterval(interval);
-                    history.push("/games/public");
-                }
+        API.get(`/game/${gameId}`
+        ).then(function (response) {
+            if (response.data.gameStatus === 'DELETED') {
+                dispatch(resetGame());
+            } else {
                 setGame(response.data);
                 dispatch(setGameMode(response.data.gameMode));
-            }).catch(function (error) {
-                props.onShowError(error.response.data.message);
-                clearInterval(interval);
-                history.push("/games/public");
-            });
-        };
+            }
+        }).catch(function (error) {
+            props.onShowError(error.response.data.message);
+            dispatch(resetGame());
+        });
+    }, [gameId, props, dispatch]);
 
-        getGame();
-        const interval = setInterval(function () {
-            getGame();
-        }, 1000);
-
-        return () => {
-            clearInterval(interval);
+    useEffect(() => {
+        if (gameId == null) {
+            history.push('/games/public')
         }
-    }, [gameId, history, props, dispatch]);
+    }, [gameId, history])
+
+    const onLobbyUpdate = gameData => {
+        if (isEmpty(gameData) || gameData == null || gameData.gameStatus === 'DELETED') {
+            dispatch(resetGame());
+        } else {
+            setGame(gameData);
+        }
+    }
 
     const onLeaveGame = () => {
         API.patch(`/leave/${gameId}`, {
@@ -71,6 +75,7 @@ function Lobby(props) {
 
     return (
         <div style={{display: "flex"}}>
+            <SockJsClient url={baseURL + `/websocket`} topics={[`/topic/game/${gameId}`]} onMessage={onLobbyUpdate} data-test="sock-js-client"/>
             <PlayerList players={getPlayersList()} onLeave={onLeaveGame} maxPlayers={game.maxPlayers}/>
             <LobbySettings gameMode={gameMode} numPlayers={getPlayersList().length} isHost={isGameHost()}
                            rounds={game.rounds || 1} userId={userId} userKey={userKey} gameId={gameId}/>
