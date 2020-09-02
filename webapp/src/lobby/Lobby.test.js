@@ -40,6 +40,7 @@ describe("TEST SUITE Lobby: ", () => {
         store.clearActions();
         mockAPI.resetHistory();
         mockAPI.reset();
+        jest.clearAllMocks();
     });
 
     describe("When lobby is active, ", () => {
