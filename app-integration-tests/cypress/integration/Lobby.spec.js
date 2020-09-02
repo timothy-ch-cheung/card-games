@@ -8,8 +8,9 @@ describe('Lobby ', () => {
                 cy.get('input[name="nickname"]').type('Jane');
                 cy.contains('[data-test="submit-create-player-modal"]', 'Join Game').click();
 
-                cy.leaveGame(data.gameId, data.hostPlayerId, data.hostPlayerKey);
-                cy.contains('Public games')
+                cy.leaveGame(data.gameId, data.hostPlayerId, data.hostPlayerKey).then(() => {
+                    cy.contains('Public games');
+                })
             });
         });
     });
