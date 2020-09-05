@@ -20,7 +20,7 @@ describe('Games Page:', () => {
             .then(lobbyCard => {
                 const numCards = lobbyCard.length;
                 cy.createGame('new game');
-                cy.wait(10000);
+                cy.wait(11000);
                 cy.get('.container').find('.lobby-card').should('have.length', numCards + 1);
             });
     });
