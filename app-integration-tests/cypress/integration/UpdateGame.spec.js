@@ -29,6 +29,7 @@ describe('Update Game ', () => {
 
             cy.get('[data-test="numRounds-value"]').should('have.value', 1);
             cy.get('[data-test="round-number-text"]').should('have.value', 2);
+            cy.wait(100);
             cy.updateGame(data.gameId, data.hostPlayerId, data.hostPlayerKey, 4);
 
             cy.get('[data-test="numRounds-value"]').should('have.value', 2);
