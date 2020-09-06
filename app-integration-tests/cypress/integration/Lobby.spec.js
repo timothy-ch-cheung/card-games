@@ -13,5 +13,20 @@ describe('Lobby ', () => {
                 cy.contains('Public games');
             });
         });
+
+        it('another guest joining game updates player list', () => {
+            cy.visit('/games/public');
+            cy.createGame("Another will join", "John", 3).then(data => {
+                cy.get('[data-test=refresh-btn]').click();
+                let lobbyCardBtn = cy.contains('.card-title', "Another will join").parent().children('.btn');
+                lobbyCardBtn.click();
+                cy.get('input[name="nickname"]').type('Jane');
+                cy.contains('.modal-dialog .btn', 'Join Game').click();
+
+                cy.get('[data-test^="player-name"]').should('have.length', 2);
+                cy.joinGame(data.gameId);
+                cy.get('[data-test^="player-name"]').should('have.length', 3);
+            });
+        });
     });
 });

@@ -98,7 +98,8 @@ public class LobbyService {
             lobbyRepository.save(lobby);
         }
         playerService.updateCurrentLobby(player, lobby);
-        return lobbyRepository.findByLobbyId(gameId);
+        lobby.addGuest(player);
+        return lobby;
     }
 
     @Transactional
