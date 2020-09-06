@@ -78,10 +78,11 @@ Cypress.Commands.add("createGame", (lobbyName, nickname, maxPlayers, queueForCle
 });
 
 Cypress.Commands.add("joinGame", {
-    prevSubject: true
-}, (subject) => {
+    prevSubject: 'optional'
+}, (subject, gameId) => {
     cy.fixture('createPlayer.json').then((createPlayer) => {
         createPlayer.username = Math.floor(Math.random() * 1000);
+        let joinGameId = subject ? subject.gameId : gameId;
         cy.request({
             url: `${Cypress.env('serverUrl')}/player`,
             method: 'POST',
@@ -95,7 +96,7 @@ Cypress.Commands.add("joinGame", {
                     joinGame.id = playerId;
                     joinGame.key = playerKey;
                     return cy.request({
-                        url: `${Cypress.env('serverUrl')}/join/${subject.gameId}`,
+                        url: `${Cypress.env('serverUrl')}/join/${joinGameId}`,
                         method: 'PATCH',
                         body: joinGame
                     }).then(() => {
