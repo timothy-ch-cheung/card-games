@@ -71,7 +71,7 @@ jobs:
     working_directory: ~/card-games/server
 
     docker:
-      - image: circleci/openjdk:8-jdk-stretch
+      - image: circleci/openjdk:11.0-jdk-stretch
 
     steps:
       - checkout:
@@ -108,13 +108,13 @@ jobs:
       - attach_workspace:
           at: server
 
-      - run: heroku deploy:jar server/target/server.jar --app $HEROKU_APP_NAME
+      - run: heroku deploy:jar server/target/server.jar --app $HEROKU_APP_NAME --jdk 11
 
   api-test:
     working_directory: ~/card-games/api-integration-tests
 
     docker:
-      - image: circleci/openjdk:8-jdk-stretch
+      - image: circleci/openjdk:11.0-jdk-stretch
 
     environment:
       TEST_ENV: PRODUCTION
