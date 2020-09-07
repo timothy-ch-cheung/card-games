@@ -18,7 +18,7 @@ jobs:
     working_directory: ~/card-games/server
 
     docker:
-      - image: circleci/openjdk:8-jdk-stretch
+      - image: circleci/openjdk:11.0-jdk-stretch
 
     steps:
       - checkout:
