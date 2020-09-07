@@ -108,7 +108,7 @@ jobs:
       - attach_workspace:
           at: server
 
-      - run: heroku deploy:jar server/target/server.jar --app $HEROKU_APP_NAME
+      - run: heroku deploy:jar server/target/server.jar --app $HEROKU_APP_NAME --jdk 11
 
   api-test:
     working_directory: ~/card-games/api-integration-tests
