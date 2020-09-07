@@ -15,7 +15,7 @@
 	<description>Noughts and Crosses server</description>
 
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 		<skip.frontend>true</skip.frontend>
 		<sonar.projectKey>card-games-server</sonar.projectKey>
 		<sonar.organization>timothy-ch-cheung</sonar.organization>
