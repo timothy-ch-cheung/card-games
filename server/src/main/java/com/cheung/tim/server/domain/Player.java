@@ -30,6 +30,11 @@ public class Player extends BaseEntity {
         this.key = key;
     }
 
+    public Player(Player player) {
+        this(player.getUserId(), player.getUsername(), player.getKey());
+        this.currentLobby = player.getCurrentLobby();
+    }
+
     @Getter
     @Column(name = "user_id", columnDefinition = "CHAR(32)", nullable = false)
     @GeneratedValue(generator = "uuid")
