@@ -11,6 +11,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
 
 @Entity
 @Table(name = "LOBBY")
@@ -44,7 +47,6 @@ public class Lobby extends BaseEntity {
     @JoinColumn(name = "game_id", unique = true)
     private Game game;
 
-    @Getter
     @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", unique = true)
@@ -75,8 +77,12 @@ public class Lobby extends BaseEntity {
     @Setter
     private Integer rounds;
 
+    public Player getHost() {
+        return new Player(this.host);
+    }
+
     public Set<Player> getGuests() {
-        return Collections.unmodifiableSet(this.guests);
+        return this.guests.stream().map(g -> new Player(g)).collect(toSet());
     }
 
     public void addGuest(Player player) {
