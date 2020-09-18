@@ -53,10 +53,14 @@ public class Player extends BaseEntity {
     private String username;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "game_id")
+    @JoinColumn(name = "lobby_id")
     @Getter
     @Setter
     Lobby currentLobby;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "game_id")
+    private Game game;
 
     @PrePersist
     protected void onCreate() {

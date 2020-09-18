@@ -7,13 +7,11 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toSet;
 
 @Entity
 @Table(name = "LOBBY")
@@ -43,8 +41,8 @@ public class Lobby extends BaseEntity {
 
     @Getter
     @Setter
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "game_id", unique = true)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "game_id", unique = true, referencedColumnName = "id")
     private Game game;
 
     @Setter

@@ -1,17 +1,20 @@
 package com.cheung.tim.server.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "GAME")
 public class Game extends BaseEntity {
 
     @Getter
-    @Column(name = "user_id", columnDefinition = "CHAR(32)", nullable = false)
+    @Column(columnDefinition = "CHAR(32)", nullable = false)
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
     @Id
@@ -19,6 +22,20 @@ public class Game extends BaseEntity {
 
     @Getter
     private Integer currentRound;
+
+    @OneToOne(mappedBy = "game")
+    @Getter
+    private Lobby lobby;
+
+    @Getter
+    @OneToMany(mappedBy = "game", fetch = FetchType.LAZY)
+    private Set<PlayerGameData> playerGameData = new HashSet<>();
+
+    @Getter
+    @Setter
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", unique = true)
+    private Player winner = null;
 
     public void nextRound() {
         this.currentRound += 1;
