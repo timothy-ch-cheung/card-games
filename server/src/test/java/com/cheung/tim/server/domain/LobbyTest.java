@@ -9,6 +9,7 @@ import java.util.Set;
 
 import static com.cheung.tim.server.enums.GameMode.MATCH_TWO;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.mock;
 
@@ -99,6 +100,12 @@ class LobbyTest {
         Set<Player> guestSetCopy = lobby.getGuests();
         ((Player) guestSetCopy.toArray()[0]).setUsername("NEW_USERNAME");
         assertThat(((Player) (lobby.getGuests().toArray()[0])).getUsername(), is("ORIGINAL"));
+    }
+
+    @Test
+    void getHost_returnsNullIfHostIsNull() {
+        Lobby lobby = new Lobby("test_lobby", null, GameStatus.OPEN, 2, MATCH_TWO);
+        assertThat(lobby.getHost(), is(nullValue()));
     }
 
     private Lobby createLobby() {

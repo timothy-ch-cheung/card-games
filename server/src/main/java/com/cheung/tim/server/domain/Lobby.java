@@ -76,6 +76,9 @@ public class Lobby extends BaseEntity {
     private Integer rounds;
 
     public Player getHost() {
+        if (this.host == null) {
+            return null;
+        }
         return new Player(this.host);
     }
 

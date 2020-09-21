@@ -28,6 +28,7 @@ public class Game extends BaseEntity {
     private Lobby lobby;
 
     @Getter
+    @Setter
     @OneToMany(mappedBy = "game", fetch = FetchType.LAZY)
     private Set<PlayerGameData> playerGameData = new HashSet<>();
 

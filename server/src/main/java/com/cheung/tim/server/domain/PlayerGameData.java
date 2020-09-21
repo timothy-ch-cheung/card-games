@@ -1,6 +1,7 @@
 package com.cheung.tim.server.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -13,6 +14,7 @@ public class PlayerGameData extends BaseEntity {
     private Long id;
 
     @Getter
+    @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", unique = true)
     private Player player;
@@ -22,5 +24,6 @@ public class PlayerGameData extends BaseEntity {
     private Game game;
 
     @Getter
+    @Setter
     private int score;
 }
