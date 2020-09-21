@@ -81,6 +81,14 @@ class PlayerTest {
         assertThat(players.contains(new Player("123", "John")), is(true));
     }
 
+    @Test
+    void copyConstructorReturnsCopy() {
+        Player player = new Player("123", "John", "key");
+        Player playerCopy = new Player(player);
+        assertThat(player.equals(playerCopy), is(true));
+        assertThat(player == playerCopy, is(false));
+    }
+
     private Player createPlayer() {
         return new Player("11111111111111111111111111111111", "John");
     }
