@@ -83,7 +83,7 @@ public class Lobby extends BaseEntity {
     }
 
     public Set<Player> getGuests() {
-        return this.guests.stream().map(g -> new Player(g)).collect(toSet());
+        return this.guests.stream().map(Player::new).collect(toSet());
     }
 
     public void addGuest(Player player) {
